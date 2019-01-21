@@ -2,6 +2,7 @@
 import bibtexparser
 import networkx as nx
 import jellyfish
+import numpy
 
 bibtex_file = open('data/Zaraiskaya.bib')
 bib_str = bibtex_file.read()
@@ -9,6 +10,7 @@ bib_db = bibtexparser.loads(bib_str)
 
 G = nx.Graph
 threshold = 0.85
+
 
 def make_uniq_authors_list(bib_db):
     allAuthors = []
@@ -78,3 +80,36 @@ while(1):
         break
     else:
         continue
+
+allAuthors = make_uniq_authors_list(bib_db)
+authorWeight = []
+msize = len(allAuthors)
+edges = numpy.zeros((msize, msize))
+weights = numpy.zeros(msize)
+
+k = 0
+for i, entry in enumerate(bib_db.entries):
+    if 'author' not in entry:
+        continue
+    authors = entry['author'].split(' and ')
+    authors = map(unicode.strip, authors)
+    for j, author in enumerate(authors):
+        print('')
+        if author not in authorWeight:
+            authorWeight.append(author)
+            weights[k] = weights[k] + 1
+            k = k + 1
+        else:
+            il = authorWeight.index(author)
+            weights[il] = weights[il] + 1
+        for ii, author_2 in enumerate(authors):
+            print str(author_2) + ' ' + str(authors)
+            e2 = allAuthors.index(author_2)
+            e1 = allAuthors.index(author)
+            edges[e1][e2] = edges[e1][e2] + 1
+
+
+
+
+print str(len(allAuthors)) + ' ' + str(len(authorWeight))
+print weights
