@@ -65,8 +65,8 @@ def save_all_pairs(allAuthors, threshold):
                 np = np + 1
                 p = (auth_1, auth_2)
                 pairs.append(p)
-    f = open("pairs.txt", "w+")
-    f.write('\n'.join('%s, %s, y' % x for x in pairs))
+    f = open("duplicates.csv", "w+")
+    f.write('\n'.join('%s, %s, y' % x for x in pairs).encode('utf-8'))
     f.close()
     return(pairs)
 
@@ -94,31 +94,10 @@ bibtex_file = open(infile)
 bib_str = bibtex_file.read()
 bib_db = bibtexparser.loads(bib_str)
 print('Constructing network from file: ' + infile)
-# Merge duplicate authors
-while(1):
-    allAuthors = make_uniq_authors_list(bib_db)
-    print 'Total number of authors = ' + str(len(allAuthors))
-    print 'Using Jaro-Winkler algorithm, threshold ' + str(threshold)
-    choice = raw_input("Merge duplicate authors (y/n)?")
-    print('')
-    if choice == 'y':
-        np, pairs = make_pairs(allAuthors, threshold)
-        if np == 0:
-            break
-        rename_authors(bib_db, pairs)
-    elif choice == 'n':
-        break
-    else:
-        continue
-# Save the edited bibtex file
-writer = BibTexWriter()
-bibtex_str = bibtexparser.dumps(bib_db)
-with open(out_bib, 'w') as bibfile:
-    bibfile.write(bibtex_str.encode('utf8'))
 # Make the list of unique authors
 allAuthors = make_uniq_authors_list(bib_db)
 pairs = save_all_pairs(allAuthors, threshold)
-# Find graph edges. and node weights
+# Graph
 msize = len(allAuthors)
 edges = numpy.zeros((msize, msize))
 weights = numpy.zeros(msize)
