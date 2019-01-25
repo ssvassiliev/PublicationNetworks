@@ -1,11 +1,8 @@
 #!/usr/bin/python
 import bibtexparser
-from bibtexparser.bwriter import BibTexWriter
 import networkx as nx
-import jellyfish
 import numpy
 import matplotlib.pyplot as plt
-import os
 
 
 def make_uniq_authors_list(bib_db):
@@ -21,63 +18,6 @@ def make_uniq_authors_list(bib_db):
             else:
                 continue
     return allAuthors
-
-
-def make_pairs(allAuthors, threshold):
-    pairs = []
-    np = 0
-    for i in range(0, len(allAuthors)):
-        for j in range(i+1, len(allAuthors)):
-            djawi_1 = jellyfish.jaro_winkler(allAuthors[i], allAuthors[j])
-            djawi_2 = jellyfish.jaro_winkler(allAuthors[i].split()[-1],
-                                             allAuthors[j].split()[-1])
-            if djawi_1 > threshold or djawi_2 > threshold:
-                np = np + 1
-                while(1):
-                    q = allAuthors[i] + ' --> ' + allAuthors[j] + ' (y/i/n)?'
-                    choice = raw_input(q.encode('ascii', 'ignore'))
-                    if choice == 'y':
-                        p = (allAuthors[i], allAuthors[j])
-                        pairs.append(p)
-                        break
-                    elif choice == 'i':
-                        p = (allAuthors[j], allAuthors[i])
-                        pairs.append(p)
-                        break
-                    elif choice == 'n':
-                        break
-                    else:
-                        continue
-    print '---------------------------------'
-    print 'Merging: ' + str(len(pairs)) + ' authors'
-    return(np, pairs)
-
-
-def save_all_pairs(allAuthors, threshold):
-    pairs = []
-    np = 0
-    for i, auth_1 in enumerate(allAuthors):
-        for auth_2 in allAuthors[i+1:-1]:
-            djawi_1 = jellyfish.jaro_winkler(auth_1, auth_2)
-            djawi_2 = jellyfish.jaro_winkler(auth_1.split()[-1],
-                                             auth_2.split()[-1])
-            if djawi_1 > threshold or djawi_2 > threshold:
-                np = np + 1
-                p = (auth_1, auth_2)
-                pairs.append(p)
-    f = open("duplicates.csv", "w+")
-    f.write('\n'.join('%s, %s, y' % x for x in pairs).encode('utf-8'))
-    f.close()
-    return(pairs)
-
-
-def rename_authors(bib_db, pairs):
-    for entry in bib_db.entries:
-        if 'author' not in entry:
-            continue
-        for p in pairs:
-            entry['author'] = entry['author'].replace(p[0], p[1])
-    return(pairs)
 
 
 # Main program
@@ -96,7 +36,6 @@ bib_db = bibtexparser.loads(bib_str)
 print('Constructing network from file: ' + infile)
 # Make the list of unique authors
 allAuthors = make_uniq_authors_list(bib_db)
-pairs = save_all_pairs(allAuthors, threshold)
 # Graph
 msize = len(allAuthors)
 edges = numpy.zeros((msize, msize))
@@ -133,8 +72,8 @@ nodesize = [d['weight'] for (u, d) in G.nodes(data=True)]
 pos = nx.spring_layout(G, iterations=100)
 nx.draw_networkx_nodes(G, pos, node_size=nodesize)
 nx.draw_networkx_edges(G, pos, width=0.5, edge_color='b')
-nx.draw_networkx_labels(G, pos, labels, alpha=1.0, font_size=8,
-                                            font_color='black')
+nx.draw_networkx_labels(G, pos, labels, alpha=1.0,
+                        font_size=8, font_color='black')
 plt.axis('off')
 plt.show()
 

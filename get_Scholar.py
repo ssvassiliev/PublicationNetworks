@@ -27,12 +27,12 @@ if count > 1:
     ind = ind - 1
 else:
     ind = 0
-print 'Downloading publications of ' + authors[ind].name
+print 'Downloading ' + authors[ind].name + ' publications'
 author = authors[ind].fill()
 db.entries = []
 id = 1
 bar = Bar('Loading', max=len(author.publications))
-for p in author.publications:
+for id, p in enumerate(author.publications):
     bar.next()
     pub = p.fill()
     if 'year' in pub.bib:
@@ -43,7 +43,6 @@ for p in author.publications:
     sid = "%04d" % id
     pub.bib['ID'] = str(sid)
     db.entries.append(pub.bib)
-    id = id + 1
 bar.finish()
 writer = BibTexWriter()
 bibtex_str = bibtexparser.dumps(db)
