@@ -34,15 +34,12 @@ def make_pairs(allAuthors, threshold):
             if djawi_1 > threshold or djawi_2 > threshold:
                 np = np + 1
                 while(1):
-                    q = auth_1 + ' --> ' + auth_2 + ' (y/i/n)?'
+                    q = auth_1 + ' <---> ' + auth_2 + ' (y/n)?'
                     choice = raw_input(q.encode('ascii', 'ignore'))
                     if choice == 'y':
                         p = (auth_1, auth_2)
                         pairs.append(p)
                         break
-                    elif choice == 'i':
-                        p = (auth_2, auth_1)
-                        pairs.append(p)
                         break
                     elif choice == 'n':
                         break
@@ -66,7 +63,7 @@ def make_pairs_auto(filename, allAuthors, threshold):
                 if len(auth_1) < len(auth_2):
                     p = ('n,', auth_1, auth_2, djawi_1, djawi_2)
                 else:
-                    p = ('n,', auth_2, auth_1, djawi_2, djawi_1)
+                    p = ('n,', auth_2, auth_1, djawi_1, djawi_2)
                 pairs.append(p)
     return(pairs)
 
@@ -181,39 +178,44 @@ new_db = remove_entries(bib_db, lastname)
 # Identify and merge duplicate authors programmatically
 while(1):
     np, new_db = rename_authors_auto(new_db, threshold)
-    print 'Merged ' + str(np) + ' duplicate authors'
     if np == 0:
         break
+    print 'Merged ' + str(np) + ' duplicate authors'
 # Save the list of potential duplicates
 allAuthors = make_uniq_authors_list(new_db)
-print 'The number of authors = ' + str(len(allAuthors))
+print ' '.join(('The number of authors =', str(len(allAuthors))))
 # Merge remaining potential duplicate authors interactively
-print 'Using Jaro-Winkler algorithm, threshold = ' + str(threshold)
+print ' '.join(('Using Jaro-Winkler algorithm, threshold =', str(threshold)))
 pairs = make_pairs_auto(out_pairs, allAuthors, threshold)
-print "The number of remaining potential duplicates = " + str(len(pairs))
+print 'The number of remaining potential duplicates = ' + str(len(pairs))
 while(1):
     allAuthors = make_uniq_authors_list(new_db)
-    choice = raw_input("Merge duplicates: \ny - manually\nf - from file\ns - save to file\n>>>")
-    print('')
-    if choice == 'y':
+    choice = raw_input(
+     '\n'.join(('Merge duplicates:', ' "i" - merge interactively',
+                ' "r" - read duplicates from file',
+                ' "w" - write duplicates to file', '>>>')))
+    print ''
+    if choice == 'i':
         np, pairs = make_pairs(allAuthors, threshold)
         if np == 0:
             break
         rename_authors(new_db, pairs)
-    elif choice == 's':
+    elif choice == 'w':
         pairs = make_pairs_auto(out_pairs, allAuthors, threshold)
         save_pairs(pairs, out_pairs)
+        print 'Duplicates are written to file ' + out_pairs
         break
-    elif choice == 'f':
+    elif choice == 'r':
+        print 'Reading duplicates from file ' + in_pairs
         pairs = read_pairs(in_pairs)
         while(1):
             old_np = len(allAuthors)
             rename_authors(new_db, pairs)
             allAuthors = make_uniq_authors_list(new_db)
             diff = old_np - len(allAuthors)
-            print 'Merged ' + str(diff) + ' authors'
             if diff == 0:
                 break
+            print 'Merged ' + str(diff) + ' authors'
         break
     else:
         continue
