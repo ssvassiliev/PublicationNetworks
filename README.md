@@ -11,9 +11,11 @@ It is possible to get citations from Google Scholar using  [Publish or Perish](h
 
 #### get_scholar
  [Get_scholar](https://github.com/ssvassiliev/PublicationNetworks)  searches Google Scholar authors by name and then retrieves full records of all publications. This protocol allows circumventing author truncation issue mentioned above. Get_scholar produces a usable list of publications at the expense of query time. Publication records are retrieved one by one, and each query takes a couple of seconds to process, so be patient. The result of a query is saved in BibTex format.<br>
-**Installation:** To install required libraries run the following command:<br>
+**Installation** 
+To install required libraries run the following command:<br>
  `pip install scholarly bibtexparser progress`<br>
-**Usage:** Run the script and follow instructions on the screen. You will be asked to enter the name of the Google Scholar author. The results of the query are saved in BibTex format.
+**Usage** 
+Run the script and follow instructions on the screen. You will be asked to enter the name of the Google Scholar author. The results of the query are saved in BibTex format.
 
 ### Collecting data from Pubmed
 #### get_citing_authors
@@ -31,7 +33,7 @@ Common issues:
 
 ### cleanup_bibtex.py
 
-## Network creation
+## Network extraction
 ### Sci2 Tool
 
 [Sci2](https://sci2.cns.iu.edu/user/index.php) tool can extract several types of networks from various data formats. It supports major bibliometric formats including ISI, Bibtex Endnote Export Format and Scopus csv. Plain text CSV format is also supported. This introductory workshop will focus on the extraction of networks from BibTex and Scopus files. For more details see [Sci2 manual](http://sci2.wiki.cns.iu.edu) 
@@ -51,5 +53,5 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 
 ### Graphviz
 
-### C
+
 
