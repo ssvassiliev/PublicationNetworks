@@ -23,12 +23,6 @@ Run the script and follow instructions on the screen. You will be asked to enter
 
 ### Collecting data from Scopus
 
-### Collecting data from Web of Science
-#### CitNetExplorer
-[CitNetExplorer](http://www.citnetexplorer.nl/) is avery useful tool allowing to extract and visualize networks directly from WoS. 
-
-#### VosViewer
-[VosViewer](http://www.vosviewer.com/) is similar to CitNetExplorer and it comes from the same group at Leiden University. I am not sure why they separated these two projects as they seem to offer  very similar functionality. The only difference I can see so far is that VosViewer supports wide variety of input formats compared to CitNetExplorer.
 
 ## BibTex database clean up
 
@@ -60,5 +54,11 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 
 ### Graphviz
 
+## Complete packages for data collection, network extraction and visualization
+#### CitNetExplorer
+[CitNetExplorer](http://www.citnetexplorer.nl/) is avery useful tool allowing to extract and visualize networks directly from WoS. 
+
+#### VosViewer
+[VosViewer](http://www.vosviewer.com/) is similar to CitNetExplorer and it comes from the same group at Leiden University. I am not sure why they separated these two projects as they seem to offer  very similar functionality. The only difference I can see so far is that VosViewer supports wide variety of input formats compared to CitNetExplorer. VosViewer can be launched directly from the Web.
 
 
