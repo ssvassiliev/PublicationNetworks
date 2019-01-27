@@ -56,12 +56,14 @@ Cons
 - all node labels are converted to lower case. 
 #### CitNetExplorer
 [CitNetExplorer](http://www.citnetexplorer.nl/) is a powerful tool allowing to extract and visualize citation networks directly from WoS. It is designed specifically for analysis of *citation networks* only. Citations are grouped by the year allowing to analyze evolution of citations in time. It comes from the same developers as VOSviewer and has the same disappointing issue of converting labels to lower case. 
+
 ## Networks in Biology
+
 ### Network data repositories
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledgethe.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQwNzQ0NDYyMywtMTkzODAzNjgxLDE4NT
+eyJoaXN0b3J5IjpbMjE0NDE1MTMwOSwtMTkzODAzNjgxLDE4NT
 A3NzYzODhdfQ==
 -->
