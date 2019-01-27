@@ -87,12 +87,12 @@ Cons
 
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
-- [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledgethe.
-[BioGrid](https://thebiogrid.org/)
+- [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledge
+- [BioGrid](https://thebiogrid.org/) database of biological interactions
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM3MjYzNzM2MywtMzI0NzkwOTYzLC0xMD
+eyJoaXN0b3J5IjpbLTYyMjU3NDcxOSwtMzI0NzkwOTYzLC0xMD
 czMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3MjIxNDIsNjU0MjU1
 Nzg2LDE4NTA3NzE0ODUsLTE5MzgwMzY4MSwxODUwNzc2Mzg4XX
 0=
