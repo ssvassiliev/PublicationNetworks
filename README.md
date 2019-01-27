@@ -51,6 +51,7 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 `"Error parsing BibTeX file: 248:64: encountered '@."`<br>
  What this means is that 64th character on line 248 of this BibTex file is '@'. This character has a special meaning in BibTex, but it also commonly occurs in citation URLs. After removing this character, or escaping it with \@ the file should load normally. 
 
+
 ## Network visualization and analysis 
 
 ### Gephi
@@ -58,6 +59,7 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 ### Graphviz
 
 ### Cytoscape
+
 
 ## Complete packages for data collection, network extraction and visualization
 
@@ -90,7 +92,7 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3ODg1NDUzMDMsLTEwNzMzODE5NDcsLT
-EzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3
-MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYzODhdfQ==
+eyJoaXN0b3J5IjpbLTMyNDc5MDk2MywtMTA3MzM4MTk0NywtMT
+MyNTk5NDc5MywxODc5NzIyMTQyLDY1NDI1NTc4NiwxODUwNzcx
+NDg1LC0xOTM4MDM2ODEsMTg1MDc3NjM4OF19
 -->
