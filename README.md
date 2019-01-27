@@ -19,20 +19,27 @@ To install required libraries run the following command:<br>
 Run the script and follow instructions on the screen. You will be asked to enter the name of the Google Scholar author. The results of the query are saved in BibTex format.
 
 ### Collecting data from Pubmed 
+
 #### get_citing_authors 
 [Get_citing_authors](https://github.com/Sihao/get_citing_authors) in an app to get the list of authors citing a given list of papers through the PubMed API. You can either input papers as a comma-separated list of PubMed IDs or provide a search term, and the app will get the authors that cite all of the search results. The output is a table where the first column is author names, the second is the number of times that an author has cited any of the input articles, and the third is the list of PubMed IDs of the cited. The live example can be found [here](https://flask-fetch-citation.herokuapp.com).
+
 ### Collecting data from Scopus 
+
 ## BibTex database clean up 
 Common issues 
 - records missing authors, for example, patents!
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - duplicate authors
+
 ### merge_duplicate_authors 
+
 ## Network extraction 
+
 ### Sci2 Tool 
 
 [Sci2](https://sci2.cns.iu.edu/user/index.php) tool can extract several types of networks from various bibliographic database formats. It supports major bibliometric formats including ISI, Bibtex Endnote Export Format and Scopus csv. Plain text CSV format is also supported. This introductory workshop will focus on the extraction of networks from BibTex and Scopus files. For more details see [Sci2 manual](http://sci2.wiki.cns.iu.edu) 
+
 Extracting networks from BibTex files.
 1. **File** ---> **Load**
 2. **Data preparation** ---> **Extract Co-Author Network**. Select bibtex format in popup window.
@@ -40,12 +47,17 @@ Extracting networks from BibTex files.
 Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You will likely encounter error looking similar to <br>
 `"Error parsing BibTeX file: 248:64: encountered '@."`<br>
  What this means is that 64th character on line 248 of this BibTex file is '@'. This character has a special meaning in BibTex, but it also commonly occurs in citation URLs. After removing this character, or escaping it with \@ the file should load normally. 
+
 ## Network visualization and analysis 
+
 ### Gephi
+
 ### Graphviz
+
 ### Cytoscape
 
 ## Complete packages for data collection, network extraction and visualization
+
 #### VOSviewer
 [VosViewer](http://www.vosviewer.com/) is the new generation bibliopgaphic network analysis and analysis and visualization tool developed in Leiden University.
 
@@ -58,16 +70,18 @@ Pros
 Cons
 - limited layout and appearance options. 
 - all node labels are converted to lower case. 
+
 #### CitNetExplorer
 [CitNetExplorer](http://www.citnetexplorer.nl/) is a powerful tool allowing to extract and visualize citation networks directly from WoS. It is designed specifically for analysis of *citation networks* only. Citations are grouped by the year allowing to analyze evolution of citations in time. It comes from the same developers as VOSviewer and has the same disappointing issue of converting labels to lower case. 
 
 ## Networks in Biology
 
 ### Network data repositories
+
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledgethe.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU2MjI0MzEyMywtMTkzODAzNjgxLDE4NT
+eyJoaXN0b3J5IjpbMTg1MDc3MTQ4NSwtMTkzODAzNjgxLDE4NT
 A3NzYzODhdfQ==
 -->
