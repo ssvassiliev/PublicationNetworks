@@ -1,11 +1,10 @@
-# Visualization of citation networks
+# Visualization of citation networks##
  
-## Tools for bibliometric data collection
-### Collecting data from Google Scholar
+## Tools for bibliometric data collection##
+### Collecting data from Google Scholar###
 Google Scholar accounts are arguably the best way to obtain a list of publications of an author. Everybody have Google Scholar profiles and take care to keep it correct and updated. Nevertheless, getting useful publication lists from Google is not straightforward. Below we discuss several ways to get citation data for network visualization.
 
-#### Publish or Perish
-
+#### Publish or Perish####
 It is possible to get citations from Google Scholar using  [Publish or Perish](https://harzing.com/resources/publish-or-perish). PoP is a windows based application, but it can be used on Mac and Linux with the help of Wine. In theory PoP allows literature searches in several databases, however, I was not able to connect to WOS using campus VPN. PoP could be useful to scrape citation results from Google Scholar. Unfortunately, Google truncates author lists unpredictably. In some cases, it retains 5 authors, in other only 3,  and adds '...' at the end of authors. This "..." record appears as a node in the network. Another issue with a shortened list of authors is that the head of a group may very often be the last one, and then the citation will be not connected to the main node. These issues make networks extracted from PoP imported lists not particularly trustworthy. If you decide to go this way, save query results in BibTex format for subsequent network extraction.
 
 #### bibnet-google-scholar-scraper
@@ -86,7 +85,7 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2NjkwODg3MjAsMTg3OTcyMjE0Miw2NT
+eyJoaXN0b3J5IjpbLTEzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NT
 QyNTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYz
 ODhdfQ==
 -->
