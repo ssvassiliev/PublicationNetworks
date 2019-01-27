@@ -83,8 +83,8 @@ Cons
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledgethe.
 
 
-[INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system,
+[INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system making mechanistic pathway models from ,is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5Mz
-gwMzY4MSwxODUwNzc2Mzg4XX0=
+eyJoaXN0b3J5IjpbMjEzNTk1OTE3Niw2NTQyNTU3ODYsMTg1MD
+c3MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYzODhdfQ==
 -->
