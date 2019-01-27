@@ -32,22 +32,17 @@ Common issues
 Extracting networks from BibTex files.
 1. **File** ---> **Load**
 2. **Data preparation** ---> **Extract Co-Author Network**. Select bibtex format in popup window.
-3. **File **---> **Save**. Select GraphML format in popup window
-
+3. **File **---> **Save**. Select GraphML format in popup window<br>
 Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You will likely encounter error looking similar to <br>
 `"Error parsing BibTeX file: 248:64: encountered '@."`<br>
  What this means is that 64th character on line 248 of this BibTex file is '@'. This character has a special meaning in BibTex, but it also commonly occurs in citation URLs. After removing this character, or escaping it with \@ the file should load normally. 
+## Network visualization and analysis 
+### Gephi
+### Graphviz
+### Cytoscape
 
-## Network visualization and analysis ##
-
-### Gephi ###
-
-### Graphviz ###
-
-### Cytoscape ###
-
-## Complete packages for data collection, network extraction and visualization ##
-#### VOSviewer ####
+## Complete packages for data collection, network extraction and visualization
+#### VOSviewer
 [VosViewer](http://www.vosviewer.com/) is the new generation bibliopgaphic network analysis and analysis and visualization tool developed in Leiden University.
 Pros
 + supports wide variety of bibliographic database formats
@@ -57,14 +52,14 @@ Pros
 Cons
 - limited layout and appearance options. 
 - all node labels are converted to lower case. 
-#### CitNetExplorer ####
+#### CitNetExplorer
 [CitNetExplorer](http://www.citnetexplorer.nl/) is a powerful tool allowing to extract and visualize citation networks directly from WoS. It is de
 signed specifically for analysis of *citation networks* only. Citations are grouped by the year allowing to analyze evolution of citations in time. It comes from the same developers as VOSviewer and has the same disappointing issue of converting labels to lower case. 
-## Networks in Biology ##
-### Network data repositories ###
+## Networks in Biology
+### Network data repositories
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledgethe.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTI2MDc4OTg1MSwxODUwNzc2Mzg4XX0=
+eyJoaXN0b3J5IjpbLTE5MzgwMzY4MSwxODUwNzc2Mzg4XX0=
 -->
