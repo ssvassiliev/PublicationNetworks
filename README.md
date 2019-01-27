@@ -44,22 +44,24 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 ## Complete packages for data collection, network extraction and visualization
 #### VOSviewer
 [VosViewer](http://www.vosviewer.com/) is the new generation bibliopgaphic network analysis and analysis and visualization tool developed in Leiden University.
+
 Pros
 + supports wide variety of bibliographic database formats
 + extracts co-author, co-occurence, citation, bibliographic coupling, and co-citation 
 + performs both extraction and visualization of networks. 
 + can be launched directly from the Web site
+
 Cons
 - limited layout and appearance options. 
 - all node labels are converted to lower case. 
 #### CitNetExplorer
-[CitNetExplorer](http://www.citnetexplorer.nl/) is a powerful tool allowing to extract and visualize citation networks directly from WoS. It is de
-signed specifically for analysis of *citation networks* only. Citations are grouped by the year allowing to analyze evolution of citations in time. It comes from the same developers as VOSviewer and has the same disappointing issue of converting labels to lower case. 
+[CitNetExplorer](http://www.citnetexplorer.nl/) is a powerful tool allowing to extract and visualize citation networks directly from WoS. It is designed specifically for analysis of *citation networks* only. Citations are grouped by the year allowing to analyze evolution of citations in time. It comes from the same developers as VOSviewer and has the same disappointing issue of converting labels to lower case. 
 ## Networks in Biology
 ### Network data repositories
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledgethe.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MzgwMzY4MSwxODUwNzc2Mzg4XX0=
+eyJoaXN0b3J5IjpbLTQwNzQ0NDYyMywtMTkzODAzNjgxLDE4NT
+A3NzYzODhdfQ==
 -->
