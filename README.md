@@ -1,6 +1,7 @@
 # Visualization of citation networks##
  
 ## Tools for bibliometric data collection##
+
 ### Collecting data from Google Scholar###
 Google Scholar accounts are arguably the best way to obtain a list of publications of an author. Everybody have Google Scholar profiles and take care to keep it correct and updated. Nevertheless, getting useful publication lists from Google is not straightforward. Below we discuss several ways to get citation data for network visualization.
 
@@ -24,6 +25,7 @@ Run the script and follow instructions on the screen. You will be asked to enter
 [Get_citing_authors](https://github.com/Sihao/get_citing_authors) in an app to get the list of authors citing a given list of papers through the PubMed API. You can either input papers as a comma-separated list of PubMed IDs or provide a search term, and the app will get the authors that cite all of the search results. The output is a table where the first column is author names, the second is the number of times that an author has cited any of the input articles, and the third is the list of PubMed IDs of the cited. The live example can be found [here](https://flask-fetch-citation.herokuapp.com).
 
 ### Collecting data from Scopus 
+
 
 ## BibTex database clean up 
 Common issues 
@@ -88,7 +90,7 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMT
-g3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAz
-NjgxLDE4NTA3NzYzODhdfQ==
+eyJoaXN0b3J5IjpbLTE3ODg1NDUzMDMsLTEwNzMzODE5NDcsLT
+EzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3
+MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYzODhdfQ==
 -->
