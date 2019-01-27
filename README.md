@@ -81,7 +81,10 @@ Cons
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledgethe.
+
+
+[INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system,
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg1MDc3MTQ4NSwtMTkzODAzNjgxLDE4NT
-A3NzYzODhdfQ==
+eyJoaXN0b3J5IjpbNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5Mz
+gwMzY4MSwxODUwNzc2Mzg4XX0=
 -->
