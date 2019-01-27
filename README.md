@@ -41,6 +41,7 @@ Common issues
 [Sci2](https://sci2.cns.iu.edu/user/index.php) tool can extract several types of networks from various bibliographic database formats. It supports major bibliometric formats including ISI, Bibtex Endnote Export Format and Scopus csv. Plain text CSV format is also supported. This introductory workshop will focus on the extraction of networks from BibTex and Scopus files. For more details see [Sci2 manual](http://sci2.wiki.cns.iu.edu) 
 
 Extracting networks from BibTex files.
+
 1. **File** ---> **Load**
 2. **Data preparation** ---> **Extract Co-Author Network**. Select bibtex format in popup window.
 3. **File **---> **Save**. Select GraphML format in popup window<br>
@@ -62,12 +63,14 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 [VosViewer](http://www.vosviewer.com/) is the new generation bibliopgaphic network analysis and analysis and visualization tool developed in Leiden University.
 
 Pros
+
 + supports wide variety of bibliographic database formats
 + extracts co-author, co-occurence, citation, bibliographic coupling, and co-citation 
 + performs both extraction and visualization of networks. 
 + can be launched directly from the Web site
 
 Cons
+
 - limited layout and appearance options. 
 - all node labels are converted to lower case. 
 
@@ -85,7 +88,7 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NT
-QyNTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYz
-ODhdfQ==
+eyJoaXN0b3J5IjpbLTEwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMT
+g3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAz
+NjgxLDE4NTA3NzYzODhdfQ==
 -->
