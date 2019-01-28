@@ -1,6 +1,7 @@
 # Visualization of citation networks##
  
 ## Tools for bibliometric data collection##
+
 ### Collecting data from Google Scholar###
 Google Scholar accounts are arguably the best way to obtain a list of publications of an author. Everybody have Google Scholar profiles and take care to keep it correct and updated. Nevertheless, getting useful publication lists from Google is not straightforward. Below we discuss several ways to get citation data for network visualization.
 
@@ -16,23 +17,26 @@ It is possible to get citations from Google Scholar using  [Publish or Perish](h
 To install required libraries run the following command:<br>
  `pip install scholarly bibtexparser progress`<br>
 **Usage** 
-Run the script and follow instructions on the screen. You will be asked to enter the name of the Google Scholar author. The results of the query are saved in BibTex format.
+Run the script and follow instructions on the screen. You will be asked to enter the name of the Google Scholar author. The result of the query is saved in BibTex format.
 
 ### Collecting data from Pubmed 
+Social Networks plugin for Cytoscape can query Pubmed and extract network.
 
 #### get_citing_authors 
-[Get_citing_authors](https://github.com/Sihao/get_citing_authors) in an app to get the list of authors citing a given list of papers through the PubMed API. You can either input papers as a comma-separated list of PubMed IDs or provide a search term, and the app will get the authors that cite all of the search results. The output is a table where the first column is author names, the second is the number of times that an author has cited any of the input articles, and the third is the list of PubMed IDs of the cited. The live example can be found [here](https://flask-fetch-citation.herokuapp.com).
+[Get_citing_authors](https://github.com/Sihao/get_citing_authors) is an app to get the list of authors citing a given list of papers through the PubMed API. You can either input papers as a comma-separated list of PubMed IDs or provide a search term, and the app will get the authors that cite all of the search results. The output is a table where the first column is author names, the second is the number of times that an author has cited any of the input articles, and the third is the list of PubMed IDs of the cited. The live example can be found [here](https://flask-fetch-citation.herokuapp.com).
 
 ### Collecting data from Scopus 
 
-## BibTex database clean up 
-Common issues 
+
+## Preprocessing BibTex database 
+
+Retrieved publication lists  lists often have many mistakes and  inconsistencies, such as:
 - records missing authors, for example, patents!
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
-- duplicate authors
-
-### merge_duplicate_authors 
+- different spelling of the same author
+Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in file, corrected  interactively, or ignored.  The file has all similar pairs of authors flagged witn 'n' , meaning do not merge. To tell program to merge a pair of authors user changes 'n' to 'y'. 
+ 
 
 ## Network extraction 
 
@@ -49,6 +53,7 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 `"Error parsing BibTeX file: 248:64: encountered '@."`<br>
  What this means is that 64th character on line 248 of this BibTex file is '@'. This character has a special meaning in BibTex, but it also commonly occurs in citation URLs. After removing this character, or escaping it with \@ the file should load normally. 
 
+
 ## Network visualization and analysis 
 
 ### Gephi
@@ -56,6 +61,7 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 ### Graphviz
 
 ### Cytoscape
+
 
 ## Complete packages for data collection, network extraction and visualization
 
@@ -83,12 +89,15 @@ Cons
 
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
-- [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledgethe.
-
+- [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledge
+- [BioGrid](https://thebiogrid.org/) database of biological interactions
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMT
-g3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAz
-NjgxLDE4NTA3NzYzODhdfQ==
+eyJoaXN0b3J5IjpbMjEyNzkwNjEwMywxMzUzMDQ2NDc2LC05MD
+E5MjA2NjksMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2
+NzEzLDYwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMz
+I0NzkwOTYzLC0xMDczMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3
+MjIxNDIsNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5MzgwMzY4MS
+wxODUwNzc2Mzg4XX0=
 -->
