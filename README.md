@@ -46,7 +46,7 @@ Sci2 tool does not correct any of these issues. Manual edit of large networks in
 
 ### Make network 
 
-[Make_network](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file and saves them in GraphML format.
+[Make_network](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file and saves it in GraphML format.
 
 1. **File** ---> **Load**
 2. **Data preparation** ---> **Extract Co-Author Network**. Select bibtex format in popup window.
@@ -96,11 +96,11 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzNzc5NTQ2NjEsMTUwMzQ5MjY3NCwtMT
-Q2NjcwNDQ5NSwyMTI3OTA2MTAzLDEzNTMwNDY0NzYsLTkwMTky
-MDY2OSwxNDkwNTQ1NDI5LC0xNjcwNjE2MzkxLC00ODkwODY3MT
-MsNjAzNzU0ODQ4LC05ODkyNzkzOSwtNjIyNTc0NzE5LC0zMjQ3
-OTA5NjMsLTEwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMTg3OTcyMj
-E0Miw2NTQyNTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAzNjgxLDE4
-NTA3NzYzODhdfQ==
+eyJoaXN0b3J5IjpbMjk2NTYxODM0LDE1MDM0OTI2NzQsLTE0Nj
+Y3MDQ0OTUsMjEyNzkwNjEwMywxMzUzMDQ2NDc2LC05MDE5MjA2
+NjksMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2NzEzLD
+YwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMzI0Nzkw
+OTYzLC0xMDczMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3MjIxND
+IsNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5MzgwMzY4MSwxODUw
+Nzc2Mzg4XX0=
 -->
