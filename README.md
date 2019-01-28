@@ -20,6 +20,7 @@ To install required libraries run the following command:<br>
 Run the script and follow instructions on the screen. You will be asked to enter the name of the Google Scholar author. The results of the query are saved in BibTex format.
 
 ### Collecting data from Pubmed 
+Social Networks plugin for Cytoscape can query Pubmed 
 
 #### get_citing_authors 
 [Get_citing_authors](https://github.com/Sihao/get_citing_authors) in an app to get the list of authors citing a given list of papers through the PubMed API. You can either input papers as a comma-separated list of PubMed IDs or provide a search term, and the app will get the authors that cite all of the search results. The output is a table where the first column is author names, the second is the number of times that an author has cited any of the input articles, and the third is the list of PubMed IDs of the cited. The live example can be found [here](https://flask-fetch-citation.herokuapp.com).
@@ -92,8 +93,8 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYyMjU3NDcxOSwtMzI0NzkwOTYzLC0xMD
-czMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3MjIxNDIsNjU0MjU1
-Nzg2LDE4NTA3NzE0ODUsLTE5MzgwMzY4MSwxODUwNzc2Mzg4XX
-0=
+eyJoaXN0b3J5IjpbNzk5NjUxMjIxLC02MjI1NzQ3MTksLTMyND
+c5MDk2MywtMTA3MzM4MTk0NywtMTMyNTk5NDc5MywxODc5NzIy
+MTQyLDY1NDI1NTc4NiwxODUwNzcxNDg1LC0xOTM4MDM2ODEsMT
+g1MDc3NjM4OF19
 -->
