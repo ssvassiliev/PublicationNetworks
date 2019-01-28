@@ -29,12 +29,12 @@ Social Networks plugin for Cytoscape can query Pubmed and extract network.
 
 
 ## Preprocessing BibTex database 
-Citation lists often have many  mistainconsistencies, such as:
+Retrieved publication lists  lists often have many mistakes and  inconsistencies, such as:
 - records missing authors, for example, patents!
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - different spelling of the same author
-Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with 
+Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with  
 
 ### merge_duplicate_authors 
 
@@ -94,10 +94,10 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MDYwMzM5ODUsLTkwMTkyMDY2OSwxND
-kwNTQ1NDI5LC0xNjcwNjE2MzkxLC00ODkwODY3MTMsNjAzNzU0
-ODQ4LC05ODkyNzkzOSwtNjIyNTc0NzE5LC0zMjQ3OTA5NjMsLT
-EwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NTQy
-NTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYzOD
-hdfQ==
+eyJoaXN0b3J5IjpbLTk1MzY5NzE4NSwtOTAxOTIwNjY5LDE0OT
+A1NDU0MjksLTE2NzA2MTYzOTEsLTQ4OTA4NjcxMyw2MDM3NTQ4
+NDgsLTk4OTI3OTM5LC02MjI1NzQ3MTksLTMyNDc5MDk2MywtMT
+A3MzM4MTk0NywtMTMyNTk5NDc5MywxODc5NzIyMTQyLDY1NDI1
+NTc4NiwxODUwNzcxNDg1LC0xOTM4MDM2ODEsMTg1MDc3NjM4OF
+19
 -->
