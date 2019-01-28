@@ -89,7 +89,7 @@ Cons
 ### Network data repositories
 
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
-- [KEGG Pathway](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
+- [KEGG Pathway](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes is a collection of manually drawn [pathway maps](https://www.genome.jp/kegg/kegg3a.html) representing our knowledge on the molecular interaction, reaction and relation networks
 - [NCBI Biosystems](https://www.ncbi.nlm.nih.gov/biosystems)  provides integrated access to biological systems and their component genes, proteins, and small molecules,
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledge
 - [BioGrid](https://thebiogrid.org/) database of biological interactions
@@ -98,11 +98,11 @@ Review: [Tools for visualization and analysis of molecular networks, pathways, a
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ4Mjk4MTYzLC0yNzU1MTg5OTQsNTI5OT
-M3MjA1LDI5NjU2MTgzNCwxNTAzNDkyNjc0LC0xNDY2NzA0NDk1
-LDIxMjc5MDYxMDMsMTM1MzA0NjQ3NiwtOTAxOTIwNjY5LDE0OT
-A1NDU0MjksLTE2NzA2MTYzOTEsLTQ4OTA4NjcxMyw2MDM3NTQ4
-NDgsLTk4OTI3OTM5LC02MjI1NzQ3MTksLTMyNDc5MDk2MywtMT
-A3MzM4MTk0NywtMTMyNTk5NDc5MywxODc5NzIyMTQyLDY1NDI1
-NTc4Nl19
+eyJoaXN0b3J5IjpbMTAzODcwOTY5NSwtMjc1NTE4OTk0LDUyOT
+kzNzIwNSwyOTY1NjE4MzQsMTUwMzQ5MjY3NCwtMTQ2NjcwNDQ5
+NSwyMTI3OTA2MTAzLDEzNTMwNDY0NzYsLTkwMTkyMDY2OSwxND
+kwNTQ1NDI5LC0xNjcwNjE2MzkxLC00ODkwODY3MTMsNjAzNzU0
+ODQ4LC05ODkyNzkzOSwtNjIyNTc0NzE5LC0zMjQ3OTA5NjMsLT
+EwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NTQy
+NTU3ODZdfQ==
 -->
