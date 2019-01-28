@@ -28,8 +28,8 @@ Social Networks plugin for Cytoscape can query Pubmed and extract network.
 ### Collecting data from Scopus 
 
 
-## BibTex database clean up 
-Citation lists often have many inconsistencies, such as:
+## Preprocessing BibTex database 
+Citation lists often have many  mistainconsistencies, such as:
 - records missing authors, for example, patents!
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
@@ -94,9 +94,10 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkwMTkyMDY2OSwxNDkwNTQ1NDI5LC0xNj
-cwNjE2MzkxLC00ODkwODY3MTMsNjAzNzU0ODQ4LC05ODkyNzkz
-OSwtNjIyNTc0NzE5LC0zMjQ3OTA5NjMsLTEwNzMzODE5NDcsLT
-EzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3
-MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYzODhdfQ==
+eyJoaXN0b3J5IjpbLTE5MDYwMzM5ODUsLTkwMTkyMDY2OSwxND
+kwNTQ1NDI5LC0xNjcwNjE2MzkxLC00ODkwODY3MTMsNjAzNzU0
+ODQ4LC05ODkyNzkzOSwtNjIyNTc0NzE5LC0zMjQ3OTA5NjMsLT
+EwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NTQy
+NTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYzOD
+hdfQ==
 -->
