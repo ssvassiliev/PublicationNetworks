@@ -35,7 +35,7 @@ Retrieved publication lists  lists often have many mistakes and  inconsistencies
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - different spelling of the same author
-Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors](https://github.com/ssvassiliev/PublicationNetworks)  tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in the file (name-dupl-out.csv), corrected  interactively, or ignored.  The file has all similar pairs of authors flagged witn 'n' , meaning do not merge. To tell program to merge a pair of authors user changes 'n' to 'y', changes filename to name-dupl-in .csv and reruns the program.
+Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors](https://github.com/ssvassiliev/PublicationNetworks)  tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in the file (name-dupl-out.csv), corrected  interactively, or ignored.  The file has all similar pairs of authors flagged witn 'n' , meaning do not merge. To tell program to merge a pair of authors user changes 'n' to 'y', changes filename to name-dupl-in.csv and reruns the program.
  
 
 ## Network extraction 
@@ -94,10 +94,10 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMDgwNzAwMTIsMjEyNzkwNjEwMywxMz
-UzMDQ2NDc2LC05MDE5MjA2NjksMTQ5MDU0NTQyOSwtMTY3MDYx
-NjM5MSwtNDg5MDg2NzEzLDYwMzc1NDg0OCwtOTg5Mjc5MzksLT
-YyMjU3NDcxOSwtMzI0NzkwOTYzLC0xMDczMzgxOTQ3LC0xMzI1
-OTk0NzkzLDE4Nzk3MjIxNDIsNjU0MjU1Nzg2LDE4NTA3NzE0OD
-UsLTE5MzgwMzY4MSwxODUwNzc2Mzg4XX0=
+eyJoaXN0b3J5IjpbMTc0NTI5MjEyLDIxMjc5MDYxMDMsMTM1Mz
+A0NjQ3NiwtOTAxOTIwNjY5LDE0OTA1NDU0MjksLTE2NzA2MTYz
+OTEsLTQ4OTA4NjcxMyw2MDM3NTQ4NDgsLTk4OTI3OTM5LC02Mj
+I1NzQ3MTksLTMyNDc5MDk2MywtMTA3MzM4MTk0NywtMTMyNTk5
+NDc5MywxODc5NzIyMTQyLDY1NDI1NTc4NiwxODUwNzcxNDg1LC
+0xOTM4MDM2ODEsMTg1MDc3NjM4OF19
 -->
