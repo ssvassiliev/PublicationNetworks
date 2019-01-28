@@ -35,7 +35,7 @@ Retrieved publication lists  lists often have many mistakes and  inconsistencies
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - different spelling of the same author
-Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in file, corrected  interactively, or ignored.  The file has all similar pairs of authors f 
+Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicatm e authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in file, corrected  interactively, or ignored.  The file has all similar pairs of authors flagged witn 'n' , meaning do not merge. To tell progra 
  
 
 ## Network extraction 
@@ -94,10 +94,10 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjY0NjE4MzEzLDEzNTMwNDY0NzYsLTkwMT
-kyMDY2OSwxNDkwNTQ1NDI5LC0xNjcwNjE2MzkxLC00ODkwODY3
-MTMsNjAzNzU0ODQ4LC05ODkyNzkzOSwtNjIyNTc0NzE5LC0zMj
-Q3OTA5NjMsLTEwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMTg3OTcy
-MjE0Miw2NTQyNTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAzNjgxLD
-E4NTA3NzYzODhdfQ==
+eyJoaXN0b3J5IjpbMTY1MjU2NzUwNCwxMzUzMDQ2NDc2LC05MD
+E5MjA2NjksMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2
+NzEzLDYwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMz
+I0NzkwOTYzLC0xMDczMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3
+MjIxNDIsNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5MzgwMzY4MS
+wxODUwNzc2Mzg4XX0=
 -->
