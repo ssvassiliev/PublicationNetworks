@@ -90,16 +90,17 @@ Cons
 
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
+- [NCBI Biosystems](https://www.ncbi.nlm.nih.gov/biosystems)
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledge
 - [BioGrid](https://thebiogrid.org/) database of biological interactions
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTI5OTM3MjA1LDI5NjU2MTgzNCwxNTAzND
-kyNjc0LC0xNDY2NzA0NDk1LDIxMjc5MDYxMDMsMTM1MzA0NjQ3
-NiwtOTAxOTIwNjY5LDE0OTA1NDU0MjksLTE2NzA2MTYzOTEsLT
-Q4OTA4NjcxMyw2MDM3NTQ4NDgsLTk4OTI3OTM5LC02MjI1NzQ3
-MTksLTMyNDc5MDk2MywtMTA3MzM4MTk0NywtMTMyNTk5NDc5My
-wxODc5NzIyMTQyLDY1NDI1NTc4NiwxODUwNzcxNDg1LC0xOTM4
-MDM2ODFdfQ==
+eyJoaXN0b3J5IjpbOTM3NzkxNjgsNTI5OTM3MjA1LDI5NjU2MT
+gzNCwxNTAzNDkyNjc0LC0xNDY2NzA0NDk1LDIxMjc5MDYxMDMs
+MTM1MzA0NjQ3NiwtOTAxOTIwNjY5LDE0OTA1NDU0MjksLTE2Nz
+A2MTYzOTEsLTQ4OTA4NjcxMyw2MDM3NTQ4NDgsLTk4OTI3OTM5
+LC02MjI1NzQ3MTksLTMyNDc5MDk2MywtMTA3MzM4MTk0NywtMT
+MyNTk5NDc5MywxODc5NzIyMTQyLDY1NDI1NTc4NiwxODUwNzcx
+NDg1XX0=
 -->
