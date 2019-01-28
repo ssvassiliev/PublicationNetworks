@@ -35,7 +35,7 @@ Retrieved publication lists  lists often have many mistakes and  inconsistencies
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - different spelling of the same author
-Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in file, corrected  interactively, or ignored.  The file has all similar pairs of authors flagged witn 'n' , meaning do not merge. To tell program to merge a pair of authors user changes 'n' to 'y'. 
+Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in the file (name-dupl-out.csv), corrected  interactively, or ignored.  The file has all similar pairs of authors flagged witn 'n' , meaning do not merge. To tell program to merge a pair of authors user changes 'n' to 'y' and changes filename to 
  
 
 ## Network extraction 
@@ -94,10 +94,10 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEyNzkwNjEwMywxMzUzMDQ2NDc2LC05MD
-E5MjA2NjksMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2
-NzEzLDYwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMz
-I0NzkwOTYzLC0xMDczMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3
-MjIxNDIsNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5MzgwMzY4MS
-wxODUwNzc2Mzg4XX0=
+eyJoaXN0b3J5IjpbMTcyMjk0ODQwNywyMTI3OTA2MTAzLDEzNT
+MwNDY0NzYsLTkwMTkyMDY2OSwxNDkwNTQ1NDI5LC0xNjcwNjE2
+MzkxLC00ODkwODY3MTMsNjAzNzU0ODQ4LC05ODkyNzkzOSwtNj
+IyNTc0NzE5LC0zMjQ3OTA5NjMsLTEwNzMzODE5NDcsLTEzMjU5
+OTQ3OTMsMTg3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3MTQ4NS
+wtMTkzODAzNjgxLDE4NTA3NzYzODhdfQ==
 -->
