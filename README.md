@@ -95,12 +95,12 @@ Cons
 - [BioGrid](https://thebiogrid.org/) database of biological interactions
 
 
-KEGG pathway .kgml files can be loaded into cytoscape using the KEGGscape plugin. If it fails, try [KEGGtranslator](http://www.ra.cs.uni-tuebingen.de/software)/KEGGtranslator/index.html
+KEGG pathway .kgml files can be loaded into Cytoscape using the KEGGscape plugin. If it fails, try [KEGGtranslator](http://www.ra.cs.uni-tuebingen.de/software)/KEGGtranslator/index.html
 Review: [Tools for visualization and analysis of molecular networks, pathways, and -omics data](https://doi.org/10.2147/AABC.S63534)
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk4NDA1NzQ2MSwxMDM4NzA5Njk1LC0yNz
+eyJoaXN0b3J5IjpbMTcxNzYwOTg5OSwxMDM4NzA5Njk1LC0yNz
 U1MTg5OTQsNTI5OTM3MjA1LDI5NjU2MTgzNCwxNTAzNDkyNjc0
 LC0xNDY2NzA0NDk1LDIxMjc5MDYxMDMsMTM1MzA0NjQ3NiwtOT
 AxOTIwNjY5LDE0OTA1NDU0MjksLTE2NzA2MTYzOTEsLTQ4OTA4
