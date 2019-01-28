@@ -17,7 +17,7 @@ It is possible to get citations from Google Scholar using  [Publish or Perish](h
 To install required libraries run the following command:<br>
  `pip install scholarly bibtexparser progress`<br>
 **Usage** 
-Run the script and follow instructions on the screen. You will be asked to enter the name of the Google Scholar author. The results of the query are saved in BibTex format.
+Run the script and follow instructions on the screen. You will be asked to enter the name of the Google Scholar author. The result of the query is saved in BibTex format.
 
 ### Collecting data from Pubmed 
 Social Networks plugin for Cytoscape can query Pubmed and extract network.
@@ -94,9 +94,9 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtND
-g5MDg2NzEzLDYwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcx
-OSwtMzI0NzkwOTYzLC0xMDczMzgxOTQ3LC0xMzI1OTk0NzkzLD
-E4Nzk3MjIxNDIsNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5Mzgw
-MzY4MSwxODUwNzc2Mzg4XX0=
+eyJoaXN0b3J5IjpbMTMwMDg0NzAyLDE0OTA1NDU0MjksLTE2Nz
+A2MTYzOTEsLTQ4OTA4NjcxMyw2MDM3NTQ4NDgsLTk4OTI3OTM5
+LC02MjI1NzQ3MTksLTMyNDc5MDk2MywtMTA3MzM4MTk0NywtMT
+MyNTk5NDc5MywxODc5NzIyMTQyLDY1NDI1NTc4NiwxODUwNzcx
+NDg1LC0xOTM4MDM2ODEsMTg1MDc3NjM4OF19
 -->
