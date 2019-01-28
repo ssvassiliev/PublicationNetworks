@@ -33,8 +33,7 @@ Common issues
 - records missing authors, for example, patents!
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
-- duplicate authors
-
+- different spelling of the same author
 ### merge_duplicate_authors 
 
 ## Network extraction 
@@ -93,8 +92,8 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk4OTI3OTM5LC02MjI1NzQ3MTksLTMyND
-c5MDk2MywtMTA3MzM4MTk0NywtMTMyNTk5NDc5MywxODc5NzIy
-MTQyLDY1NDI1NTc4NiwxODUwNzcxNDg1LC0xOTM4MDM2ODEsMT
-g1MDc3NjM4OF19
+eyJoaXN0b3J5IjpbNzQ2NDA2NjYwLC05ODkyNzkzOSwtNjIyNT
+c0NzE5LC0zMjQ3OTA5NjMsLTEwNzMzODE5NDcsLTEzMjU5OTQ3
+OTMsMTg3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3MTQ4NSwtMT
+kzODAzNjgxLDE4NTA3NzYzODhdfQ==
 -->
