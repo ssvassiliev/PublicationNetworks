@@ -29,7 +29,7 @@ Social Networks plugin for Cytoscape can query Pubmed and extract network.
 
 
 ## BibTex database clean up 
-Common issues 
+
 - records missing authors, for example, patents!
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
@@ -92,8 +92,8 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzQ2NDA2NjYwLC05ODkyNzkzOSwtNjIyNT
-c0NzE5LC0zMjQ3OTA5NjMsLTEwNzMzODE5NDcsLTEzMjU5OTQ3
-OTMsMTg3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3MTQ4NSwtMT
-kzODAzNjgxLDE4NTA3NzYzODhdfQ==
+eyJoaXN0b3J5IjpbMTExNDE1MTI4MywtOTg5Mjc5MzksLTYyMj
+U3NDcxOSwtMzI0NzkwOTYzLC0xMDczMzgxOTQ3LC0xMzI1OTk0
+NzkzLDE4Nzk3MjIxNDIsNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLT
+E5MzgwMzY4MSwxODUwNzc2Mzg4XX0=
 -->
