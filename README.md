@@ -94,13 +94,15 @@ Cons
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledge
 - [BioGrid](https://thebiogrid.org/) database of biological interactions
 
+[Tools for visualization and analysis of molecular networks, pathways, and -omics data](https://doi.org/10.2147/AABC.S63534)
+
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI3NTUxODk5NCw1Mjk5MzcyMDUsMjk2NT
-YxODM0LDE1MDM0OTI2NzQsLTE0NjY3MDQ0OTUsMjEyNzkwNjEw
-MywxMzUzMDQ2NDc2LC05MDE5MjA2NjksMTQ5MDU0NTQyOSwtMT
-Y3MDYxNjM5MSwtNDg5MDg2NzEzLDYwMzc1NDg0OCwtOTg5Mjc5
-MzksLTYyMjU3NDcxOSwtMzI0NzkwOTYzLC0xMDczMzgxOTQ3LC
-0xMzI1OTk0NzkzLDE4Nzk3MjIxNDIsNjU0MjU1Nzg2LDE4NTA3
-NzE0ODVdfQ==
+eyJoaXN0b3J5IjpbMjAyMDUyNjksLTI3NTUxODk5NCw1Mjk5Mz
+cyMDUsMjk2NTYxODM0LDE1MDM0OTI2NzQsLTE0NjY3MDQ0OTUs
+MjEyNzkwNjEwMywxMzUzMDQ2NDc2LC05MDE5MjA2NjksMTQ5MD
+U0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2NzEzLDYwMzc1NDg0
+OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMzI0NzkwOTYzLC0xMD
+czMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3MjIxNDIsNjU0MjU1
+Nzg2XX0=
 -->
