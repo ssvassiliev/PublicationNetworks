@@ -1,5 +1,6 @@
 # Visualization of citation networks 
  
+ [Why visualize networks](https://cambridge-intelligence.com/keylines/why-visualize-networks/)
 ## Tools for bibliometric data collection 
 
 ### Collecting data from Google Scholar 
@@ -100,11 +101,11 @@ Review: [Tools for visualization and analysis of molecular networks, pathways, a
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjM1ODQ2MDM4LDE3MTc2MDk4OTksMTAzOD
-cwOTY5NSwtMjc1NTE4OTk0LDUyOTkzNzIwNSwyOTY1NjE4MzQs
-MTUwMzQ5MjY3NCwtMTQ2NjcwNDQ5NSwyMTI3OTA2MTAzLDEzNT
-MwNDY0NzYsLTkwMTkyMDY2OSwxNDkwNTQ1NDI5LC0xNjcwNjE2
-MzkxLC00ODkwODY3MTMsNjAzNzU0ODQ4LC05ODkyNzkzOSwtNj
-IyNTc0NzE5LC0zMjQ3OTA5NjMsLTEwNzMzODE5NDcsLTEzMjU5
-OTQ3OTNdfQ==
+eyJoaXN0b3J5IjpbNjU0MjQ2ODgyLDYzNTg0NjAzOCwxNzE3Nj
+A5ODk5LDEwMzg3MDk2OTUsLTI3NTUxODk5NCw1Mjk5MzcyMDUs
+Mjk2NTYxODM0LDE1MDM0OTI2NzQsLTE0NjY3MDQ0OTUsMjEyNz
+kwNjEwMywxMzUzMDQ2NDc2LC05MDE5MjA2NjksMTQ5MDU0NTQy
+OSwtMTY3MDYxNjM5MSwtNDg5MDg2NzEzLDYwMzc1NDg0OCwtOT
+g5Mjc5MzksLTYyMjU3NDcxOSwtMzI0NzkwOTYzLC0xMDczMzgx
+OTQ3XX0=
 -->
