@@ -29,12 +29,13 @@ Social Networks plugin for Cytoscape can query Pubmed and extract network.
 
 
 ## Preprocessing BibTex database 
+
 Retrieved publication lists  lists often have many mistakes and  inconsistencies, such as:
 - records missing authors, for example, patents!
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - different spelling of the same author
-Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in file, corrected  interactively, or ignored   
+Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in file, corrected  interactively, or ignored.   
  
 
 ## Network extraction 
@@ -93,7 +94,7 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM0MTg5MjAxOCwtOTAxOTIwNjY5LDE0OT
+eyJoaXN0b3J5IjpbMTM1MzA0NjQ3NiwtOTAxOTIwNjY5LDE0OT
 A1NDU0MjksLTE2NzA2MTYzOTEsLTQ4OTA4NjcxMyw2MDM3NTQ4
 NDgsLTk4OTI3OTM5LC02MjI1NzQ3MTksLTMyNDc5MDk2MywtMT
 A3MzM4MTk0NywtMTMyNTk5NDc5MywxODc5NzIyMTQyLDY1NDI1
