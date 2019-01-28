@@ -23,7 +23,7 @@ Run the script and follow instructions on the screen. You will be asked to enter
 Social Networks plugin for Cytoscape can query Pubmed and extract network.
 
 #### get_citing_authors 
-[Get_citing_authors](https://github.com/Sihao/get_citing_authors) in an app to get the list of authors citing a given list of papers through the PubMed API. You can either input papers as a comma-separated list of PubMed IDs or provide a search term, and the app will get the authors that cite all of the search results. The output is a table where the first column is author names, the second is the number of times that an author has cited any of the input articles, and the third is the list of PubMed IDs of the cited. The live example can be found [here](https://flask-fetch-citation.herokuapp.com).
+[Get_citing_authors](https://github.com/Sihao/get_citing_authors) is an app to get the list of authors citing a given list of papers through the PubMed API. You can either input papers as a comma-separated list of PubMed IDs or provide a search term, and the app will get the authors that cite all of the search results. The output is a table where the first column is author names, the second is the number of times that an author has cited any of the input articles, and the third is the list of PubMed IDs of the cited. The live example can be found [here](https://flask-fetch-citation.herokuapp.com).
 
 ### Collecting data from Scopus 
 
@@ -94,9 +94,9 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTMwMDg0NzAyLDE0OTA1NDU0MjksLTE2Nz
-A2MTYzOTEsLTQ4OTA4NjcxMyw2MDM3NTQ4NDgsLTk4OTI3OTM5
-LC02MjI1NzQ3MTksLTMyNDc5MDk2MywtMTA3MzM4MTk0NywtMT
-MyNTk5NDc5MywxODc5NzIyMTQyLDY1NDI1NTc4NiwxODUwNzcx
-NDg1LC0xOTM4MDM2ODEsMTg1MDc3NjM4OF19
+eyJoaXN0b3J5IjpbLTkwMTkyMDY2OSwxNDkwNTQ1NDI5LC0xNj
+cwNjE2MzkxLC00ODkwODY3MTMsNjAzNzU0ODQ4LC05ODkyNzkz
+OSwtNjIyNTc0NzE5LC0zMjQ3OTA5NjMsLTEwNzMzODE5NDcsLT
+EzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NTQyNTU3ODYsMTg1MDc3
+MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYzODhdfQ==
 -->
