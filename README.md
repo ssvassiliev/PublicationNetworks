@@ -34,7 +34,7 @@ Citation lists often have many inconsistencies, such as:
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - different spelling of the same author
-Sci2 tool does not correct any of these issues. 
+Sci2 tool does not correct any of these issues, and manual edit 
 
 ### merge_duplicate_authors 
 
@@ -94,9 +94,9 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2NzA2MTYzOTEsLTQ4OTA4NjcxMyw2MD
-M3NTQ4NDgsLTk4OTI3OTM5LC02MjI1NzQ3MTksLTMyNDc5MDk2
-MywtMTA3MzM4MTk0NywtMTMyNTk5NDc5MywxODc5NzIyMTQyLD
-Y1NDI1NTc4NiwxODUwNzcxNDg1LC0xOTM4MDM2ODEsMTg1MDc3
-NjM4OF19
+eyJoaXN0b3J5IjpbLTEzMjkzMzA2NTYsLTE2NzA2MTYzOTEsLT
+Q4OTA4NjcxMyw2MDM3NTQ4NDgsLTk4OTI3OTM5LC02MjI1NzQ3
+MTksLTMyNDc5MDk2MywtMTA3MzM4MTk0NywtMTMyNTk5NDc5My
+wxODc5NzIyMTQyLDY1NDI1NTc4NiwxODUwNzcxNDg1LC0xOTM4
+MDM2ODEsMTg1MDc3NjM4OF19
 -->
