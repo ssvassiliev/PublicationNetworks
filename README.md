@@ -44,8 +44,9 @@ Sci2 tool does not correct any of these issues. Manual edit of large networks in
 
 [Sci2](https://sci2.cns.iu.edu/user/index.php) tool can extract several types of networks from various bibliographic database formats. It supports major bibliometric formats including ISI, Bibtex Endnote Export Format and Scopus csv. Plain text CSV format is also supported. This introductory workshop will focus on the extraction of networks from BibTex and Scopus files. For more details see [Sci2 manual](http://sci2.wiki.cns.iu.edu) 
 
+### Make network 
 
-
+[Make_network] 
 Extracting networks from BibTex files.
 
 1. **File** ---> **Load**
@@ -96,7 +97,7 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTc1NjE4NDEzLC0xNDY2NzA0NDk1LDIxMj
+eyJoaXN0b3J5IjpbOTcxNDE1MTUxLC0xNDY2NzA0NDk1LDIxMj
 c5MDYxMDMsMTM1MzA0NjQ3NiwtOTAxOTIwNjY5LDE0OTA1NDU0
 MjksLTE2NzA2MTYzOTEsLTQ4OTA4NjcxMyw2MDM3NTQ4NDgsLT
 k4OTI3OTM5LC02MjI1NzQ3MTksLTMyNDc5MDk2MywtMTA3MzM4
