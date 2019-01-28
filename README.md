@@ -43,17 +43,16 @@ Sci2 tool does not correct any of these issues. Manual edit of large networks in
 ### Sci2 Tool 
 
 [Sci2](https://sci2.cns.iu.edu/user/index.php) tool can extract several types of networks from various bibliographic database formats. It supports major bibliometric formats including ISI, Bibtex Endnote Export Format and Scopus csv. Plain text CSV format is also supported. This introductory workshop will focus on the extraction of networks from BibTex and Scopus files. For more details see [Sci2 manual](http://sci2.wiki.cns.iu.edu) 
-
-### Make network 
-
-[Make_network](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file and saves it in GraphML format.
-
 1. **File** ---> **Load**
 2. **Data preparation** ---> **Extract Co-Author Network**. Select bibtex format in popup window.
 3. **File **---> **Save**. Select GraphML format in popup window<br>
 Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You will likely encounter error looking similar to <br>
 `"Error parsing BibTeX file: 248:64: encountered '@."`<br>
  What this means is that 64th character on line 248 of this BibTex file is '@'. This character has a special meaning in BibTex, but it also commonly occurs in citation URLs. After removing this character, or escaping it with \@ the file should load normally. 
+
+### make_network 
+
+[Make_network](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file and saves it in GraphML format.
 
 
 ## Network visualization and analysis 
@@ -96,11 +95,11 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjk2NTYxODM0LDE1MDM0OTI2NzQsLTE0Nj
-Y3MDQ0OTUsMjEyNzkwNjEwMywxMzUzMDQ2NDc2LC05MDE5MjA2
-NjksMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2NzEzLD
-YwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMzI0Nzkw
-OTYzLC0xMDczMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3MjIxND
-IsNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5MzgwMzY4MSwxODUw
-Nzc2Mzg4XX0=
+eyJoaXN0b3J5IjpbNTI5OTM3MjA1LDI5NjU2MTgzNCwxNTAzND
+kyNjc0LC0xNDY2NzA0NDk1LDIxMjc5MDYxMDMsMTM1MzA0NjQ3
+NiwtOTAxOTIwNjY5LDE0OTA1NDU0MjksLTE2NzA2MTYzOTEsLT
+Q4OTA4NjcxMyw2MDM3NTQ4NDgsLTk4OTI3OTM5LC02MjI1NzQ3
+MTksLTMyNDc5MDk2MywtMTA3MzM4MTk0NywtMTMyNTk5NDc5My
+wxODc5NzIyMTQyLDY1NDI1NTc4NiwxODUwNzcxNDg1LC0xOTM4
+MDM2ODFdfQ==
 -->
