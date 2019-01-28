@@ -34,7 +34,7 @@ Retrieved publication lists  lists often have many mistakes and  inconsistencies
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - different spelling of the same author
-Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove   
+Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, 
  
 
 ## Network extraction 
@@ -93,10 +93,10 @@ Cons
 
 [INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU2OTUxOTg0MywtOTAxOTIwNjY5LDE0OT
-A1NDU0MjksLTE2NzA2MTYzOTEsLTQ4OTA4NjcxMyw2MDM3NTQ4
-NDgsLTk4OTI3OTM5LC02MjI1NzQ3MTksLTMyNDc5MDk2MywtMT
-A3MzM4MTk0NywtMTMyNTk5NDc5MywxODc5NzIyMTQyLDY1NDI1
-NTc4NiwxODUwNzcxNDg1LC0xOTM4MDM2ODEsMTg1MDc3NjM4OF
-19
+eyJoaXN0b3J5IjpbLTIwNzA5NjU0NzcsLTkwMTkyMDY2OSwxND
+kwNTQ1NDI5LC0xNjcwNjE2MzkxLC00ODkwODY3MTMsNjAzNzU0
+ODQ4LC05ODkyNzkzOSwtNjIyNTc0NzE5LC0zMjQ3OTA5NjMsLT
+EwNzMzODE5NDcsLTEzMjU5OTQ3OTMsMTg3OTcyMjE0Miw2NTQy
+NTU3ODYsMTg1MDc3MTQ4NSwtMTkzODAzNjgxLDE4NTA3NzYzOD
+hdfQ==
 -->
