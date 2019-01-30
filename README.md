@@ -85,7 +85,7 @@ Cons
 - all node labels are converted to lower case. 
 
 #### CitNetExplorer
-[CitNetExplorer](http://www.citnetexplorer.nl/) is a powerful tool allowing to extract and visualize citation networks directly from WoS. It is designed specifically for analysis of *citation networks* only. Citations are grouped by the year allowing to analyze evolution of citations in time. It comes from the same developers as VOSviewer and has the same disappointing issue of converting labels to lower case. 
+[CitNetExplorer](http://www.citnetexplorer.nl/) is a powerful tool allowing to extract and visualize citation networks directly from WoS. It is designed specifically for analysis of *citation networks* only. Citations are grouped by the year allowing to analyze evolution of citations in time. It comes from the same developers as VOSviewer and has the same disappointing issue of converting all node labels to lower case. 
 
 ## Networks in Biology
 
@@ -103,11 +103,11 @@ Review: [Tools for visualization and analysis of molecular networks, pathways, a
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU4ODAyODU2Myw2NTQyNDY4ODIsNjM1OD
-Q2MDM4LDE3MTc2MDk4OTksMTAzODcwOTY5NSwtMjc1NTE4OTk0
-LDUyOTkzNzIwNSwyOTY1NjE4MzQsMTUwMzQ5MjY3NCwtMTQ2Nj
-cwNDQ5NSwyMTI3OTA2MTAzLDEzNTMwNDY0NzYsLTkwMTkyMDY2
-OSwxNDkwNTQ1NDI5LC0xNjcwNjE2MzkxLC00ODkwODY3MTMsNj
-AzNzU0ODQ4LC05ODkyNzkzOSwtNjIyNTc0NzE5LC0zMjQ3OTA5
-NjNdfQ==
+eyJoaXN0b3J5IjpbMTY5MzE2MzI1MCwxNTg4MDI4NTYzLDY1ND
+I0Njg4Miw2MzU4NDYwMzgsMTcxNzYwOTg5OSwxMDM4NzA5Njk1
+LC0yNzU1MTg5OTQsNTI5OTM3MjA1LDI5NjU2MTgzNCwxNTAzND
+kyNjc0LC0xNDY2NzA0NDk1LDIxMjc5MDYxMDMsMTM1MzA0NjQ3
+NiwtOTAxOTIwNjY5LDE0OTA1NDU0MjksLTE2NzA2MTYzOTEsLT
+Q4OTA4NjcxMyw2MDM3NTQ4NDgsLTk4OTI3OTM5LC02MjI1NzQ3
+MTldfQ==
 -->
