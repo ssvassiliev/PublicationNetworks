@@ -1,11 +1,12 @@
-# Visualization of citation networks##
+# Visualization of citation networks 
  
-## Tools for bibliometric data collection##
+ [Why visualize networks](https://cambridge-intelligence.com/keylines/why-visualize-networks/)
+## Tools for bibliometric data collection 
 
-### Collecting data from Google Scholar###
+### Collecting data from Google Scholar 
 Google Scholar accounts are arguably the best way to obtain a list of publications of an author. Everybody have Google Scholar profiles and take care to keep it correct and updated. Nevertheless, getting useful publication lists from Google is not straightforward. Below we discuss several ways to get citation data for network visualization.
 
-#### Publish or Perish####
+#### Publish or Perish 
 It is possible to get citations from Google Scholar using  [Publish or Perish](https://harzing.com/resources/publish-or-perish). PoP is a windows based application, but it can be used on Mac and Linux with the help of Wine. In theory PoP allows literature searches in several databases, however, I was not able to connect to WOS using campus VPN. PoP could be useful to scrape citation results from Google Scholar. Unfortunately, Google truncates author lists unpredictably. In some cases, it retains 5 authors, in other only 3,  and adds '...' at the end of authors. This "..." record appears as a node in the network. Another issue with a shortened list of authors is that the head of a group may very often be the last one, and then the citation will be not connected to the main node. These issues make networks extracted from PoP imported lists not particularly trustworthy. If you decide to go this way, save query results in BibTex format for subsequent network extraction.
 
 #### bibnet-google-scholar-scraper
@@ -35,7 +36,7 @@ Retrieved publication lists  lists often have many mistakes and  inconsistencies
 - records missing the principal author
 - the principal author is present, but not recognized because his name in the record is in order (last, middle, first) instead of expected (first, middle, last).
 - different spelling of the same author
-Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors] tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in file, corrected  interactively, or ignored.  The file has all similar pairs of authors flagged witn 'n' , meaning do not merge. To tell program to merge a pair of authors user changes 'n' to 'y'. 
+Sci2 tool does not correct any of these issues. Manual edit of large networks in gephi may be daunting. Most problems can be rectified with [preprocess_authors](https://github.com/ssvassiliev/PublicationNetworks)  tool. This script will remove records missing all authors, records missing only principal author, and attempt to merge duplicate authors. it will not be able to merge all misspelled authors. Suspected duplicates can be saved in the file "name-dupl-out.csv", corrected  interactively, or ignored.  The file has all similar pairs of authors flagged witn 'n' , meaning do not merge. To tell program to merge a pair of authors user changes 'n' to 'y', changes filename to "name-dupl-in.csv" and reruns the program.
  
 
 ## Network extraction 
@@ -43,15 +44,16 @@ Sci2 tool does not correct any of these issues. Manual edit of large networks in
 ### Sci2 Tool 
 
 [Sci2](https://sci2.cns.iu.edu/user/index.php) tool can extract several types of networks from various bibliographic database formats. It supports major bibliometric formats including ISI, Bibtex Endnote Export Format and Scopus csv. Plain text CSV format is also supported. This introductory workshop will focus on the extraction of networks from BibTex and Scopus files. For more details see [Sci2 manual](http://sci2.wiki.cns.iu.edu) 
-
-Extracting networks from BibTex files.
-
 1. **File** ---> **Load**
 2. **Data preparation** ---> **Extract Co-Author Network**. Select bibtex format in popup window.
 3. **File **---> **Save**. Select GraphML format in popup window<br>
 Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You will likely encounter error looking similar to <br>
 `"Error parsing BibTeX file: 248:64: encountered '@."`<br>
  What this means is that 64th character on line 248 of this BibTex file is '@'. This character has a special meaning in BibTex, but it also commonly occurs in citation URLs. After removing this character, or escaping it with \@ the file should load normally. 
+
+### make_network 
+
+[Make_network](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file and saves it in GraphML format.
 
 
 ## Network visualization and analysis 
@@ -88,16 +90,22 @@ Cons
 ### Network data repositories
 
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
-- [KEGG](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes
+- [KEGG Pathway](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes is a collection of manually drawn [pathway maps](https://www.genome.jp/kegg/kegg3a.html) representing our knowledge on the molecular interaction, reaction and relation networks
+- [NCBI Biosystems](https://www.ncbi.nlm.nih.gov/biosystems)  provides integrated access to biological systems and their component genes, proteins, and small molecules,
 - [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledge
 - [BioGrid](https://thebiogrid.org/) database of biological interactions
 
-[INDRA](http://www.indra.bio/) (Integrated Network and Dynamical Reasoning Assembler) is an automated model assembly system interfacing with NLP systems and databases to collect knowledge, and through a process of assembly, produce causal graphs and dynamical models
+KEGG pathway .kgml files can be loaded into Cytoscape using the KEGGscape plugin. If it fails, try [KEGGtranslator](http://www.ra.cs.uni-tuebingen.de/software/KEGGtranslator/index.html)
+
+Review: [Tools for visualization and analysis of molecular networks, pathways, and -omics data](https://doi.org/10.2147/AABC.S63534)
+
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEyNzkwNjEwMywxMzUzMDQ2NDc2LC05MD
-E5MjA2NjksMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2
-NzEzLDYwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMz
-I0NzkwOTYzLC0xMDczMzgxOTQ3LC0xMzI1OTk0NzkzLDE4Nzk3
-MjIxNDIsNjU0MjU1Nzg2LDE4NTA3NzE0ODUsLTE5MzgwMzY4MS
-wxODUwNzc2Mzg4XX0=
+eyJoaXN0b3J5IjpbNjU0MjQ2ODgyLDYzNTg0NjAzOCwxNzE3Nj
+A5ODk5LDEwMzg3MDk2OTUsLTI3NTUxODk5NCw1Mjk5MzcyMDUs
+Mjk2NTYxODM0LDE1MDM0OTI2NzQsLTE0NjY3MDQ0OTUsMjEyNz
+kwNjEwMywxMzUzMDQ2NDc2LC05MDE5MjA2NjksMTQ5MDU0NTQy
+OSwtMTY3MDYxNjM5MSwtNDg5MDg2NzEzLDYwMzc1NDg0OCwtOT
+g5Mjc5MzksLTYyMjU3NDcxOSwtMzI0NzkwOTYzLC0xMDczMzgx
+OTQ3XX0=
 -->
