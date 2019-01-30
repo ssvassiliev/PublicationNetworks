@@ -1,7 +1,5 @@
 # Network visualization
- 
- [Why visualize networks](https://cambridge-intelligence.com/keylines/why-visualize-networks/)
- 
+
 ## Tools for bibliometric data collection 
 
 ### Collecting data from Google Scholar 
@@ -102,7 +100,7 @@ Review: [Tools for visualization and analysis of molecular networks, pathways, a
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjAwMjk0OTE5Nyw2NTQyNDY4ODIsNjM1OD
+eyJoaXN0b3J5IjpbLTgxOTExMzMzNyw2NTQyNDY4ODIsNjM1OD
 Q2MDM4LDE3MTc2MDk4OTksMTAzODcwOTY5NSwtMjc1NTE4OTk0
 LDUyOTkzNzIwNSwyOTY1NjE4MzQsMTUwMzQ5MjY3NCwtMTQ2Nj
 cwNDQ5NSwyMTI3OTA2MTAzLDEzNTMwNDY0NzYsLTkwMTkyMDY2
