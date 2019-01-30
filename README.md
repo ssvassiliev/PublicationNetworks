@@ -50,7 +50,7 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 `"Error parsing BibTeX file: 248:64: encountered '@."`<br>
  What this means is that 64th character on line 248 of this BibTex file is '@'. This character has a special meaning in BibTex, but it also commonly occurs in citation URLs. After removing this character, or escaping it with \@ the file should load normally. 
 
-### make_network 
+### make_co-author_network
 
 [Make_network](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file and saves it in GraphML format.
 
@@ -100,7 +100,7 @@ Review: [Tools for visualization and analysis of molecular networks, pathways, a
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTgxOTExMzMzNyw2NTQyNDY4ODIsNjM1OD
+eyJoaXN0b3J5IjpbLTcxOTkyMjU5OCw2NTQyNDY4ODIsNjM1OD
 Q2MDM4LDE3MTc2MDk4OTksMTAzODcwOTY5NSwtMjc1NTE4OTk0
 LDUyOTkzNzIwNSwyOTY1NjE4MzQsMTUwMzQ5MjY3NCwtMTQ2Nj
 cwNDQ5NSwyMTI3OTA2MTAzLDEzNTMwNDY0NzYsLTkwMTkyMDY2
