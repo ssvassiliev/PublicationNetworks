@@ -58,7 +58,7 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 
 [make_citation_network_scopus](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file exported by Scopus and saves itin GraphML format. 
 
-## Network visualization and analysis 
+## Network visualization and analysis tools
 
 ### Gephi
 
@@ -103,11 +103,11 @@ Review: [Tools for visualization and analysis of molecular networks, pathways, a
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzQ0NDU2ODY3LDY1NDI0Njg4Miw2MzU4ND
-YwMzgsMTcxNzYwOTg5OSwxMDM4NzA5Njk1LC0yNzU1MTg5OTQs
-NTI5OTM3MjA1LDI5NjU2MTgzNCwxNTAzNDkyNjc0LC0xNDY2Nz
-A0NDk1LDIxMjc5MDYxMDMsMTM1MzA0NjQ3NiwtOTAxOTIwNjY5
-LDE0OTA1NDU0MjksLTE2NzA2MTYzOTEsLTQ4OTA4NjcxMyw2MD
-M3NTQ4NDgsLTk4OTI3OTM5LC02MjI1NzQ3MTksLTMyNDc5MDk2
-M119
+eyJoaXN0b3J5IjpbLTEwNzU3MzcxMTgsNjU0MjQ2ODgyLDYzNT
+g0NjAzOCwxNzE3NjA5ODk5LDEwMzg3MDk2OTUsLTI3NTUxODk5
+NCw1Mjk5MzcyMDUsMjk2NTYxODM0LDE1MDM0OTI2NzQsLTE0Nj
+Y3MDQ0OTUsMjEyNzkwNjEwMywxMzUzMDQ2NDc2LC05MDE5MjA2
+NjksMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2NzEzLD
+YwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMzI0Nzkw
+OTYzXX0=
 -->
