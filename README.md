@@ -94,7 +94,7 @@ Cons
 - [IntAct](http://www.ebi.ac.uk/intact) molecular interaction database
 - [KEGG Pathway](https://www.genome.jp/kegg/) Kyoto Encyclopedia of Genes and Genomes is a collection of manually drawn [pathway maps](https://www.genome.jp/kegg/kegg3a.html) representing our knowledge on the molecular interaction, reaction and relation networks
 - [NCBI Biosystems](https://www.ncbi.nlm.nih.gov/biosystems)  provides integrated access to biological systems and their component genes, proteins, and small molecules,
-- [NDEx](http://www.home.ndexbio.org/index) the Network Data Excange an open-source framework for sharing biological network knowledge
+- [NDEx](http://www.home.ndexbio.org/index) the Network Data Exchange an open-source framework for sharing biological network knowledge
 - [BioGrid](https://thebiogrid.org/) database of biological interactions
 
 KEGG pathway .kgml files can be loaded into Cytoscape using the KEGGscape plugin. If it fails, try [KEGGtranslator](http://www.ra.cs.uni-tuebingen.de/software/KEGGtranslator/index.html)
@@ -103,7 +103,7 @@ Review: [Tools for visualization and analysis of molecular networks, pathways, a
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTY5MzE2MzI1MCwxNTg4MDI4NTYzLDY1ND
+eyJoaXN0b3J5IjpbMTYzMDQ0NTM0MiwxNTg4MDI4NTYzLDY1ND
 I0Njg4Miw2MzU4NDYwMzgsMTcxNzYwOTg5OSwxMDM4NzA5Njk1
 LC0yNzU1MTg5OTQsNTI5OTM3MjA1LDI5NjU2MTgzNCwxNTAzND
 kyNjc0LC0xNDY2NzA0NDk1LDIxMjc5MDYxMDMsMTM1MzA0NjQ3
