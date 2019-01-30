@@ -26,8 +26,8 @@ def make_pairs(allAuthors, threshold):
     np = 0
     for i, auth_1 in enumerate(allAuthors):
         for auth_2 in allAuthors[i+1:-1]:
-            ta1 = normalize_auth(auth_1)
-            ta2 = normalize_auth(auth_2)
+            ta1 = normalize_auth(auth_1, db_type)
+            ta2 = normalize_auth(auth_2, db_type)
             djawi_1 = jellyfish.jaro_winkler(ta1, ta2)
             djawi_2 = jellyfish.jaro_winkler(ta1.split()[-1],
                                              ta2.split()[-1])
@@ -54,8 +54,8 @@ def make_pairs_auto(filename, allAuthors, threshold):
     pairs = []
     for i, auth_1 in enumerate(allAuthors):
         for auth_2 in allAuthors[i+1:-1]:
-            ta1 = normalize_auth(auth_1)
-            ta2 = normalize_auth(auth_2)
+            ta1 = normalize_auth(auth_1, db_type)
+            ta2 = normalize_auth(auth_2, db_type)
             djawi_1 = jellyfish.jaro_winkler(ta1, ta2)
             djawi_2 = jellyfish.jaro_winkler(ta1.split()[-1],
                                              ta2.split()[-1])
@@ -71,6 +71,7 @@ def make_pairs_auto(filename, allAuthors, threshold):
 def save_pairs(pairs, filename):
     f = open(filename, "w+")
     f.write('\n'.join('%s %s, %s, %f, %f' % x for x in pairs).encode('utf-8'))
+    f.write('\n')
     f.close()
     return()
 
@@ -93,8 +94,8 @@ def rename_authors_auto(bib_db, threshold):
     np = 0
     for i, auth_1 in enumerate(allAuthors):
         for auth_2 in allAuthors[i+1:-1]:
-            ta1 = normalize_auth(auth_1)
-            ta2 = normalize_auth(auth_2)
+            ta1 = normalize_auth(auth_1, db_type)
+            ta2 = normalize_auth(auth_2, db_type)
             # Step 1: Find similar pairs (fast)
             djawi_1 = jellyfish.jaro_winkler(ta1, ta2)
             djawi_2 = jellyfish.jaro_winkler(ta1.split()[-1],
@@ -127,23 +128,29 @@ def remove_entries(bib_db, lastname):
                      + str(entry['ID']) + " " + str(name) + "\n"
             new_db.entries.append(entry)
     diff = len(bib_db.entries) - len(new_db.entries)
-    print 'Removed ' + str(diff) + ' entries missing "' + lastname + '""'
+    print 'Removed ' + str(diff) + ' entries missing "' + lastname + '"'
     return(new_db)
 
 
-def normalize_auth(auth):
+def normalize_auth(auth, db_type):
     # Normalize name records:
     # - strip all names except first, middle and last
     # - abbreviate first and middle names
     # - if initials are joined: 'AA' --> A A
     # - convert to lower case
     t1 = auth.split()
-    if len(t1) > 2:
-        ta1 = ' '.join((t1[0][0], t1[1][0], t1[-1]))
-    elif len(t1[0]) == 2 and t1[0].isupper():
-        ta1 = ' '.join((t1[0][0], t1[0][1], t1[1]))
-    else:
-        ta1 = ' '.join((t1[0][0], t1[-1]))
+    if db_type == 'scholar':
+        if len(t1) > 2:
+            ta1 = ' '.join((t1[0][0], t1[1][0], t1[-1]))
+        elif len(t1[0]) == 2 and t1[0].isupper():
+            ta1 = ' '.join((t1[0][0], t1[0][1], t1[1]))
+        else:
+            ta1 = ' '.join((t1[0][0], t1[-1]))
+    if db_type == 'scopus':
+        le = t1[0]
+        t1[0] = t1[-1]
+        t1[-1] = le
+        ta1 = ' '.join(t1).replace(',', '').replace('.', '')
     return(ta1.lower())
 
 
@@ -160,8 +167,13 @@ def read_pairs(filename):
 reload(sys)
 sys.setdefaultencoding('utf8')
 # Main program
-#infile = raw_input('Enter BibTex file:')
-infile = 'B.Balcom.bib'
+infile = raw_input('Input BibTex file: ')
+db_type = []
+while True:
+    db_type = raw_input('Database type (scholar/scopus): ')
+    if db_type == 'scopus' or db_type == 'scholar':
+        break
+# infile = 'B.Balcom.bib'
 out_bib = infile.replace(".bib", "-edited.bib")
 out_pairs = infile.replace(".bib", "-dupl-out.csv")
 in_pairs = infile.replace(".bib", "-dupl-in.csv")
@@ -172,8 +184,8 @@ bib_str = bibtex_file.read()
 bib_db = bibtexparser.loads(bib_str)
 print('Cleaning up "' + infile + '"')
 # Remove entries not authored by the selected author
-#lastname = raw_input('Remove entries not authored by:')
-lastname = 'balcom'
+lastname = raw_input('Remove entries not authored by (lastname or "enter"):')
+# lastname = 'balcom'
 new_db = remove_entries(bib_db, lastname)
 # Identify and merge duplicate authors programmatically
 while(1):
@@ -188,12 +200,12 @@ print ' '.join(('The number of authors =', str(len(allAuthors))))
 print ' '.join(('Using Jaro-Winkler algorithm, threshold =', str(threshold)))
 pairs = make_pairs_auto(out_pairs, allAuthors, threshold)
 print 'The number of remaining potential duplicates = ' + str(len(pairs))
-while(1):
+while True:
     allAuthors = make_uniq_authors_list(new_db)
     choice = raw_input(
      '\n'.join(('Merge duplicates:', ' "i" - merge interactively',
                 ' "r" - read duplicates from file',
-                ' "w" - write duplicates to file', '>>>')))
+                ' "w" - write duplicates to file and finish', '>>>')))
     print ''
     if choice == 'i':
         np, pairs = make_pairs(allAuthors, threshold)
@@ -222,3 +234,4 @@ while(1):
 # Save the edited bibtex file
 with open(out_bib, 'w') as bibtex_file:
     bibtexparser.dump(new_db, bibtex_file)
+print 'Saved ' + out_bib
