@@ -53,7 +53,8 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 ### make_co-author_network
 [make_co-author_network](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file and saves it in GraphML format.
 
-### 
+### make_citation_network_scopus
+[make_citation_network_scopus](https://github.com/ssvassiliev/PublicationNetworks)  extracts network from BibTex file expor and saves it
 
 ## Network visualization and analysis 
 
@@ -100,11 +101,11 @@ Review: [Tools for visualization and analysis of molecular networks, pathways, a
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA5OTExNTE3Niw2NTQyNDY4ODIsNjM1OD
-Q2MDM4LDE3MTc2MDk4OTksMTAzODcwOTY5NSwtMjc1NTE4OTk0
-LDUyOTkzNzIwNSwyOTY1NjE4MzQsMTUwMzQ5MjY3NCwtMTQ2Nj
-cwNDQ5NSwyMTI3OTA2MTAzLDEzNTMwNDY0NzYsLTkwMTkyMDY2
-OSwxNDkwNTQ1NDI5LC0xNjcwNjE2MzkxLC00ODkwODY3MTMsNj
-AzNzU0ODQ4LC05ODkyNzkzOSwtNjIyNTc0NzE5LC0zMjQ3OTA5
-NjNdfQ==
+eyJoaXN0b3J5IjpbLTE2MDM1NDk5ODcsNjU0MjQ2ODgyLDYzNT
+g0NjAzOCwxNzE3NjA5ODk5LDEwMzg3MDk2OTUsLTI3NTUxODk5
+NCw1Mjk5MzcyMDUsMjk2NTYxODM0LDE1MDM0OTI2NzQsLTE0Nj
+Y3MDQ0OTUsMjEyNzkwNjEwMywxMzUzMDQ2NDc2LC05MDE5MjA2
+NjksMTQ5MDU0NTQyOSwtMTY3MDYxNjM5MSwtNDg5MDg2NzEzLD
+YwMzc1NDg0OCwtOTg5Mjc5MzksLTYyMjU3NDcxOSwtMzI0Nzkw
+OTYzXX0=
 -->
