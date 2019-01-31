@@ -23,3 +23,6 @@ make_co-author_network extracts network from BibTex file and saves it in GraphML
 ### make_citation_network_scopus
 
 make_citation_network_scopus  extracts network from BibTex file exported by Scopus and saves it in GraphML format. 
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbMTY5MTY0NjA1OF19
+-->
