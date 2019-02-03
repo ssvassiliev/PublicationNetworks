@@ -40,7 +40,6 @@ def make_pairs(allAuthors, threshold):
                         p = (auth_1, auth_2)
                         pairs.append(p)
                         break
-                        break
                     elif choice == 'n':
                         break
                     else:
@@ -175,8 +174,7 @@ while True:
         break
 # infile = 'B.Balcom.bib'
 out_bib = infile.replace(".bib", "-edited.bib")
-out_pairs = infile.replace(".bib", "-dupl-out.csv")
-in_pairs = infile.replace(".bib", "-dupl-in.csv")
+out_pairs = infile.replace(".bib", "-dupl.csv")
 # Jaro-Winkler threshold
 threshold = 0.9
 bibtex_file = open(infile)
@@ -203,23 +201,25 @@ print 'The number of remaining potential duplicates = ' + str(len(pairs))
 while True:
     allAuthors = make_uniq_authors_list(new_db)
     choice = raw_input(
-     '\n'.join(('Merge duplicates:', ' "i" - merge interactively',
-                ' "r" - read duplicates from file',
-                ' "w" - write duplicates to file and finish', '>>>')))
+     ' '.join(('Merge duplicates:\n', '"i" - merge interactively\n',
+               '"r" - read duplicates from file', out_pairs,
+               '\n "w" - write duplicates to file', out_pairs, '\n>>>')))
     print ''
     if choice == 'i':
         np, pairs = make_pairs(allAuthors, threshold)
         if np == 0:
             break
         rename_authors(new_db, pairs)
+        break
     elif choice == 'w':
         pairs = make_pairs_auto(out_pairs, allAuthors, threshold)
         save_pairs(pairs, out_pairs)
-        print 'Duplicates are written to file ' + out_pairs
+        print ''.join(('Duplicates are written to file ', out_pairs,
+                       ',\nflag entries with "y" to remove them'))
         break
     elif choice == 'r':
-        print 'Reading duplicates from file ' + in_pairs
-        pairs = read_pairs(in_pairs)
+        print 'Reading duplicates from file ' + out_pairs
+        pairs = read_pairs(out_pairs)
         while(1):
             old_np = len(allAuthors)
             rename_authors(new_db, pairs)
