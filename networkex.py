@@ -2,6 +2,7 @@
 import tkFileDialog
 import Tkinter as tk
 import ttk
+import tkMessageBox
 from make_coauthor_network import make_uniq_authors_list
 from make_citation_network_scopus import make_indexed_list_scopus
 import bibtexparser
@@ -43,7 +44,7 @@ def citation_network():
             pb2['value'] = (i+1)*100.0/asize
             pb2.update()
         else:
-            if ii >= asize/nbar:
+            if ii >= asize/nbar or i+1 == asize:
                 ii = 0.0
                 pb2['value'] = (i+1)*100.0/asize
                 pb2.update()
@@ -60,7 +61,7 @@ def citation_network():
             pb['value'] = (i+1)*100.0/msize
             pb.update()
         else:
-            if ii >= msize/nbar:
+            if ii >= msize/nbar or i+1 == msize:
                 ii = 0.0
                 pb['value'] = (i+1)*100.0/msize
                 pb.update()
@@ -71,6 +72,7 @@ def citation_network():
                 G.add_edge(i, j, weight=edges[i][j]*maxEdgeWidth/edges.max())
     # Save graph
     nx.write_graphml(G, out_graphml)
+    return(G.number_of_nodes(), G.number_of_edges())
 
 
 def co_author_network():
@@ -102,7 +104,7 @@ def co_author_network():
             pb2['value'] = (i_ent+1)*100.0/asize
             pb2.update()
         else:
-            if ii >= asize/nbar:
+            if ii >= asize/nbar or i_ent+1 == asize:
                 ii = 0.0
                 pb2['value'] = (i_ent+1)*100.0/asize
                 pb2.update()
@@ -130,7 +132,7 @@ def co_author_network():
             pb['value'] = (i+1)*100.0/msize
             pb.update()
         else:
-            if ii >= msize/nbar:
+            if ii >= msize/nbar or i+1 == msize:
                 ii = 0.0
                 pb['value'] = (i+1)*100.0/msize
                 pb.update()
@@ -140,90 +142,137 @@ def co_author_network():
                 G.add_edge(i, j, weight=edges[i][j]*maxEdgeWidth/edges.max())
     # Save graph
     nx.write_graphml(G, out_graphml)
-    return()
+    print 'Number of edges = ' + str(G.number_of_edges())
+    print 'Number of nodes = ' + str(G.number_of_nodes())
+    return(G.number_of_nodes(), G.number_of_edges())
 
 
 def select_file():
-    blank = "********************"
+    blank = "no file selected"
     f = tkFileDialog.askopenfilename(
      initialdir="./", title="Select file",
      filetypes=(("BibTex files", "*.bib"), ("all files", "*.*")))
+    s = str(f).split('/')[-1]
     if len(f) < 5:
-        filename.set(blank)
+        filename.set('')
+        flabel.set(blank)
     else:
         filename.set(f)
+        flabel.set(s)
     return()
 
 
 def make_network():
+
+    def tklabel(nd, ed):
+        nde = ''.join(("Number of nodes = ", str(nd),
+                       "\nNumber of edges = ", str(ed)))
+        nodedge.set(nde)
+    if str(filename.get()) == '':
+        tkMessageBox.showerror(
+         "IOError", ''.join(("Please select file")))
+        return()
+
     pb['value'] = 0
     pb2['value'] = 0
+    nodedge.set("Number of nodes = 0\nNumber of edges = 0")
     pb.update()
     pb2.update()
+    # database type
     dbt = db_type.get()
+    # network type
     nwt = net_type.get()
+    # co-authorship network extraction works for both database types
     if nwt == 0:
-        co_author_network()
-    if dbt == 1 and nwt == 1:
-        citation_network()
+        nd, ed = co_author_network()
+        tklabel(nd, ed)
+    # co-citaion network extraction works with Scopus files
+    if nwt == 1 and dbt == 1:
+        try:
+            nd, ed = citation_network()
+            tklabel(nd, ed)
+        except KeyError, e:
+            tkMessageBox.showerror(
+             "KeyError", ''.join(("File has no ", str(e), " record")))
+            return()
+    # co-citaion network extraction does not work with Scholar files
+    if nwt == 1 and dbt == 0:
+            tkMessageBox.showerror(
+             "DataBaseTypeError",
+             "Co-citation network cannot be made from Google Scholar files")
+            return()
 
 
 if __name__ == "__main__":
+    blank = "no file selected"
     root = tk.Tk()
     s = ttk.Style()
     s.theme_use("clam")
     s.configure("TProgressbar", foreground='red',
-                background='red', thickness=10)
+                background='red', thickness=5)
     db_type = tk.IntVar()
     net_type = tk.IntVar()
     filename = tk.StringVar()
-    bar_Max = tk.IntVar()
-    bar_Val = tk.IntVar()
-    blank = "********************"
-    filename.set(blank)
+    flabel = tk.StringVar()
+    nodes = tk.StringVar()
+    edges = tk.StringVar()
+    nodedge = tk.StringVar()
+    flabel.set(blank)
+    nodedge.set("Number of nodes = 0\nNumber of edges = 0")
 
     # Root window
     root.title('Network Extractor')
-    root["padx"] = 30
+    root["padx"] = 20
     root["pady"] = 20
     # Select database type
     tk.Label(root, text="Database type:",
-             padx=20).grid(row=0, column=0, sticky=tk.W)
+             padx=20).grid(row=0, column=1, sticky=tk.W)
     tk.Radiobutton(root, text="Scholar", padx=10, variable=db_type,
-                   value=0).grid(row=1, column=0, sticky=tk.W)
+                   value=0).grid(row=1, column=1, sticky=tk.W)
     tk.Radiobutton(root, text="Scopus", padx=10, variable=db_type,
-                   value=1).grid(row=2, column=0, sticky=tk.W)
+                   value=1).grid(row=2, column=1, sticky=tk.W)
     # Select network type
     tk.Label(root, text="Network type:",
-             padx=20).grid(row=0, column=1, sticky=tk.W)
-    tk.Radiobutton(root, text="Co-authors", padx=10, variable=net_type,
-                   value=0).grid(row=1, column=1, sticky=tk.W)
-    tk.Radiobutton(root, text="Citations", padx=10, variable=net_type,
-                   value=1).grid(row=2, column=1, sticky=tk.W)
+             padx=20).grid(row=0, column=2, sticky=tk.W)
+    tk.Radiobutton(root, text="Co-authorship", padx=10, variable=net_type,
+                   value=0).grid(row=1, column=2, sticky=tk.W)
+    tk.Radiobutton(root, text="Co-citation", padx=10, variable=net_type,
+                   value=1).grid(row=2, column=2, sticky=tk.W)
     # Select BibTex file
-    tk.Button(root, text="Select file",
+    tk.Button(root, text="Select .bib file", width=12,
               command=select_file).grid(row=3, column=0, columnspan=1,
                                         pady=5, sticky=tk.W)
-    tk.Label(root, textvariable=filename, padx=5,
-             bg='white').grid(row=3, column=1, columnspan=1, sticky=tk.W)
+    tk.Label(root, textvariable=flabel, padx=5,
+             ).grid(row=3, column=1, columnspan=1, sticky=tk.W)
     # Extract network
-    tk.Button(root, text="Extract network",
+    tk.Button(root, text="Make network", width=12,
               command=make_network).grid(row=4, column=0, columnspan=1,
                                          pady=2, sticky=tk.W)
-    # Progress bar
-    pb = ttk.Progressbar(root, orient='horizontal', mode='determinate')
-    pb.grid(row=4, column=1, columnspan=1, pady=2, sticky=tk.S+tk.W)
+    # Progress bar 1
+    pb = ttk.Progressbar(root, orient='horizontal',
+                         mode='determinate', length=200)
+    pb.grid(row=4, column=1, columnspan=1, sticky=tk.S+tk.W)
     pb["value"] = 0
     pb["maximum"] = 100
     # Progress bar 2
-    pb2 = ttk.Progressbar(root, orient='horizontal', mode='determinate')
-    pb2.grid(row=4, column=1, columnspan=1, pady=2, sticky=tk.N+tk.W)
+    pb2 = ttk.Progressbar(root, orient='horizontal',
+                          mode='determinate', length=200)
+    pb2.grid(row=4, column=1, columnspan=1, sticky=tk.N+tk.W)
     pb2["value"] = 0
     pb2["maximum"] = 100
+    # Print results
+    tk.Label(root, text="Info:", padx=20,
+             ).grid(row=5, column=0, columnspan=1, sticky=tk.E)
+    tk.Label(root, textvariable=nodedge, justify=tk.LEFT,
+             ).grid(row=5, column=1, columnspan=1, sticky=tk.W)
     # Quit
-    tk.Button(root, text="Quit", fg='black',
-              command=exit).grid(row=5, column=1, columnspan=1,
-                                 pady=5, sticky=tk.E)
+    tk.Button(root, text="Quit", fg='black', justify=tk.LEFT,
+              command=exit).grid(row=5, column=2, columnspan=1,
+                                 pady=5, padx=10, sticky=tk.E)
 
-    root.after(200, root.update())
+#    text = tk.Text(root)
+#    text.insert(tk.INSERT, "Hello.....")
+#    text.grid(row=5, column=0, columnspan=2,
+#              pady=5, padx=10, sticky=tk.W)
+
     root.mainloop()
