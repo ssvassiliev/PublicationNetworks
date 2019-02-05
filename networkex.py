@@ -8,7 +8,7 @@ from make_citation_network_scopus import make_indexed_list_scopus
 import bibtexparser
 import networkx as nx
 import numpy
-
+from sys import exit
 
 def citation_network():
     # Max number of progress bar increments
@@ -206,10 +206,14 @@ def make_network():
 if __name__ == "__main__":
     blank = "no file selected"
     root = tk.Tk()
+    # root.geometry("400x300")
     s = ttk.Style()
     s.theme_use("clam")
     s.configure("TProgressbar", foreground='red',
-                background='red', thickness=5)
+                background='red', thickness=4)
+    root.columnconfigure(0, weight=1)
+    root.columnconfigure(1, weight=1)
+    root.columnconfigure(2, weight=1)
     db_type = tk.IntVar()
     net_type = tk.IntVar()
     filename = tk.StringVar()
@@ -225,54 +229,71 @@ if __name__ == "__main__":
     root["padx"] = 20
     root["pady"] = 20
     # Select database type
+    c1 = [0, 0, 0]
+    r1 = [0, 1, 2]
+    cl = 'blue'
+    # Select database type
     tk.Label(root, text="Database type:",
-             padx=20).grid(row=0, column=1, sticky=tk.W)
-    tk.Radiobutton(root, text="Scholar", padx=10, variable=db_type,
-                   value=0).grid(row=1, column=1, sticky=tk.W)
-    tk.Radiobutton(root, text="Scopus", padx=10, variable=db_type,
-                   value=1).grid(row=2, column=1, sticky=tk.W)
+             padx=1).grid(row=r1[0], column=c1[0], sticky='nw')
+    tk.Radiobutton(root, text="Scholar", padx=1, variable=db_type,
+                   value=0).grid(row=r1[1], column=c1[1], sticky='nw')
+    tk.Radiobutton(root, text="Scopus", padx=1, variable=db_type,
+                   value=1).grid(row=r1[2], column=c1[2], sticky='nw')
+
     # Select network type
+    c2 = [1, 1, 1]
+    r2 = [0, 1, 2]
     tk.Label(root, text="Network type:",
-             padx=20).grid(row=0, column=2, sticky=tk.W)
-    tk.Radiobutton(root, text="Co-authorship", padx=10, variable=net_type,
-                   value=0).grid(row=1, column=2, sticky=tk.W)
-    tk.Radiobutton(root, text="Co-citation", padx=10, variable=net_type,
-                   value=1).grid(row=2, column=2, sticky=tk.W)
+             padx=1).grid(row=r2[0], column=c2[0], sticky='nw')
+    tk.Radiobutton(root, text="Co-authorship", padx=1, variable=net_type,
+                   value=0).grid(row=r2[1], column=c2[1], sticky='nw')
+    tk.Radiobutton(root, text="Co-citation", padx=1, pady=5, variable=net_type,
+                   value=1).grid(row=r2[2], column=c2[2], sticky='nw')
+
+    # Separator
+    #tk.Label(root, text=" ",
+    #         padx=1).grid(row=3, column=0, columnspan=3)
+
+    ttk.Separator(root, orient=tk.HORIZONTAL).grid(
+        column=0, row=3, columnspan=2, sticky='we')
+
     # Select BibTex file
+    c3 = [0, 1]
+    r3 = [4, 4]
     tk.Button(root, text="Select .bib file", width=12,
-              command=select_file).grid(row=3, column=0, columnspan=1,
-                                        pady=5, sticky=tk.W)
-    tk.Label(root, textvariable=flabel, padx=5,
-             ).grid(row=3, column=1, columnspan=1, sticky=tk.W)
+              command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
+                                        pady=20, sticky='ne')
+    tk.Label(root, textvariable=flabel, padx=5
+             ).grid(row=r3[1], column=c3[1], columnspan=1, sticky=tk.W)
+
     # Extract network
     tk.Button(root, text="Make network", width=12,
-              command=make_network).grid(row=4, column=0, columnspan=1,
-                                         pady=2, sticky=tk.W)
+              command=make_network).grid(row=5, column=0, columnspan=1,
+                                         pady=1, sticky='e')
     # Progress bar 1
     pb = ttk.Progressbar(root, orient='horizontal',
-                         mode='determinate', length=200)
-    pb.grid(row=4, column=1, columnspan=1, sticky=tk.S+tk.W)
-    pb["value"] = 0
-    pb["maximum"] = 100
+                         mode='determinate', length=150)
+    pb.grid(row=5, column=1, columnspan=2, sticky=tk.S+tk.W)
+
     # Progress bar 2
     pb2 = ttk.Progressbar(root, orient='horizontal',
-                          mode='determinate', length=200)
-    pb2.grid(row=4, column=1, columnspan=1, sticky=tk.N+tk.W)
-    pb2["value"] = 0
-    pb2["maximum"] = 100
+                          mode='determinate', length=150)
+    pb2.grid(row=5, column=1, columnspan=2, sticky=tk.N+tk.W)
+
     # Print results
     tk.Label(root, text="Info:", padx=20,
-             ).grid(row=5, column=0, columnspan=1, sticky=tk.E)
+             ).grid(row=6, column=0, columnspan=1, sticky=tk.E)
     tk.Label(root, textvariable=nodedge, justify=tk.LEFT,
-             ).grid(row=5, column=1, columnspan=1, sticky=tk.W)
-    # Quit
+             ).grid(row=6, column=1, columnspan=1, sticky=tk.W)
+
+    # Quit Button
     tk.Button(root, text="Quit", fg='black', justify=tk.LEFT,
-              command=exit).grid(row=5, column=2, columnspan=1,
+              command=exit).grid(row=7, column=2, columnspan=1,
                                  pady=5, padx=10, sticky=tk.E)
 
 #    text = tk.Text(root)
 #    text.insert(tk.INSERT, "Hello.....")
 #    text.grid(row=5, column=0, columnspan=2,
-#              pady=5, padx=10, sticky=tk.W)
+#    pady=5, padx=10, sticky=tk.W)
 
     root.mainloop()
