@@ -5,10 +5,14 @@ import ttk
 import tkMessageBox
 from make_coauthor_network import make_uniq_authors_list
 from make_citation_network_scopus import make_indexed_list_scopus
+from edit_authors import remove_entries, rename_authors_auto, make_pairs_auto,\
+ rename_authors, save_pairs
 import bibtexparser
 import networkx as nx
 import numpy
+import sys
 from sys import exit
+
 
 def citation_network():
     # Max number of progress bar increments
@@ -48,7 +52,6 @@ def citation_network():
                 ii = 0.0
                 pb2['value'] = (i+1)*100.0/asize
                 pb2.update()
-        # --- Update progress bar end ---
     # Add normalized nodes and edges
     wm = weights.max()
     for i, each_weight in enumerate(weights):
@@ -142,8 +145,8 @@ def co_author_network():
                 G.add_edge(i, j, weight=edges[i][j]*maxEdgeWidth/edges.max())
     # Save graph
     nx.write_graphml(G, out_graphml)
-    print 'Number of edges = ' + str(G.number_of_edges())
-    print 'Number of nodes = ' + str(G.number_of_nodes())
+    print 'number of edges = ' + str(G.number_of_edges())
+    print 'number of nodes = ' + str(G.number_of_nodes())
     return(G.number_of_nodes(), G.number_of_edges())
 
 
@@ -165,8 +168,8 @@ def select_file():
 def make_network():
 
     def tklabel(nd, ed):
-        nde = ''.join(("Number of nodes = ", str(nd),
-                       "\nNumber of edges = ", str(ed)))
+        nde = ''.join(("number of nodes = ", str(nd),
+                       "\nnumber of edges = ", str(ed)))
         nodedge.set(nde)
     if str(filename.get()) == '':
         tkMessageBox.showerror(
@@ -175,7 +178,7 @@ def make_network():
 
     pb['value'] = 0
     pb2['value'] = 0
-    nodedge.set("Number of nodes = 0\nNumber of edges = 0")
+    nodedge.set("number of nodes = 0\nnumber of edges = 0")
     pb.update()
     pb2.update()
     # database type
@@ -203,97 +206,232 @@ def make_network():
             return()
 
 
+def edit_authors(stage):
+    if stage == 1:
+        print "stage 1"
+    if stage == 2:
+        print "stage 2"
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+    infile = filename.get()
+    dbt = db_type.get()
+    if dbt == 0:
+        dbType = "scholar"
+    if dbt == 1:
+        dbType = "scopus"
+    # infile = 'B.Balcom.bib
+    out_bib = infile.replace(".bib", "-edited.bib")
+    out_pairs = infile.replace(".bib", "-dupl.csv")
+    # Jaro-Winkler threshold
+    threshold = 0.9
+    if stage == 1:
+        bibtex_file = open(infile)
+        bib_db = bibtexparser.load(bibtex_file)
+        # Remove entries not authored by the selected author
+        lastName = lastname.get()
+        removed, new_db = remove_entries(bib_db, lastName)
+        infoMessage0 = ' '.join((
+            "Removed entries:", str(removed)))
+        # Identify and merge duplicate authors programmatically
+        infoMessage1 = ''.join(('File: "', infile.split('/')[-1], '"'))
+        infoMessage2 = ''
+        snp = 0
+        while True:
+            np, new_db = rename_authors_auto(new_db, threshold, dbType)
+            snp += np
+            if np == 0:
+                break
+        infoMessage2 = ''.join(('\nMerged authors: ', str(snp)))
+
+        # Save the list of potential duplicates
+        allAuthors = make_uniq_authors_list(new_db)
+        pairs = make_pairs_auto(out_pairs, allAuthors, threshold, dbType)
+
+        infoMessage3 = ' '.join((
+            '\nTotal authors:', str(len(allAuthors)),
+            '\nDuplicate authors: ', str(len(pairs))))
+        save_pairs(pairs, out_pairs)
+        pairs_csv = (
+         '\n'.join('%s %s, %s, %f, %f' % x for x in pairs).encode('utf-8'))
+        duPairs.set(pairs_csv)
+        infoMessage4 = ''.join(('\nSaved: "', out_pairs.split('/')[-1],
+                                '"'))
+        print infoMessage1 + infoMessage2 + infoMessage3 + infoMessage4
+        messageInfo1.set(infoMessage0 + infoMessage2 + infoMessage3)
+        bibtex_str.set(bibtexparser.dumps(new_db))
+    if stage == 2:
+        text = bibtex_str.get()
+        new_db = bibtexparser.loads(text)
+        ps = duPairs.get()
+        pt = ps.split('\n')
+        pairs = []
+        for line in pt:
+            li = line.split(',')
+            if li[0] == 'y':
+                pairs.append(tuple(li[1:3]))
+        snp = 0
+        while True:
+            np, new_db = rename_authors(new_db, pairs)
+            snp += np
+            if np == 0:
+                break
+        infoMessage2 = ''.join(('\nMerged authors: ', str(snp)))
+        # Save the edited bibtex file
+        with open(out_bib, 'w') as bibtex_file:
+            bibtexparser.dump(new_db, bibtex_file)
+        print 'Saved ' + out_bib
+
+
 if __name__ == "__main__":
     blank = "no file selected"
     root = tk.Tk()
-    # root.geometry("400x300")
+    n = ttk.Notebook(root)
+    f2 = ttk.Frame(n)
+    f1 = ttk.Frame(n)
+    n.grid(row=1, column=0, columnspan=50, rowspan=49, sticky='NESW')
+    n.add(f1, text='Edit BibTex')
+    n.add(f2, text='Network')
+    # root.geometry("400x350")
     s = ttk.Style()
     s.theme_use("clam")
     s.configure("TProgressbar", foreground='red',
                 background='red', thickness=4)
-    root.columnconfigure(0, weight=1)
-    root.columnconfigure(1, weight=1)
-    root.columnconfigure(2, weight=1)
     db_type = tk.IntVar()
+    bibtex_str = tk.StringVar()
     net_type = tk.IntVar()
     filename = tk.StringVar()
+    lastname = tk.StringVar()
     flabel = tk.StringVar()
+    messageInfo1 = tk.StringVar()
+    duPairs = tk.StringVar()
     nodes = tk.StringVar()
     edges = tk.StringVar()
+    text = tk.StringVar()
     nodedge = tk.StringVar()
     flabel.set(blank)
-    nodedge.set("Number of nodes = 0\nNumber of edges = 0")
+    nodedge.set("number of nodes = 0\nnumber of edges = 0")
 
-    # Root window
+    def pair_editor():
+
+        def save_text():
+            P = t.get(1.0, tk.END)
+            duPairs.set(P)
+            win.destroy()
+
+        win = tk.Toplevel(f1)
+        ybar = tk.Scrollbar(win)
+        t = tk.Text(win)
+        ybar.config(command=t.yview)
+        t.config(yscrollcommand=ybar.set)
+        t.grid(row=0, column=0)
+        t.delete(1.0, tk.END)
+        t.insert(tk.END, duPairs.get())
+        tk.Button(win, text="OK", command=save_text).grid(
+         row=1, column=0, columnspan=1, pady=10, padx=1, sticky='ne')
+        ybar.grid(row=0, column=1, sticky="ns")
+
     root.title('Network Extractor')
     root["padx"] = 20
     root["pady"] = 20
-    # Select database type
-    c1 = [0, 0, 0]
-    r1 = [0, 1, 2]
-    cl = 'blue'
-    # Select database type
-    tk.Label(root, text="Database type:",
-             padx=1).grid(row=r1[0], column=c1[0], sticky='nw')
-    tk.Radiobutton(root, text="Scholar", padx=1, variable=db_type,
-                   value=0).grid(row=r1[1], column=c1[1], sticky='nw')
-    tk.Radiobutton(root, text="Scopus", padx=1, variable=db_type,
-                   value=1).grid(row=r1[2], column=c1[2], sticky='nw')
-
-    # Select network type
-    c2 = [1, 1, 1]
-    r2 = [0, 1, 2]
-    tk.Label(root, text="Network type:",
-             padx=1).grid(row=r2[0], column=c2[0], sticky='nw')
-    tk.Radiobutton(root, text="Co-authorship", padx=1, variable=net_type,
-                   value=0).grid(row=r2[1], column=c2[1], sticky='nw')
-    tk.Radiobutton(root, text="Co-citation", padx=1, pady=5, variable=net_type,
-                   value=1).grid(row=r2[2], column=c2[2], sticky='nw')
-
-    # Separator
-    #tk.Label(root, text=" ",
-    #         padx=1).grid(row=3, column=0, columnspan=3)
-
-    ttk.Separator(root, orient=tk.HORIZONTAL).grid(
-        column=0, row=3, columnspan=2, sticky='we')
-
+    # Make Network Window
+    # -----------------------------------------
     # Select BibTex file
     c3 = [0, 1]
-    r3 = [4, 4]
-    tk.Button(root, text="Select .bib file", width=12,
+    r3 = [0, 0]
+    tk.Button(f2, text="Select File", width=9, takefocus=0,
               command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
-                                        pady=20, sticky='ne')
-    tk.Label(root, textvariable=flabel, padx=5
+                                        pady=10, padx=1, sticky='ne')
+    tk.Label(f2, textvariable=flabel, padx=5
              ).grid(row=r3[1], column=c3[1], columnspan=1, sticky=tk.W)
-
-    # Extract network
-    tk.Button(root, text="Make network", width=12,
-              command=make_network).grid(row=5, column=0, columnspan=1,
-                                         pady=1, sticky='e')
+    # Select database type
+    c1 = [0, 0, 0]
+    r1 = [1, 2, 3]
+    tk.Label(f2, text="Database type:",
+             padx=20, pady=5).grid(row=r1[0], column=c1[0], sticky='nw')
+    tk.Radiobutton(f2, text="Scholar", padx=20, variable=db_type, takefocus=0,
+                   value=0).grid(row=r1[1], column=c1[1], sticky='nw')
+    tk.Radiobutton(f2, text="Scopus", padx=20, variable=db_type, takefocus=0,
+                   value=1).grid(row=r1[2], column=c1[2], sticky='nw')
+    # Select network type
+    c2 = [1, 1, 1]
+    r2 = [1, 2, 3]
+    tk.Label(f2, text="Network type:",
+             padx=20, pady=5).grid(row=r2[0], column=c2[0], sticky='nw')
+    tk.Radiobutton(
+     f2, text="Co-authorship", padx=20, variable=net_type, takefocus=0,
+     value=0).grid(row=r2[1], column=c2[1], sticky='nw')
+    tk.Radiobutton(
+     f2, text="Co-citation", padx=20, pady=5, variable=net_type, takefocus=0,
+     value=1).grid(row=r2[2], column=c2[2], sticky='nw')
+    ttk.Separator(f2, orient=tk.HORIZONTAL).grid(
+        column=0, row=4, columnspan=3, pady=10, sticky='nwe')
+    # Make network
+    tk.Button(
+     f2, text="Make Network", width=12, pady=5, padx=1, takefocus=0,
+     command=make_network).grid(row=5, column=0, columnspan=1, sticky='se')
     # Progress bar 1
-    pb = ttk.Progressbar(root, orient='horizontal',
-                         mode='determinate', length=150)
-    pb.grid(row=5, column=1, columnspan=2, sticky=tk.S+tk.W)
-
+    pb = ttk.Progressbar(f2, orient='horizontal',
+                         mode='determinate', length=180)
+    pb.grid(row=5, column=1, columnspan=1, sticky=tk.S+tk.W)
     # Progress bar 2
-    pb2 = ttk.Progressbar(root, orient='horizontal',
-                          mode='determinate', length=150)
-    pb2.grid(row=5, column=1, columnspan=2, sticky=tk.N+tk.W)
-
-    # Print results
-    tk.Label(root, text="Info:", padx=20,
-             ).grid(row=6, column=0, columnspan=1, sticky=tk.E)
-    tk.Label(root, textvariable=nodedge, justify=tk.LEFT,
-             ).grid(row=6, column=1, columnspan=1, sticky=tk.W)
-
+    pb2 = ttk.Progressbar(f2, orient='horizontal',
+                          mode='determinate', length=180)
+    pb2.grid(row=5, column=1, columnspan=1, sticky=tk.N+tk.W)
+    # Print network properties
+    tk.Label(f2, text="Network\nproperties:",  padx=20,
+             ).grid(row=7, column=0, columnspan=1, sticky=tk.E)
+    tk.Label(f2, textvariable=nodedge, justify=tk.LEFT,
+             ).grid(row=7, column=1, columnspan=1, sticky=tk.W)
     # Quit Button
-    tk.Button(root, text="Quit", fg='black', justify=tk.LEFT,
+    tk.Button(f2, text="Quit", fg='black', justify=tk.LEFT, takefocus=0,
+              command=exit).grid(row=8, column=2, columnspan=1,
+                                 pady=5, padx=1, sticky=tk.E)
+
+    # Edit BibTex Window
+    # ---------------------------------------
+    # Select BibTex file
+    c3 = [0, 1]
+    r3 = [0, 0]
+    tk.Button(f1, text="Select File", width=9, takefocus=0,
+              command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
+                                        pady=10, sticky='nw')
+    tk.Label(f1, textvariable=flabel, padx=5
+             ).grid(row=r3[1], column=c3[1], columnspan=1, sticky=tk.W)
+    # Select database type
+    c1 = [0, 0, 0]
+    r1 = [1, 2, 3]
+    tk.Label(f1, text="Database type:",
+             padx=1, pady=5).grid(row=r1[0], column=c1[0], sticky='nw')
+    tk.Radiobutton(f1, text="Scholar", padx=1, variable=db_type, takefocus=0,
+                   value=0).grid(row=r1[1], column=c1[1], sticky='nw')
+    tk.Radiobutton(f1, text="Scopus", padx=1, variable=db_type, takefocus=0,
+                   value=1).grid(row=r1[2], column=c1[2], sticky='nw')
+    # Lastname of the principal author entry
+    c2 = [1, 1, 1]
+    r2 = [1, 2, 3]
+    tk.Label(f1, text="Remove entries\nnot authored by:",
+             padx=1, pady=5).grid(row=r2[0], column=c2[0], sticky='nw')
+    tk.Entry(
+     f1, textvariable=lastname).grid(row=r2[1], column=c2[1], sticky='nw')
+    ttk.Separator(f1, orient=tk.HORIZONTAL).grid(
+        column=0, row=4, columnspan=3, pady=10, sticky='nwe')
+    # Auto cleanup
+    tk.Button(
+     f1, text="Auto cleanup", width=14, command=lambda: edit_authors(1),
+     takefocus=0,).grid(row=5, column=0, columnspan=1, sticky='w')
+    # Print autocleanup info
+    l1 = tk.Label(f1, textvariable=messageInfo1, justify=tk.LEFT)
+    l1.grid(row=5, rowspan=4, column=1,  padx=10, sticky='nw')
+    # Select duplicates
+    tk.Button(
+     f1, text="Select duplicates", fg='black', justify=tk.LEFT, takefocus=0,
+     command=pair_editor).grid(row=6, column=0, columnspan=1, sticky='sw')
+    # Save BibTex
+    tk.Button(
+     f1, text="Save BibTex", width=14, command=lambda: edit_authors(2),
+     takefocus=0,).grid(row=7, column=0, columnspan=1, sticky='w')
+    # Quit Button
+    tk.Button(f1, text="Quit", fg='black', justify=tk.LEFT, takefocus=0,
               command=exit).grid(row=7, column=2, columnspan=1,
-                                 pady=5, padx=10, sticky=tk.E)
-
-#    text = tk.Text(root)
-#    text.insert(tk.INSERT, "Hello.....")
-#    text.grid(row=5, column=0, columnspan=2,
-#    pady=5, padx=10, sticky=tk.W)
-
+                                 pady=5, padx=10, sticky='se')
     root.mainloop()
