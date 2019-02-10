@@ -5,7 +5,7 @@ import ttk
 import tkMessageBox
 from make_coauthor_network import make_uniq_authors_list
 from make_citation_network_scopus import make_indexed_list_scopus
-from edit_authors import remove_entries, rename_authors_auto, make_pairs_auto,\
+from edit_authors import remove_entries, rename_authors_auto_pb, make_pairs_auto,\
  rename_authors, save_pairs
 import bibtexparser
 import networkx as nx
@@ -151,6 +151,8 @@ def co_author_network():
 
 
 def select_file():
+    filename.set('')
+    flabel.set('')
     blank = "no file selected"
     f = tkFileDialog.askopenfilename(
      initialdir="./", title="Select file",
@@ -162,6 +164,12 @@ def select_file():
     else:
         filename.set(f)
         flabel.set(s)
+    messageInfo1.set('')
+    out_filename.set('')
+    nodedge.set('')
+    pb['value'] = 0
+    pb2['value'] = 0
+    pb3['value'] = 0
     return()
 
 
@@ -178,7 +186,7 @@ def make_network():
 
     pb['value'] = 0
     pb2['value'] = 0
-    nodedge.set("number of nodes = 0\nnumber of edges = 0")
+    nodedge.set('')
     pb.update()
     pb2.update()
     # database type
@@ -207,24 +215,27 @@ def make_network():
 
 
 def edit_authors(stage):
-    if stage == 1:
-        print "stage 1"
-    if stage == 2:
-        print "stage 2"
+    # Jaro-Winkler threshold
+    threshold = 0.9
     reload(sys)
     sys.setdefaultencoding('utf8')
     infile = filename.get()
+    if infile == '':
+        tkMessageBox.showerror(
+         "IOError", "Please select file")
+        return()
     dbt = db_type.get()
     if dbt == 0:
         dbType = "scholar"
     if dbt == 1:
         dbType = "scopus"
-    # infile = 'B.Balcom.bib
     out_bib = infile.replace(".bib", "-edited.bib")
     out_pairs = infile.replace(".bib", "-dupl.csv")
-    # Jaro-Winkler threshold
-    threshold = 0.9
     if stage == 1:
+        messageInfo1.set("*** Working ***\n    Please wait")
+        pb3['value'] = 0
+        l1.update()
+        out_filename.set('')
         bibtex_file = open(infile)
         bib_db = bibtexparser.load(bibtex_file)
         # Remove entries not authored by the selected author
@@ -237,7 +248,7 @@ def edit_authors(stage):
         infoMessage2 = ''
         snp = 0
         while True:
-            np, new_db = rename_authors_auto(new_db, threshold, dbType)
+            np, new_db = rename_authors_auto_pb(new_db, threshold, dbType, pb3)
             snp += np
             if np == 0:
                 break
@@ -249,7 +260,7 @@ def edit_authors(stage):
 
         infoMessage3 = ' '.join((
             '\nTotal authors:', str(len(allAuthors)),
-            '\nDuplicate authors: ', str(len(pairs))))
+            '\nDuplicates: ', str(len(pairs))))
         save_pairs(pairs, out_pairs)
         pairs_csv = (
          '\n'.join('%s %s, %s, %f, %f' % x for x in pairs).encode('utf-8'))
@@ -263,9 +274,8 @@ def edit_authors(stage):
         text = bibtex_str.get()
         new_db = bibtexparser.loads(text)
         ps = duPairs.get()
-        pt = ps.split('\n')
         pairs = []
-        for line in pt:
+        for line in ps.split('\n'):
             li = line.split(',')
             if li[0] == 'y':
                 pairs.append(tuple(li[1:3]))
@@ -280,6 +290,7 @@ def edit_authors(stage):
         with open(out_bib, 'w') as bibtex_file:
             bibtexparser.dump(new_db, bibtex_file)
         print 'Saved ' + out_bib
+        out_filename.set(out_bib.split('/')[-1])
 
 
 if __name__ == "__main__":
@@ -290,7 +301,7 @@ if __name__ == "__main__":
     f1 = ttk.Frame(n)
     n.grid(row=1, column=0, columnspan=50, rowspan=49, sticky='NESW')
     n.add(f1, text='Edit BibTex')
-    n.add(f2, text='Network')
+    n.add(f2, text='Create Network')
     # root.geometry("400x350")
     s = ttk.Style()
     s.theme_use("clam")
@@ -300,6 +311,7 @@ if __name__ == "__main__":
     bibtex_str = tk.StringVar()
     net_type = tk.IntVar()
     filename = tk.StringVar()
+    out_filename = tk.StringVar()
     lastname = tk.StringVar()
     flabel = tk.StringVar()
     messageInfo1 = tk.StringVar()
@@ -309,7 +321,7 @@ if __name__ == "__main__":
     text = tk.StringVar()
     nodedge = tk.StringVar()
     flabel.set(blank)
-    nodedge.set("number of nodes = 0\nnumber of edges = 0")
+    nodedge.set('')
 
     def pair_editor():
 
@@ -318,17 +330,24 @@ if __name__ == "__main__":
             duPairs.set(P)
             win.destroy()
 
+        header = '\
+        Flag,    Name 1,    Name 2,    FullName similarity,    LastName similarity'
         win = tk.Toplevel(f1)
+        win['padx'] = 10
         ybar = tk.Scrollbar(win)
         t = tk.Text(win)
         ybar.config(command=t.yview)
         t.config(yscrollcommand=ybar.set)
-        t.grid(row=0, column=0)
+        t.grid(row=1, column=0, columnspan=2)
         t.delete(1.0, tk.END)
         t.insert(tk.END, duPairs.get())
-        tk.Button(win, text="OK", command=save_text).grid(
-         row=1, column=0, columnspan=1, pady=10, padx=1, sticky='ne')
-        ybar.grid(row=0, column=1, sticky="ns")
+        tk.Label(win, text=header
+                 ).grid(row=0, column=0, columnspan=2, sticky=tk.W)
+        tk.Button(win, text="Save", command=save_text).grid(
+         row=2, column=0, columnspan=1, pady=10, padx=1, sticky='ne')
+        tk.Button(win, text="Cancel", command=win.destroy).grid(
+         row=2, column=1, columnspan=1, pady=10, padx=1, sticky='ne')
+        ybar.grid(row=1, column=2, sticky="ns")
 
     root.title('Network Extractor')
     root["padx"] = 20
@@ -338,7 +357,7 @@ if __name__ == "__main__":
     # Select BibTex file
     c3 = [0, 1]
     r3 = [0, 0]
-    tk.Button(f2, text="Select File", width=9, takefocus=0,
+    tk.Button(f2, text="Open File", width=12, takefocus=0,
               command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
                                         pady=10, padx=1, sticky='ne')
     tk.Label(f2, textvariable=flabel, padx=5
@@ -347,7 +366,7 @@ if __name__ == "__main__":
     c1 = [0, 0, 0]
     r1 = [1, 2, 3]
     tk.Label(f2, text="Database type:",
-             padx=20, pady=5).grid(row=r1[0], column=c1[0], sticky='nw')
+             padx=15, pady=5).grid(row=r1[0], column=c1[0], sticky='nw')
     tk.Radiobutton(f2, text="Scholar", padx=20, variable=db_type, takefocus=0,
                    value=0).grid(row=r1[1], column=c1[1], sticky='nw')
     tk.Radiobutton(f2, text="Scopus", padx=20, variable=db_type, takefocus=0,
@@ -367,15 +386,15 @@ if __name__ == "__main__":
         column=0, row=4, columnspan=3, pady=10, sticky='nwe')
     # Make network
     tk.Button(
-     f2, text="Make Network", width=12, pady=5, padx=1, takefocus=0,
+     f2, text="Create Network", width=12, pady=5, padx=5, takefocus=0,
      command=make_network).grid(row=5, column=0, columnspan=1, sticky='se')
     # Progress bar 1
     pb = ttk.Progressbar(f2, orient='horizontal',
-                         mode='determinate', length=180)
+                         mode='determinate', length=170)
     pb.grid(row=5, column=1, columnspan=1, sticky=tk.S+tk.W)
     # Progress bar 2
     pb2 = ttk.Progressbar(f2, orient='horizontal',
-                          mode='determinate', length=180)
+                          mode='determinate', length=170)
     pb2.grid(row=5, column=1, columnspan=1, sticky=tk.N+tk.W)
     # Print network properties
     tk.Label(f2, text="Network\nproperties:",  padx=20,
@@ -384,15 +403,15 @@ if __name__ == "__main__":
              ).grid(row=7, column=1, columnspan=1, sticky=tk.W)
     # Quit Button
     tk.Button(f2, text="Quit", fg='black', justify=tk.LEFT, takefocus=0,
-              command=exit).grid(row=8, column=2, columnspan=1,
-                                 pady=5, padx=1, sticky=tk.E)
+              command=exit).grid(row=9, column=0, columnspan=2,
+                                 pady=20, padx=1, sticky='s')
 
     # Edit BibTex Window
     # ---------------------------------------
     # Select BibTex file
     c3 = [0, 1]
     r3 = [0, 0]
-    tk.Button(f1, text="Select File", width=9, takefocus=0,
+    tk.Button(f1, text="Open File", width=14, takefocus=0,
               command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
                                         pady=10, sticky='nw')
     tk.Label(f1, textvariable=flabel, padx=5
@@ -410,28 +429,36 @@ if __name__ == "__main__":
     c2 = [1, 1, 1]
     r2 = [1, 2, 3]
     tk.Label(f1, text="Remove entries\nnot authored by:",
-             padx=1, pady=5).grid(row=r2[0], column=c2[0], sticky='nw')
-    tk.Entry(
-     f1, textvariable=lastname).grid(row=r2[1], column=c2[1], sticky='nw')
+             padx=26, pady=5).grid(row=r2[0], column=c2[0], sticky='n')
+    tk.Entry(f1, textvariable=lastname, width=18).grid(
+     row=r2[1], column=c2[1], sticky='nw')
     ttk.Separator(f1, orient=tk.HORIZONTAL).grid(
         column=0, row=4, columnspan=3, pady=10, sticky='nwe')
     # Auto cleanup
     tk.Button(
      f1, text="Auto cleanup", width=14, command=lambda: edit_authors(1),
      takefocus=0,).grid(row=5, column=0, columnspan=1, sticky='w')
+    # Progress bar 2
+    pb3 = ttk.Progressbar(f1, orient='vertical',
+                          mode='determinate', length=90)
+    pb3.grid(row=5, rowspan=4, column=2, columnspan=1, sticky='ne')
     # Print autocleanup info
     l1 = tk.Label(f1, textvariable=messageInfo1, justify=tk.LEFT)
     l1.grid(row=5, rowspan=4, column=1,  padx=10, sticky='nw')
     # Select duplicates
     tk.Button(
-     f1, text="Select duplicates", fg='black', justify=tk.LEFT, takefocus=0,
+     f1, text="Edit duplicates", width=14, justify=tk.LEFT, takefocus=0,
      command=pair_editor).grid(row=6, column=0, columnspan=1, sticky='sw')
     # Save BibTex
     tk.Button(
      f1, text="Save BibTex", width=14, command=lambda: edit_authors(2),
      takefocus=0,).grid(row=7, column=0, columnspan=1, sticky='w')
+    l2 = tk.Label(f1, textvariable=out_filename, justify=tk.LEFT)
+    l2.grid(row=7, rowspan=1, column=1,  padx=10, sticky='w')
+    l2.lower()
+
     # Quit Button
     tk.Button(f1, text="Quit", fg='black', justify=tk.LEFT, takefocus=0,
-              command=exit).grid(row=7, column=2, columnspan=1,
-                                 pady=5, padx=10, sticky='se')
+              command=exit).grid(row=8, column=1, columnspan=1,
+                                 pady=1, padx=10, sticky='sw')
     root.mainloop()
