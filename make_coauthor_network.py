@@ -17,7 +17,7 @@ def make_uniq_authors_list(bib_db):
             if author not in allAuthors:
                 allAuthors.append(author)
             else:
-                continue
+                continue            
     return allAuthors
 
 

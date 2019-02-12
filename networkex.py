@@ -12,6 +12,68 @@ import networkx as nx
 import numpy
 import sys
 from sys import exit
+import scholarly
+from bibtexparser.bwriter import BibTexWriter
+from bibtexparser.bibdatabase import BibDatabase
+from progress.bar import Bar
+
+authors = []
+
+
+def find_scholar():
+    global authors
+    del authors[:]
+    scholar = scholar_name.get()
+    count = 0
+    search_query = scholarly.search_author(scholar)
+    profiles = ''
+    for au in search_query:
+        count = count + 1
+        line = ''
+        for i in au.interests:
+            line = line + unicode(i) + ', '
+        profiles = ''.join((
+         profiles, '\nProfile #', str(count), ':\n', au.name,
+         '\n', au.affiliation, '\n', au.email,
+         '\n', line.rstrip(','), '\n'))
+        authors.append(au)
+    profiles_label.set(profiles)
+    select_scholar()
+
+
+def get_scholar():
+    global authors
+    scholar = scholar_name.get()
+    b3.update()
+    outfile = scholar.split()[-1] + '.bib'
+    flabel.set(outfile)
+    db = BibDatabase()
+
+    sel = int(profile_number.get()) - 1
+    print 'Downloading ' + authors[sel].name + ' publications'
+    author = authors[sel].fill()
+    db.entries = []
+    id = 1
+    npub = len(author.publications)
+    for id, p in enumerate(author.publications):
+        downloading_publication.set(
+         ''.join(('Downloading: ', str(id+1), '/', str(npub))))
+        b4.update()
+        pb4['value'] = (id+1)*100.0/npub
+        pb4.update()
+        pub = p.fill()
+        if 'year' in pub.bib:
+            pub.bib['year'] = str(pub.bib['year'])
+        pub.bib['ENTRYTYPE'] = unicode('article')
+        if 'abstract' in pub.bib:
+            del pub.bib['abstract']
+        sid = "%04d" % id
+        pub.bib['ID'] = str(sid)
+        db.entries.append(pub.bib)
+    bibtex_str = bibtexparser.dumps(db)
+    with open(outfile, 'w') as bibfile:
+        bibfile.write(bibtex_str.encode('utf8'))
+    return()
 
 
 def citation_network():
@@ -166,6 +228,7 @@ def select_file():
         flabel.set(s)
     messageInfo1.set('')
     out_filename.set('')
+    net_filename.set('')
     nodedge.set('')
     pb['value'] = 0
     pb2['value'] = 0
@@ -174,6 +237,9 @@ def select_file():
 
 
 def make_network():
+    infile = filename.get()
+    out_graphml = infile.replace(".bib", ".graphml")
+    net_filename.set('')
 
     def tklabel(nd, ed):
         nde = ''.join(("number of nodes = ", str(nd),
@@ -197,11 +263,13 @@ def make_network():
     if nwt == 0:
         nd, ed = co_author_network()
         tklabel(nd, ed)
+        net_filename.set(out_graphml.split('/')[-1])
     # co-citaion network extraction works with Scopus files
     if nwt == 1 and dbt == 1:
         try:
             nd, ed = citation_network()
             tklabel(nd, ed)
+            net_filename.set(out_graphml.split('/')[-1])
         except KeyError, e:
             tkMessageBox.showerror(
              "KeyError", ''.join(("File has no ", str(e), " record")))
@@ -299,9 +367,12 @@ if __name__ == "__main__":
     n = ttk.Notebook(root)
     f2 = ttk.Frame(n)
     f1 = ttk.Frame(n)
+    f0 = ttk.Frame(n)
     n.grid(row=1, column=0, columnspan=50, rowspan=49, sticky='NESW')
+    n.add(f0, text='Scholar')
     n.add(f1, text='Edit BibTex')
     n.add(f2, text='Create Network')
+    n.select(f1)
     # root.geometry("400x350")
     s = ttk.Style()
     s.theme_use("clam")
@@ -310,8 +381,10 @@ if __name__ == "__main__":
     db_type = tk.IntVar()
     bibtex_str = tk.StringVar()
     net_type = tk.IntVar()
+    downloading_publication = tk.StringVar()
     filename = tk.StringVar()
     out_filename = tk.StringVar()
+    net_filename = tk.StringVar()
     lastname = tk.StringVar()
     flabel = tk.StringVar()
     messageInfo1 = tk.StringVar()
@@ -320,6 +393,10 @@ if __name__ == "__main__":
     edges = tk.StringVar()
     text = tk.StringVar()
     nodedge = tk.StringVar()
+    scholar_name = tk.StringVar()
+    selected_scholar = tk.StringVar()
+    profiles_label = tk.StringVar()
+    profile_number = tk.StringVar()
     flabel.set(blank)
     nodedge.set('')
 
@@ -331,23 +408,54 @@ if __name__ == "__main__":
             win.destroy()
 
         header = '\
-        Flag,    Name 1,    Name 2,    FullName similarity,    LastName similarity'
+        Flag,    Name1,    Name2,    FullName similarity,    LastName similarity'
+        help = 'Change flag "n" to "y" to merge the authors'
         win = tk.Toplevel(f1)
         win['padx'] = 10
         ybar = tk.Scrollbar(win)
         t = tk.Text(win)
         ybar.config(command=t.yview)
         t.config(yscrollcommand=ybar.set)
-        t.grid(row=1, column=0, columnspan=2)
+        t.grid(row=1, column=0, columnspan=3)
         t.delete(1.0, tk.END)
         t.insert(tk.END, duPairs.get())
         tk.Label(win, text=header
                  ).grid(row=0, column=0, columnspan=2, sticky=tk.W)
+        tk.Label(win, text=help, padx=20,
+                 ).grid(row=2, column=0, columnspan=2, sticky=tk.W)
         tk.Button(win, text="Save", command=save_text).grid(
-         row=2, column=0, columnspan=1, pady=10, padx=1, sticky='ne')
-        tk.Button(win, text="Cancel", command=win.destroy).grid(
          row=2, column=1, columnspan=1, pady=10, padx=1, sticky='ne')
-        ybar.grid(row=1, column=2, sticky="ns")
+        tk.Button(win, text="Cancel", command=win.destroy).grid(
+         row=2, column=2, columnspan=1, pady=10, padx=1, sticky='ne')
+        ybar.grid(row=1, column=3, sticky="ns")
+
+    def select_scholar():
+
+        def done():
+            selected_scholar.set(authors[int(profile_number.get()) - 1].name)
+            win2.destroy()
+
+        profile_number.set('1')
+        win2 = tk.Toplevel(f1)
+        win2['padx'] = 10
+        ybar = tk.Scrollbar(win2)
+        t = tk.Text(win2)
+        ybar.config(command=t.yview)
+        t.config(yscrollcommand=ybar.set)
+        t.grid(row=1, column=0, columnspan=3)
+        t.delete(1.0, tk.END)
+        t.insert(tk.END, profiles_label.get())
+        header = 'Google Scholar profiles'
+        tk.Label(win2, text=header).grid(row=0, column=0, columnspan=3)
+        tk.Label(win2, text='Select profile:', padx=20,
+                 ).grid(row=2, column=0, columnspan=1, sticky='e')
+        e1 = tk.Entry(win2, textvariable=profile_number, width=5)
+        e1.grid(row=2, column=1, sticky='w')
+        profile_number.set(e1.get())
+        tk.Button(win2, text="Done", command=done).grid(
+         row=2, column=2, columnspan=1, pady=10, padx=1, sticky='ne')
+        ybar.grid(row=1, column=3, sticky="ns")
+
 
     root.title('Network Extractor')
     root["padx"] = 20
@@ -357,9 +465,9 @@ if __name__ == "__main__":
     # Select BibTex file
     c3 = [0, 1]
     r3 = [0, 0]
-    tk.Button(f2, text="Open File", width=12, takefocus=0,
+    tk.Button(f2, text="Open File", width=14, takefocus=0,
               command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
-                                        pady=10, padx=1, sticky='ne')
+                                        pady=20, padx=1, sticky='ne')
     tk.Label(f2, textvariable=flabel, padx=5
              ).grid(row=r3[1], column=c3[1], columnspan=1, sticky=tk.W)
     # Select database type
@@ -383,10 +491,10 @@ if __name__ == "__main__":
      f2, text="Co-citation", padx=20, pady=5, variable=net_type, takefocus=0,
      value=1).grid(row=r2[2], column=c2[2], sticky='nw')
     ttk.Separator(f2, orient=tk.HORIZONTAL).grid(
-        column=0, row=4, columnspan=3, pady=10, sticky='nwe')
+        column=0, row=4, columnspan=3, pady=5, sticky='nwe')
     # Make network
     tk.Button(
-     f2, text="Create Network", width=12, pady=5, padx=5, takefocus=0,
+     f2, text="Create Network", width=17, pady=5, padx=1, takefocus=0,
      command=make_network).grid(row=5, column=0, columnspan=1, sticky='se')
     # Progress bar 1
     pb = ttk.Progressbar(f2, orient='horizontal',
@@ -401,10 +509,14 @@ if __name__ == "__main__":
              ).grid(row=7, column=0, columnspan=1, sticky=tk.E)
     tk.Label(f2, textvariable=nodedge, justify=tk.LEFT,
              ).grid(row=7, column=1, columnspan=1, sticky=tk.W)
+    tk.Label(f2, text="output file:",  padx=20,
+             ).grid(row=8, column=0, columnspan=1, sticky=tk.E)
+    tk.Label(f2, textvariable=net_filename, justify=tk.LEFT,
+             ).grid(row=8, column=1, columnspan=1, sticky=tk.W)
     # Quit Button
-    tk.Button(f2, text="Quit", fg='black', justify=tk.LEFT, takefocus=0,
-              command=exit).grid(row=9, column=0, columnspan=2,
-                                 pady=20, padx=1, sticky='s')
+    tk.Button(f2, text="Quit", width=14, justify=tk.LEFT, takefocus=0,
+              command=exit).grid(row=9, column=0, columnspan=1,
+                                 pady=1, sticky='w')
 
     # Edit BibTex Window
     # ---------------------------------------
@@ -440,8 +552,8 @@ if __name__ == "__main__":
      takefocus=0,).grid(row=5, column=0, columnspan=1, sticky='w')
     # Progress bar 2
     pb3 = ttk.Progressbar(f1, orient='vertical',
-                          mode='determinate', length=90)
-    pb3.grid(row=5, rowspan=4, column=2, columnspan=1, sticky='ne')
+                          mode='determinate', length=125)
+    pb3.grid(row=5, rowspan=5, column=2, columnspan=1, sticky='ne')
     # Print autocleanup info
     l1 = tk.Label(f1, textvariable=messageInfo1, justify=tk.LEFT)
     l1.grid(row=5, rowspan=4, column=1,  padx=10, sticky='nw')
@@ -458,7 +570,33 @@ if __name__ == "__main__":
     l2.lower()
 
     # Quit Button
-    tk.Button(f1, text="Quit", fg='black', justify=tk.LEFT, takefocus=0,
-              command=exit).grid(row=8, column=1, columnspan=1,
-                                 pady=1, padx=10, sticky='sw')
+    tk.Button(f1, text="Quit", width=14, justify=tk.LEFT, takefocus=0,
+              command=exit).grid(row=8, column=0, columnspan=1,
+                                 pady=1, sticky='w')
+    # Get Scholar tab
+    # ------------------------------------
+    bs = tk.Button(f0, text="Find Author", width=12, takefocus=0, command=find_scholar)
+    bs.grid(row=1, column=0, columnspan=1, pady=1, padx=1, sticky='sw')
+    tk.Label(f0, text="Scholar Author Name:",
+             padx=5, pady=1).grid(row=0, column=1, sticky='s')
+    tk.Entry(f0, textvariable=scholar_name, width=18).grid(
+     row=1, column=1, sticky='w')
+    b2 = tk.Button(f0, text="Download", width=12, takefocus=0, command=get_scholar)
+    b2.grid(row=2, column=0, columnspan=1, pady=1, padx=1, sticky='sw')
+    b3 = tk.Label(f0, textvariable=selected_scholar, padx=5, pady=1)
+    b3.grid(row=2, column=1, sticky='w')
+    b4 = tk.Label(f0, textvariable=downloading_publication, padx=5, pady=1)
+    b4.grid(row=3, column=1, sticky='w')
+
+    ttk.Separator(f0, orient=tk.VERTICAL).grid(
+        column=2, row=0, rowspan=4, padx=10, sticky='ns')
+
+    pb4 = ttk.Progressbar(f0, orient='vertical',
+                          mode='determinate', length=100)
+    pb4.grid(row=0, rowspan=4, column=3, columnspan=1, sticky='ne')
+    tk.Label(f0, textvariable=flabel, padx=5
+             ).grid(row=4, column=1, columnspan=1, sticky=tk.W)
+
+
+
     root.mainloop()

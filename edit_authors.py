@@ -11,7 +11,7 @@ def make_pairs(allAuthors, threshold, db_type):
     pairs = []
     np = 0
     for i, auth_1 in enumerate(allAuthors):
-        for auth_2 in allAuthors[i+1:-1]:
+        for auth_2 in allAuthors[i+1:]:
             ta1 = normalize_auth(auth_1, db_type)
             ta2 = normalize_auth(auth_2, db_type)
             djawi_1 = jellyfish.jaro_winkler(ta1, ta2)
@@ -38,7 +38,7 @@ def make_pairs(allAuthors, threshold, db_type):
 def make_pairs_auto(filename, allAuthors, threshold, db_type):
     pairs = []
     for i, auth_1 in enumerate(allAuthors):
-        for auth_2 in allAuthors[i+1:-1]:
+        for auth_2 in allAuthors[i+1:]:
             ta1 = normalize_auth(auth_1, db_type)
             ta2 = normalize_auth(auth_2, db_type)
             djawi_1 = jellyfish.jaro_winkler(ta1, ta2)
@@ -79,10 +79,39 @@ def rename_authors(bib_db, pairs):
 
 def rename_authors_auto(bib_db, threshold, db_type):
     allAuthors = make_uniq_authors_list(bib_db)
+    print allAuthors
     pairs = []
     np = 0
     for i, auth_1 in enumerate(allAuthors):
-        for auth_2 in allAuthors[i+1:-1]:
+        for auth_2 in allAuthors[i+1:]:
+            ta1 = normalize_auth(auth_1, db_type)
+            ta2 = normalize_auth(auth_2, db_type)
+            # Step 1: Find similar pairs (fast)
+            djawi_1 = jellyfish.jaro_winkler(ta1, ta2)
+            djawi_2 = jellyfish.jaro_winkler(ta1.split()[-1],
+                                             ta2.split()[-1])
+            if djawi_1 > threshold or djawi_2 > threshold:
+                # Step2 : Do strict person name-specific matching
+                if who.match(ta1, ta2):
+                    p = (auth_1, auth_2)
+                    np = np + 1
+                    pairs.append(p)
+    # Rename authors according to identified duplicates
+    xp, new_db = rename_authors(bib_db, pairs)
+    return(np, new_db)
+
+
+def rename_authors_auto_pb(bib_db, threshold, db_type, pb):
+    pb['value'] = 0
+    allAuthors = make_uniq_authors_list(bib_db)
+    ln = len(allAuthors)
+    d = 100.0/ln
+    pairs = []
+    np = 0
+    for i, auth_1 in enumerate(allAuthors):
+        pb['value'] += d
+        pb.update()
+        for auth_2 in allAuthors[i+1:]:
             ta1 = normalize_auth(auth_1, db_type)
             ta2 = normalize_auth(auth_2, db_type)
             # Step 1: Find similar pairs (fast)
