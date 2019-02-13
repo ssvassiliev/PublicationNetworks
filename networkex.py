@@ -22,14 +22,22 @@ authors = []
 
 
 def find_scholar():
+    messageInfo2.set("*** Querying Google Scholar ***\n    Please wait")
+    b6.update()
     global authors
     del authors[:]
     scholar = scholar_name.get()
     count = 0
     search_query = scholarly.search_author(scholar)
     profiles = ''
+    if scholar.strip() == '':
+        messageInfo2.set("\n")
+        b6.update()
+        return()
     for au in search_query:
-        count = count + 1
+        count += 1
+        if count >= 11:
+            break;
         line = ''
         for i in au.interests:
             line = line + unicode(i) + ', '
@@ -38,11 +46,18 @@ def find_scholar():
          '\n', au.affiliation, '\n', au.email,
          '\n', line.rstrip(','), '\n'))
         authors.append(au)
+    if len(authors) == 0:
+        messageInfo2.set("\n")
+        b6.update()
+        return()
     profiles_label.set(profiles)
     flabel.set(''.join((scholar, '.bib')))
     filename.set(''.join((os.getcwd(), '/', scholar, '.bib')))
     print filename.get()
     select_scholar()
+    messageInfo2.set("\n")
+    b6.update()
+    return()
 
 
 def cancel_Download():
@@ -50,6 +65,10 @@ def cancel_Download():
 
 
 def get_scholar():
+    messageInfo2.set("*** Querying Google Scholar ***\n    Please wait")
+    b6.update()
+    pb4['value'] = 0
+    pb4.update()
     global authors
     cancel_download.set(False)
     scholar = scholar_name.get()
@@ -69,6 +88,10 @@ def get_scholar():
             downloading_publication.set('')
             pb4['value'] = 0
             pb4.update()
+            messageInfo2.set('\n\n')
+            b6.update()
+            pb4['value'] = 0
+            pb4.update()
             return()
         downloading_publication.set(
          ''.join(('Downloading: ', str(id+1), '/', str(npub))))
@@ -86,6 +109,8 @@ def get_scholar():
     bibtex_str = bibtexparser.dumps(db)
     with open(outfile, 'w') as bibfile:
         bibfile.write(bibtex_str.encode('utf8'))
+    messageInfo2.set(' '.join(('Saved', flabel.get(), '\n')))
+    b6.update()
     return()
 
 
@@ -402,6 +427,7 @@ if __name__ == "__main__":
     lastname = tk.StringVar()
     flabel = tk.StringVar()
     messageInfo1 = tk.StringVar()
+    messageInfo2 = tk.StringVar()
     duPairs = tk.StringVar()
     nodes = tk.StringVar()
     edges = tk.StringVar()
@@ -463,7 +489,7 @@ if __name__ == "__main__":
         tk.Label(win2, text=header).grid(row=0, column=0, columnspan=3)
         tk.Label(win2, text='Select profile:', padx=20,
                  ).grid(row=2, column=0, columnspan=1, sticky='e')
-        e1 = tk.Entry(win2, textvariable=profile_number, width=5)
+        e1 = tk.Entry(win2, textvariable=profile_number, width=3)
         e1.grid(row=2, column=1, sticky='w')
         profile_number.set(e1.get())
         tk.Button(win2, text="Done", command=done).grid(
@@ -590,43 +616,41 @@ if __name__ == "__main__":
     # ------------------------------------
     # User entry
     tk.Label(f0, text="Enter Author Name:",
-             padx=5, pady=1).grid(row=0, column=0, sticky='s')
-    tk.Entry(f0, textvariable=scholar_name, width=14).grid(
-     row=1, column=0)
+             padx=5, pady=1).grid(row=0, column=1, sticky='s')
+    tk.Entry(f0, textvariable=scholar_name, width=18).grid(
+     row=1, column=1)
     # Find author button and download buttons
     # row 1
     bs = tk.Button(f0, text="Find Author", width=12, command=find_scholar)
-    bs.grid(row=1, column=1, columnspan=1, padx=1, sticky='w')
+    bs.grid(row=1, column=0, columnspan=1, padx=1, sticky='w')
 
     # row 2
     b2 = tk.Button(f0, text="Download", width=12, command=get_scholar)
-    b2.grid(row=2, column=1, columnspan=1, padx=1, sticky='w')
+    b2.grid(row=2, column=0, columnspan=1, padx=1, sticky='w')
     # Info text
     b3 = tk.Label(
      f0, textvariable=selected_scholar, padx=5, pady=1, justify=tk.LEFT)
-    b3.grid(row=2, column=0, sticky='w')
+    b3.grid(row=2, column=1, sticky='w')
 
     # row 3
     b5 = tk.Button(f0, text="Cancel", width=12, command=cancel_Download)
-    b5.grid(row=3, column=1, columnspan=1, padx=1, sticky='sw')
+    b5.grid(row=3, column=0, columnspan=1, padx=1, sticky='sw')
     b4 = tk.Label(f0, textvariable=downloading_publication, padx=5, pady=1)
-    b4.grid(row=3, column=0, sticky='w')
+    b4.grid(row=3, column=1, sticky='w')
 
     # row 4
-    tk.Label(f0, text='\n\n\n\n\n', padx=5, pady=1).grid(row=4, column=0, sticky='w')
+    tk.Label(f0, text='\n', padx=5, pady=1).grid(row=4, column=0, sticky='w')
+    b6 = tk.Label(f0, textvariable=messageInfo2, padx=5, pady=1)
+    b6.grid(row=5, column=0, columnspan=2)
+    tk.Label(f0, text='\n', padx=5, pady=1).grid(row=6, column=0, sticky='w')
 
     # vertical
     ttk.Separator(f0, orient=tk.VERTICAL).grid(
-        column=2, row=0, rowspan=9, padx=10, sticky='ns')
+        column=2, row=0, rowspan=9, padx=5, sticky='nse')
     pb4 = ttk.Progressbar(f0, orient='vertical',
                           mode='determinate', length=290)
-    pb4.grid(row=0, rowspan=9, column=3, columnspan=1, sticky='ne')
+    pb4.grid(row=0, rowspan=9, column=3, columnspan=1, sticky='nw')
 
-    # row 5
-    tk.Label(f0, text='Output file:', padx=5
-             ).grid(row=5, column=0, columnspan=1, sticky='ne')
-    tk.Label(f0, textvariable=flabel, padx=5
-             ).grid(row=5, column=1, columnspan=1, sticky='nw')
     # row 8
     # Quit Button
     tk.Button(f0, text="Quit", width=14, justify=tk.LEFT, takefocus=0,
