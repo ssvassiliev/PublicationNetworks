@@ -27,13 +27,13 @@ def find_scholar():
     global authors
     del authors[:]
     scholar = scholar_name.get()
-    count = 0
-    search_query = scholarly.search_author(scholar)
-    profiles = ''
     if scholar.strip() == '':
         messageInfo2.set("\n")
         b6.update()
         return()
+    count = 0
+    search_query = scholarly.search_author(scholar)
+    profiles = ''
     for au in search_query:
         count += 1
         if count >= 11:
@@ -47,7 +47,7 @@ def find_scholar():
          '\n', line.rstrip(','), '\n'))
         authors.append(au)
     if len(authors) == 0:
-        messageInfo2.set("\n")
+        messageInfo2.set("No Results\n")
         b6.update()
         return()
     profiles_label.set(profiles)
@@ -65,18 +65,19 @@ def cancel_Download():
 
 
 def get_scholar():
+    global authors
+    if len(authors) == 0:
+        return()
     messageInfo2.set("*** Querying Google Scholar ***\n    Please wait")
     b6.update()
     pb4['value'] = 0
     pb4.update()
-    global authors
     cancel_download.set(False)
     scholar = scholar_name.get()
     b3.update()
     outfile = scholar.split()[-1] + '.bib'
     flabel.set(outfile)
     db = BibDatabase()
-
     sel = int(profile_number.get()) - 1
     print 'Downloading ' + authors[sel].name + ' publications'
     author = authors[sel].fill()
@@ -92,6 +93,8 @@ def get_scholar():
             b6.update()
             pb4['value'] = 0
             pb4.update()
+            selected_scholar.set('')
+            del authors[:]
             return()
         downloading_publication.set(
          ''.join(('Downloading: ', str(id+1), '/', str(npub))))
