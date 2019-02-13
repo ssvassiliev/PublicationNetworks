@@ -11,6 +11,7 @@ import bibtexparser
 import networkx as nx
 import numpy
 import sys
+import os
 from sys import exit
 import scholarly
 from bibtexparser.bwriter import BibTexWriter
@@ -38,11 +39,19 @@ def find_scholar():
          '\n', line.rstrip(','), '\n'))
         authors.append(au)
     profiles_label.set(profiles)
+    flabel.set(''.join((scholar, '.bib')))
+    filename.set(''.join((os.getcwd(), '/', scholar, '.bib')))
+    print filename.get()
     select_scholar()
+
+
+def cancel_Download():
+    cancel_download.set(True)
 
 
 def get_scholar():
     global authors
+    cancel_download.set(False)
     scholar = scholar_name.get()
     b3.update()
     outfile = scholar.split()[-1] + '.bib'
@@ -56,11 +65,15 @@ def get_scholar():
     id = 1
     npub = len(author.publications)
     for id, p in enumerate(author.publications):
+        if cancel_download.get():
+            downloading_publication.set('')
+            pb4['value'] = 0
+            pb4.update()
+            return()
         downloading_publication.set(
          ''.join(('Downloading: ', str(id+1), '/', str(npub))))
-        b4.update()
         pb4['value'] = (id+1)*100.0/npub
-        pb4.update()
+        root.update()
         pub = p.fill()
         if 'year' in pub.bib:
             pub.bib['year'] = str(pub.bib['year'])
@@ -382,6 +395,7 @@ if __name__ == "__main__":
     bibtex_str = tk.StringVar()
     net_type = tk.IntVar()
     downloading_publication = tk.StringVar()
+    cancel_download = tk.BooleanVar()
     filename = tk.StringVar()
     out_filename = tk.StringVar()
     net_filename = tk.StringVar()
@@ -455,7 +469,6 @@ if __name__ == "__main__":
         tk.Button(win2, text="Done", command=done).grid(
          row=2, column=2, columnspan=1, pady=10, padx=1, sticky='ne')
         ybar.grid(row=1, column=3, sticky="ns")
-
 
     root.title('Network Extractor')
     root["padx"] = 20
@@ -575,27 +588,50 @@ if __name__ == "__main__":
                                  pady=1, sticky='w')
     # Get Scholar tab
     # ------------------------------------
-    bs = tk.Button(f0, text="Find Author", width=12, takefocus=0, command=find_scholar)
-    bs.grid(row=1, column=0, columnspan=1, pady=1, padx=1, sticky='sw')
-    tk.Label(f0, text="Scholar Author Name:",
-             padx=5, pady=1).grid(row=0, column=1, sticky='s')
-    tk.Entry(f0, textvariable=scholar_name, width=18).grid(
-     row=1, column=1, sticky='w')
-    b2 = tk.Button(f0, text="Download", width=12, takefocus=0, command=get_scholar)
-    b2.grid(row=2, column=0, columnspan=1, pady=1, padx=1, sticky='sw')
-    b3 = tk.Label(f0, textvariable=selected_scholar, padx=5, pady=1)
-    b3.grid(row=2, column=1, sticky='w')
+    # User entry
+    tk.Label(f0, text="Enter Author Name:",
+             padx=5, pady=1).grid(row=0, column=0, sticky='s')
+    tk.Entry(f0, textvariable=scholar_name, width=14).grid(
+     row=1, column=0)
+    # Find author button and download buttons
+    # row 1
+    bs = tk.Button(f0, text="Find Author", width=12, command=find_scholar)
+    bs.grid(row=1, column=1, columnspan=1, padx=1, sticky='w')
+
+    # row 2
+    b2 = tk.Button(f0, text="Download", width=12, command=get_scholar)
+    b2.grid(row=2, column=1, columnspan=1, padx=1, sticky='w')
+    # Info text
+    b3 = tk.Label(
+     f0, textvariable=selected_scholar, padx=5, pady=1, justify=tk.LEFT)
+    b3.grid(row=2, column=0, sticky='w')
+
+    # row 3
+    b5 = tk.Button(f0, text="Cancel", width=12, command=cancel_Download)
+    b5.grid(row=3, column=1, columnspan=1, padx=1, sticky='sw')
     b4 = tk.Label(f0, textvariable=downloading_publication, padx=5, pady=1)
-    b4.grid(row=3, column=1, sticky='w')
+    b4.grid(row=3, column=0, sticky='w')
 
+    # row 4
+    tk.Label(f0, text='\n\n\n\n\n', padx=5, pady=1).grid(row=4, column=0, sticky='w')
+
+    # vertical
     ttk.Separator(f0, orient=tk.VERTICAL).grid(
-        column=2, row=0, rowspan=4, padx=10, sticky='ns')
-
+        column=2, row=0, rowspan=9, padx=10, sticky='ns')
     pb4 = ttk.Progressbar(f0, orient='vertical',
-                          mode='determinate', length=100)
-    pb4.grid(row=0, rowspan=4, column=3, columnspan=1, sticky='ne')
+                          mode='determinate', length=290)
+    pb4.grid(row=0, rowspan=9, column=3, columnspan=1, sticky='ne')
+
+    # row 5
+    tk.Label(f0, text='Output file:', padx=5
+             ).grid(row=5, column=0, columnspan=1, sticky='ne')
     tk.Label(f0, textvariable=flabel, padx=5
-             ).grid(row=4, column=1, columnspan=1, sticky=tk.W)
+             ).grid(row=5, column=1, columnspan=1, sticky='nw')
+    # row 8
+    # Quit Button
+    tk.Button(f0, text="Quit", width=14, justify=tk.LEFT, takefocus=0,
+              command=exit).grid(row=8, column=0, columnspan=1,
+                                 pady=1, sticky='w')
 
 
 
