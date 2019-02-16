@@ -5,18 +5,26 @@ import ttk
 import tkMessageBox
 from make_coauthor_network import make_uniq_authors_list
 from make_citation_network_scopus import make_indexed_list_scopus
-from edit_authors import remove_entries, rename_authors_auto_pb, make_pairs_auto,\
- rename_authors, save_pairs
+from edit_authors import remove_entries, rename_authors_auto_pb,\
+ make_pairs_auto, rename_authors, save_pairs
 import bibtexparser
 import networkx as nx
 import numpy
 import sys
 import os
+import random
 from sys import exit
+import pause
 import scholarly
-from bibtexparser.bwriter import BibTexWriter
 from bibtexparser.bibdatabase import BibDatabase
-from progress.bar import Bar
+from multiprocessing.dummy import Pool
+
+
+def download_publications(p):
+    pause.seconds(random.random())
+    publ = p.fill()
+    return(publ)
+
 
 authors = []
 
@@ -37,7 +45,7 @@ def find_scholar():
     for au in search_query:
         count += 1
         if count >= 11:
-            break;
+            break
         line = ''
         for i in au.interests:
             line = line + unicode(i) + ', '
@@ -65,6 +73,9 @@ def cancel_Download():
 
 
 def get_scholar():
+    # make the Pool of workers
+    print nthreads.get()
+    pool = Pool(int(nthreads.get()))
     global authors
     if len(authors) == 0:
         return()
@@ -82,9 +93,10 @@ def get_scholar():
     print 'Downloading ' + authors[sel].name + ' publications'
     author = authors[sel].fill()
     db.entries = []
-    id = 1
     npub = len(author.publications)
-    for id, p in enumerate(author.publications):
+    pb = pool.imap(download_publications, author.publications)
+    pub = []
+    for id, i in enumerate(pb):
         if cancel_download.get():
             downloading_publication.set('')
             pb4['value'] = 0
@@ -96,19 +108,24 @@ def get_scholar():
             selected_scholar.set('')
             del authors[:]
             return()
+        pub.append(i)
         downloading_publication.set(
          ''.join(('Downloading: ', str(id+1), '/', str(npub))))
         pb4['value'] = (id+1)*100.0/npub
         root.update()
-        pub = p.fill()
-        if 'year' in pub.bib:
-            pub.bib['year'] = str(pub.bib['year'])
-        pub.bib['ENTRYTYPE'] = unicode('article')
-        if 'abstract' in pub.bib:
-            del pub.bib['abstract']
+        id += 1
+    pool.close()
+    pool.join()
+
+    for id, p in enumerate(pub):
+        if 'year' in p.bib:
+            p.bib['year'] = str(p.bib['year'])
+        p.bib['ENTRYTYPE'] = unicode('article')
+        if 'abstract' in p.bib:
+            del p.bib['abstract']
         sid = "%04d" % id
-        pub.bib['ID'] = str(sid)
-        db.entries.append(pub.bib)
+        p.bib['ID'] = str(sid)
+        db.entries.append(p.bib)
     bibtex_str = bibtexparser.dumps(db)
     with open(outfile, 'w') as bibfile:
         bibfile.write(bibtex_str.encode('utf8'))
@@ -422,6 +439,7 @@ if __name__ == "__main__":
     db_type = tk.IntVar()
     bibtex_str = tk.StringVar()
     net_type = tk.IntVar()
+    nthreads = tk.StringVar()
     downloading_publication = tk.StringVar()
     cancel_download = tk.BooleanVar()
     filename = tk.StringVar()
@@ -451,7 +469,7 @@ if __name__ == "__main__":
             win.destroy()
 
         header = '\
-        Flag,    Name1,    Name2,    FullName similarity,    LastName similarity'
+    Flag,    Name1,    Name2,    FullName similarity,    LastName similarity'
         help = 'Change flag "n" to "y" to merge the authors'
         win = tk.Toplevel(f1)
         win['padx'] = 10
@@ -618,7 +636,7 @@ if __name__ == "__main__":
     # Get Scholar tab
     # ------------------------------------
     # User entry
-    tk.Label(f0, text="Enter Author Name:",
+    tk.Label(f0, text="Google Author Name:",
              padx=5, pady=1).grid(row=0, column=1, sticky='s')
     tk.Entry(f0, textvariable=scholar_name, width=18).grid(
      row=1, column=1)
@@ -636,16 +654,20 @@ if __name__ == "__main__":
     b3.grid(row=2, column=1, sticky='w')
 
     # row 3
-    b5 = tk.Button(f0, text="Cancel", width=12, command=cancel_Download)
-    b5.grid(row=3, column=0, columnspan=1, padx=1, sticky='sw')
-    b4 = tk.Label(f0, textvariable=downloading_publication, padx=5, pady=1)
-    b4.grid(row=3, column=1, sticky='w')
+    tk.Label(f0, text='Threads:', padx=5, pady=1).grid(
+     row=3, column=0, sticky='s')
+    th = ttk.Combobox(f0, width=10, textvariable=nthreads)
+    th['values'] = (1, 2, 4, 6, 8, 10)
+    th.current(2)
+    th.grid(row=4, column=0, columnspan=1, pady=1, sticky='n')
 
     # row 4
-    tk.Label(f0, text='\n', padx=5, pady=1).grid(row=4, column=0, sticky='w')
-    b6 = tk.Label(f0, textvariable=messageInfo2, padx=5, pady=1)
-    b6.grid(row=5, column=0, columnspan=2)
-    tk.Label(f0, text='\n', padx=5, pady=1).grid(row=6, column=0, sticky='w')
+    b4 = tk.Label(f0, textvariable=downloading_publication, padx=5, pady=1)
+    b4.grid(row=4, column=1, sticky='nw')
+    tk.Label(f0, text='\n', padx=5, pady=1).grid(row=5, column=0, sticky='w')
+    b6 = tk.Label(f0, textvariable=messageInfo2, padx=6, pady=1)
+    b6.grid(row=6, column=0, columnspan=2)
+    tk.Label(f0, text='\n', padx=5, pady=1).grid(row=7, column=0, sticky='w')
 
     # vertical
     ttk.Separator(f0, orient=tk.VERTICAL).grid(
@@ -657,9 +679,9 @@ if __name__ == "__main__":
     # row 8
     # Quit Button
     tk.Button(f0, text="Quit", width=14, justify=tk.LEFT, takefocus=0,
-              command=exit).grid(row=8, column=0, columnspan=1,
-                                 pady=1, sticky='w')
-
-
+              command=exit).grid(row=8, column=1, columnspan=1,
+                                 pady=1, sticky='se')
+    b5 = tk.Button(f0, text="Cancel", width=12, command=cancel_Download)
+    b5.grid(row=8, column=0, columnspan=1, padx=1, sticky='sw')
 
     root.mainloop()
