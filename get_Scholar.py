@@ -4,22 +4,22 @@ import bibtexparser
 from bibtexparser.bwriter import BibTexWriter
 from bibtexparser.bibdatabase import BibDatabase
 from progress.bar import Bar
-#from Queue import Queue
-#from threading import Thread
 from multiprocessing.dummy import Pool
 import time
-import tqdm
+import pause
+import random
 
 number_publications = 0
 
-# make the Pool of workers
-pool = Pool(10)
-
 
 def download_publications(p):
-    return p.fill()
+    pause.seconds(random.random())
+    publ = p.fill()
+    return(publ)
 
 
+# make the Pool of workers
+pool = Pool(4)
 scholar = raw_input('Search Google Scholar: ')
 # scholar = 'bruce balcom'
 outfile = scholar.split()[-1] + '.bib'
@@ -59,7 +59,7 @@ pool.close()
 pool.join()
 pub = list(pb)
 end = time.time()
-print "Total time: " + str(end - start)
+print "Download time: " + str(end - start)
 
 for id, publ in enumerate(pub):
     if 'year' in publ.bib:
