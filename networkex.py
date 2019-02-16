@@ -74,7 +74,7 @@ def cancel_Download():
 
 def get_scholar():
     # make the Pool of workers
-    print nthreads.get()
+    downloading_publication.set('')
     pool = Pool(int(nthreads.get()))
     global authors
     if len(authors) == 0:
