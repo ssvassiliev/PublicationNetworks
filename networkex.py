@@ -13,6 +13,8 @@ import numpy
 import sys
 import os
 import random
+import time
+import datetime
 from sys import exit
 import pause
 import scholarly
@@ -21,7 +23,7 @@ from multiprocessing.dummy import Pool
 
 
 def download_publications(p):
-    pause.seconds(random.random())
+    pause.milliseconds(random.randint(200, 1200))
     publ = p.fill()
     return(publ)
 
@@ -42,15 +44,14 @@ def find_scholar():
     count = 0
     search_query = scholarly.search_author(scholar)
     profiles = ''
-    for au in search_query:
-        count += 1
-        if count >= 11:
+    for count, au in enumerate(search_query):
+        if count >= 10:
             break
         line = ''
         for i in au.interests:
             line = line + unicode(i) + ', '
         profiles = ''.join((
-         profiles, '\nProfile #', str(count), ':\n', au.name,
+         profiles, '\nProfile #', str(count+1), ':\n', au.name,
          '\n', au.affiliation, '\n', au.email,
          '\n', line.rstrip(','), '\n'))
         authors.append(au)
@@ -59,10 +60,11 @@ def find_scholar():
         b6.update()
         return()
     profiles_label.set(profiles)
+    select_scholar()
+    scholar = selected_scholar.get()
+    scholar = scholar.replace(' ', '_')
     flabel.set(''.join((scholar, '.bib')))
     filename.set(''.join((os.getcwd(), '/', scholar, '.bib')))
-    print filename.get()
-    select_scholar()
     messageInfo2.set("\n")
     b6.update()
     return()
@@ -74,28 +76,36 @@ def cancel_Download():
 
 def get_scholar():
     # make the Pool of workers
-    downloading_publication.set('')
-    pool = Pool(int(nthreads.get()))
     global authors
+    downloading_publication.set('')
     if len(authors) == 0:
         return()
+    pool = Pool(int(nthreads.get()))
     messageInfo2.set("*** Querying Google Scholar ***\n    Please wait")
     b6.update()
     pb4['value'] = 0
     pb4.update()
     cancel_download.set(False)
-    scholar = scholar_name.get()
+    scholar = selected_scholar.get()
+    scholar = scholar.replace(' ', '_')
     b3.update()
-    outfile = scholar.split()[-1] + '.bib'
+    outfile = scholar + '.bib'
     flabel.set(outfile)
+    filename.set(''.join((os.getcwd(), '/', scholar, '.bib')))
     db = BibDatabase()
     sel = int(profile_number.get()) - 1
     print 'Downloading ' + authors[sel].name + ' publications'
-    author = authors[sel].fill()
+    try:
+        author = authors[sel].fill()
+    except:
+        tkMessageBox.showerror(
+         "Error", "Service unavailable")
+        return()
     db.entries = []
     npub = len(author.publications)
     pb = pool.imap(download_publications, author.publications)
     pub = []
+    start = time.time()
     for id, i in enumerate(pb):
         if cancel_download.get():
             downloading_publication.set('')
@@ -109,8 +119,13 @@ def get_scholar():
             del authors[:]
             return()
         pub.append(i)
+        current = time.time() - start
+        estimate = current*npub/(id+1)
+        remaining = str(datetime.timedelta(
+         seconds=estimate-current)).split('.')[0]
         downloading_publication.set(
-         ''.join(('Downloading: ', str(id+1), '/', str(npub))))
+         ''.join(('Downloading: ', str(id+1), '/', str(npub),
+                  "\nTime Left: ", remaining)))
         pb4['value'] = (id+1)*100.0/npub
         root.update()
         id += 1
@@ -362,7 +377,12 @@ def edit_authors(stage):
         pb3['value'] = 0
         l1.update()
         out_filename.set('')
-        bibtex_file = open(infile)
+        try:
+            bibtex_file = open(infile)
+        except IOError as er:
+            tkMessageBox.showerror(
+             "IOError", er)
+            return()
         bib_db = bibtexparser.load(bibtex_file)
         # Remove entries not authored by the selected author
         lastName = lastname.get()
@@ -484,7 +504,7 @@ if __name__ == "__main__":
                  ).grid(row=0, column=0, columnspan=2, sticky=tk.W)
         tk.Label(win, text=help, padx=20,
                  ).grid(row=2, column=0, columnspan=2, sticky=tk.W)
-        tk.Button(win, text="Save", command=save_text).grid(
+        tk.Button(win, text="Apply", command=save_text).grid(
          row=2, column=1, columnspan=1, pady=10, padx=1, sticky='ne')
         tk.Button(win, text="Cancel", command=win.destroy).grid(
          row=2, column=2, columnspan=1, pady=10, padx=1, sticky='ne')
@@ -494,6 +514,10 @@ if __name__ == "__main__":
 
         def done():
             selected_scholar.set(authors[int(profile_number.get()) - 1].name)
+            scholar = selected_scholar.get()
+            scholar = scholar.replace(' ', '_')
+            flabel.set(''.join((scholar, '.bib')))
+            filename.set(''.join((os.getcwd(), '/', scholar, '.bib')))
             win2.destroy()
 
         profile_number.set('1')
@@ -506,7 +530,7 @@ if __name__ == "__main__":
         t.grid(row=1, column=0, columnspan=3)
         t.delete(1.0, tk.END)
         t.insert(tk.END, profiles_label.get())
-        header = 'Google Scholar profiles'
+        header = 'Google Scholar Profiles'
         tk.Label(win2, text=header).grid(row=0, column=0, columnspan=3)
         tk.Label(win2, text='Select profile:', padx=20,
                  ).grid(row=2, column=0, columnspan=1, sticky='e')
@@ -525,7 +549,7 @@ if __name__ == "__main__":
     # Select BibTex file
     c3 = [0, 1]
     r3 = [0, 0]
-    tk.Button(f2, text="Open File", width=14, takefocus=0,
+    tk.Button(f2, text="Select File", width=14, takefocus=0,
               command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
                                         pady=20, padx=1, sticky='ne')
     tk.Label(f2, textvariable=flabel, padx=5
@@ -583,7 +607,7 @@ if __name__ == "__main__":
     # Select BibTex file
     c3 = [0, 1]
     r3 = [0, 0]
-    tk.Button(f1, text="Open File", width=14, takefocus=0,
+    tk.Button(f1, text="Select File", width=14, takefocus=0,
               command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
                                         pady=10, sticky='nw')
     tk.Label(f1, textvariable=flabel, padx=5
@@ -654,11 +678,11 @@ if __name__ == "__main__":
     b3.grid(row=2, column=1, sticky='w')
 
     # row 3
-    tk.Label(f0, text='Threads:', padx=5, pady=1).grid(
+    tk.Label(f0, text='Queue Size:', padx=5, pady=1).grid(
      row=3, column=0, sticky='s')
     th = ttk.Combobox(f0, width=10, textvariable=nthreads)
-    th['values'] = (1, 2, 4, 6, 8, 10)
-    th.current(2)
+    th['values'] = (1, 2, 3, 4, 6, 8)
+    th.current(3)
     th.grid(row=4, column=0, columnspan=1, pady=1, sticky='n')
 
     # row 4
@@ -670,18 +694,16 @@ if __name__ == "__main__":
     tk.Label(f0, text='\n', padx=5, pady=1).grid(row=7, column=0, sticky='w')
 
     # vertical
-    ttk.Separator(f0, orient=tk.VERTICAL).grid(
-        column=2, row=0, rowspan=9, padx=5, sticky='nse')
     pb4 = ttk.Progressbar(f0, orient='vertical',
-                          mode='determinate', length=290)
-    pb4.grid(row=0, rowspan=9, column=3, columnspan=1, sticky='nw')
+                          mode='determinate', length=280)
+    pb4.grid(row=0, rowspan=9,
+             column=3, columnspan=1, padx=(25, 1), pady=5, sticky='se')
 
     # row 8
     # Quit Button
-    tk.Button(f0, text="Quit", width=14, justify=tk.LEFT, takefocus=0,
-              command=exit).grid(row=8, column=1, columnspan=1,
-                                 pady=1, sticky='se')
-    b5 = tk.Button(f0, text="Cancel", width=12, command=cancel_Download)
+    tk.Button(f0, text="Quit", width=14, takefocus=0, command=exit).grid(
+     row=8, column=1, columnspan=1, pady=1, sticky='se')
+    b5 = tk.Button(f0, text="Stop Download", width=12, command=cancel_Download)
     b5.grid(row=8, column=0, columnspan=1, padx=1, sticky='sw')
 
     root.mainloop()
