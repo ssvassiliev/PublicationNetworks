@@ -2,6 +2,7 @@
 import tkFileDialog
 import Tkinter as tk
 import ttk
+from ttkthemes import ThemedStyle
 import tkMessageBox
 from make_coauthor_network import make_uniq_authors_list
 from make_citation_network_scopus import make_indexed_list_scopus
@@ -32,7 +33,8 @@ authors = []
 
 
 def find_scholar():
-    messageInfo2.set("*** Querying Google Scholar ***\n    Please wait")
+    messageInfo2.set("*** Querying Google Scholar ***\
+    \n               Please wait")
     b6.update()
     global authors
     del authors[:]
@@ -95,12 +97,7 @@ def get_scholar():
     db = BibDatabase()
     sel = int(profile_number.get()) - 1
     print 'Downloading ' + authors[sel].name + ' publications'
-    try:
-        author = authors[sel].fill()
-    except:
-        tkMessageBox.showerror(
-         "Error", "Service unavailable")
-        return()
+    author = authors[sel].fill()
     db.entries = []
     npub = len(author.publications)
     pb = pool.imap(download_publications, author.publications)
@@ -196,13 +193,13 @@ def citation_network():
         # ---- Update progress bar ----
         ii += 1
         if msize < 4*nbar:
-            pb['value'] = (i+1)*100.0/msize
-            pb.update()
+            pb2['value'] = (i+1)*100.0/msize
+            pb2.update()
         else:
             if ii >= msize/nbar or i+1 == msize:
                 ii = 0.0
-                pb['value'] = (i+1)*100.0/msize
-                pb.update()
+                pb2['value'] = (i+1)*100.0/msize
+                pb2.update()
         # --- Update progress bar end ---
         G.add_node(i, weight=weights[i], label=allAuthors[i])
         for j in range(i+1, msize):
@@ -267,13 +264,13 @@ def co_author_network():
         ii += 1
         # Update progress bar every step
         if msize < 4*nbar:
-            pb['value'] = (i+1)*100.0/msize
-            pb.update()
+            pb2['value'] = (i+1)*100.0/msize
+            pb2.update()
         else:
             if ii >= msize/nbar or i+1 == msize:
                 ii = 0.0
-                pb['value'] = (i+1)*100.0/msize
-                pb.update()
+                pb2['value'] = (i+1)*100.0/msize
+                pb2.update()
         G.add_node(i, weight=weights[i], label=allAuthors[i])
         for j in range(i+1, msize):
             if edges[i][j] != 0:
@@ -303,7 +300,6 @@ def select_file():
     out_filename.set('')
     net_filename.set('')
     nodedge.set('')
-    pb['value'] = 0
     pb2['value'] = 0
     pb3['value'] = 0
     return()
@@ -315,18 +311,16 @@ def make_network():
     net_filename.set('')
 
     def tklabel(nd, ed):
-        nde = ''.join(("number of nodes = ", str(nd),
-                       "\nnumber of edges = ", str(ed)))
+        nde = ''.join(("nodes = ", str(nd),
+                       "\nedges = ", str(ed)))
         nodedge.set(nde)
     if str(filename.get()) == '':
         tkMessageBox.showerror(
          "IOError", ''.join(("Please select file")))
         return()
 
-    pb['value'] = 0
     pb2['value'] = 0
     nodedge.set('')
-    pb.update()
     pb2.update()
     # database type
     dbt = db_type.get()
@@ -452,10 +446,11 @@ if __name__ == "__main__":
     n.add(f2, text='Create Network')
     n.select(f1)
     # root.geometry("400x350")
-    s = ttk.Style()
-    s.theme_use("clam")
+    s = ThemedStyle()
+    s.set_theme("clearlooks")
     s.configure("TProgressbar", foreground='red',
                 background='red', thickness=4)
+    s.configure('TButton', anchor='center')
     db_type = tk.IntVar()
     bibtex_str = tk.StringVar()
     net_type = tk.IntVar()
@@ -544,141 +539,137 @@ if __name__ == "__main__":
     root.title('Network Extractor')
     root["padx"] = 20
     root["pady"] = 20
+
     # Make Network Window
     # -----------------------------------------
     # Select BibTex file
     c3 = [0, 1]
     r3 = [0, 0]
-    tk.Button(f2, text="Select File", width=14, takefocus=0,
-              command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
-                                        pady=20, padx=1, sticky='ne')
-    tk.Label(f2, textvariable=flabel, padx=5
-             ).grid(row=r3[1], column=c3[1], columnspan=1, sticky=tk.W)
+    ttk.Button(f2, text="Select File", width=13, takefocus=0,
+               command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
+                                         pady=20, padx=1, sticky='ne')
+    ttk.Label(f2, textvariable=flabel, padding=5
+              ).grid(row=r3[1], column=c3[1], columnspan=1, sticky=tk.W)
     # Select database type
     c1 = [0, 0, 0]
     r1 = [1, 2, 3]
-    tk.Label(f2, text="Database type:",
-             padx=15, pady=5).grid(row=r1[0], column=c1[0], sticky='nw')
-    tk.Radiobutton(f2, text="Scholar", padx=20, variable=db_type, takefocus=0,
-                   value=0).grid(row=r1[1], column=c1[1], sticky='nw')
-    tk.Radiobutton(f2, text="Scopus", padx=20, variable=db_type, takefocus=0,
-                   value=1).grid(row=r1[2], column=c1[2], sticky='nw')
+    ttk.Label(f2, text="Database type:",
+              ).grid(row=r1[0], column=c1[0], sticky='nw')
+    ttk.Radiobutton(f2, text="Scholar",
+                    variable=db_type, takefocus=0,
+                    value=0).grid(row=r1[1], column=c1[1], sticky='nw')
+    ttk.Radiobutton(f2, text="Scopus", variable=db_type, takefocus=0,
+                    value=1).grid(row=r1[2], column=c1[2], sticky='nw')
     # Select network type
     c2 = [1, 1, 1]
     r2 = [1, 2, 3]
-    tk.Label(f2, text="Network type:",
-             padx=20, pady=5).grid(row=r2[0], column=c2[0], sticky='nw')
-    tk.Radiobutton(
-     f2, text="Co-authorship", padx=20, variable=net_type, takefocus=0,
+    ttk.Label(f2, text="Network type:",
+              ).grid(row=r2[0], column=c2[0], sticky='nw')
+    ttk.Radiobutton(
+     f2, text="Co-authorship", variable=net_type, takefocus=0,
      value=0).grid(row=r2[1], column=c2[1], sticky='nw')
-    tk.Radiobutton(
-     f2, text="Co-citation", padx=20, pady=5, variable=net_type, takefocus=0,
+    ttk.Radiobutton(
+     f2, text="Co-citation", variable=net_type, takefocus=0,
      value=1).grid(row=r2[2], column=c2[2], sticky='nw')
     ttk.Separator(f2, orient=tk.HORIZONTAL).grid(
-        column=0, row=4, columnspan=3, pady=5, sticky='nwe')
+        column=0, row=4, columnspan=3, pady=(1, 20), sticky='nwe')
     # Make network
-    tk.Button(
-     f2, text="Create Network", width=17, pady=5, padx=1, takefocus=0,
-     command=make_network).grid(row=5, column=0, columnspan=1, sticky='se')
-    # Progress bar 1
-    pb = ttk.Progressbar(f2, orient='horizontal',
-                         mode='determinate', length=170)
-    pb.grid(row=5, column=1, columnspan=1, sticky=tk.S+tk.W)
+    ttk.Button(
+     f2, text="Create Network", width=13, takefocus=0,
+     command=make_network).grid(row=5, column=0, pady=1, columnspan=1, sticky='se')
     # Progress bar 2
     pb2 = ttk.Progressbar(f2, orient='horizontal',
-                          mode='determinate', length=170)
-    pb2.grid(row=5, column=1, columnspan=1, sticky=tk.N+tk.W)
+                          mode='determinate', length=165)
+    pb2.grid(row=5, column=1, columnspan=1, padx=5)
     # Print network properties
-    tk.Label(f2, text="Network\nproperties:",  padx=20,
-             ).grid(row=7, column=0, columnspan=1, sticky=tk.E)
-    tk.Label(f2, textvariable=nodedge, justify=tk.LEFT,
-             ).grid(row=7, column=1, columnspan=1, sticky=tk.W)
-    tk.Label(f2, text="output file:",  padx=20,
-             ).grid(row=8, column=0, columnspan=1, sticky=tk.E)
-    tk.Label(f2, textvariable=net_filename, justify=tk.LEFT,
-             ).grid(row=8, column=1, columnspan=1, sticky=tk.W)
+    ttk.Label(f2, text="  Network\nProperties:", padding=(1, 5, 1, 1),
+              ).grid(row=7, column=0, columnspan=1, sticky='ne')
+    ttk.Label(f2, textvariable=nodedge,  padding=(1, 5, 1, 1),
+              ).grid(row=7, column=1, columnspan=1, sticky=tk.W)
+    ttk.Label(f2, text="File:",
+              ).grid(row=8, column=0, columnspan=1, sticky=tk.E)
+    ttk.Label(f2, textvariable=net_filename,
+              ).grid(row=8, column=1, columnspan=1, sticky=tk.W)
     # Quit Button
-    tk.Button(f2, text="Quit", width=14, justify=tk.LEFT, takefocus=0,
-              command=exit).grid(row=9, column=0, columnspan=1,
-                                 pady=1, sticky='w')
+    ttk.Button(f2, text="Quit", width=13, takefocus=0,
+               command=exit).grid(row=9, column=0, columnspan=1,
+                                  pady=5, sticky='sw')
 
     # Edit BibTex Window
     # ---------------------------------------
     # Select BibTex file
     c3 = [0, 1]
     r3 = [0, 0]
-    tk.Button(f1, text="Select File", width=14, takefocus=0,
-              command=select_file).grid(row=r3[0], column=c3[0], columnspan=1,
-                                        pady=10, sticky='nw')
-    tk.Label(f1, textvariable=flabel, padx=5
-             ).grid(row=r3[1], column=c3[1], columnspan=1, sticky=tk.W)
+    ttk.Button(
+     f1, text="Select File", width=14, takefocus=0, command=select_file).grid(
+      row=r3[0], column=c3[0], columnspan=1, pady=10, sticky='nw')
+    ttk.Label(f1, textvariable=flabel, padding=(5, 1)
+              ).grid(row=r3[1], column=c3[1], columnspan=1, sticky=tk.W)
     # Select database type
     c1 = [0, 0, 0]
     r1 = [1, 2, 3]
-    tk.Label(f1, text="Database type:",
-             padx=1, pady=5).grid(row=r1[0], column=c1[0], sticky='nw')
-    tk.Radiobutton(f1, text="Scholar", padx=1, variable=db_type, takefocus=0,
-                   value=0).grid(row=r1[1], column=c1[1], sticky='nw')
-    tk.Radiobutton(f1, text="Scopus", padx=1, variable=db_type, takefocus=0,
-                   value=1).grid(row=r1[2], column=c1[2], sticky='nw')
+    ttk.Label(f1, text="Database type:",
+              padding=(1, 5)).grid(row=r1[0], column=c1[0], sticky='nw')
+    ttk.Radiobutton(f1, text="Scholar", variable=db_type, takefocus=0,
+                    value=0).grid(row=r1[1], column=c1[1], sticky='nw')
+    ttk.Radiobutton(f1, text="Scopus", variable=db_type, takefocus=0,
+                    value=1).grid(row=r1[2], column=c1[2], sticky='nw')
     # Lastname of the principal author entry
     c2 = [1, 1, 1]
     r2 = [1, 2, 3]
-    tk.Label(f1, text="Remove entries\nnot authored by:",
-             padx=26, pady=5).grid(row=r2[0], column=c2[0], sticky='n')
-    tk.Entry(f1, textvariable=lastname, width=18).grid(
+    ttk.Label(f1, text="Remove entries\nnot authored by:").grid(
+     row=r2[0], column=c2[0], sticky='n')
+    ttk.Entry(f1, textvariable=lastname, width=18).grid(
      row=r2[1], column=c2[1], sticky='nw')
     ttk.Separator(f1, orient=tk.HORIZONTAL).grid(
         column=0, row=4, columnspan=3, pady=10, sticky='nwe')
     # Auto cleanup
-    tk.Button(
+    ttk.Button(
      f1, text="Auto cleanup", width=14, command=lambda: edit_authors(1),
      takefocus=0,).grid(row=5, column=0, columnspan=1, sticky='w')
     # Progress bar 2
     pb3 = ttk.Progressbar(f1, orient='vertical',
-                          mode='determinate', length=125)
+                          mode='determinate', length=135)
     pb3.grid(row=5, rowspan=5, column=2, columnspan=1, sticky='ne')
     # Print autocleanup info
-    l1 = tk.Label(f1, textvariable=messageInfo1, justify=tk.LEFT)
+    l1 = ttk.Label(f1, textvariable=messageInfo1)
     l1.grid(row=5, rowspan=4, column=1,  padx=10, sticky='nw')
     # Select duplicates
-    tk.Button(
-     f1, text="Edit duplicates", width=14, justify=tk.LEFT, takefocus=0,
+    ttk.Button(
+     f1, text="Edit duplicates", width=14, takefocus=0,
      command=pair_editor).grid(row=6, column=0, columnspan=1, sticky='sw')
     # Save BibTex
-    tk.Button(
+    ttk.Button(
      f1, text="Save BibTex", width=14, command=lambda: edit_authors(2),
      takefocus=0,).grid(row=7, column=0, columnspan=1, sticky='w')
-    l2 = tk.Label(f1, textvariable=out_filename, justify=tk.LEFT)
+    l2 = ttk.Label(f1, textvariable=out_filename, justify=tk.LEFT)
     l2.grid(row=7, rowspan=1, column=1,  padx=10, sticky='w')
     l2.lower()
 
     # Quit Button
-    tk.Button(f1, text="Quit", width=14, justify=tk.LEFT, takefocus=0,
-              command=exit).grid(row=8, column=0, columnspan=1,
-                                 pady=1, sticky='w')
+    ttk.Button(f1, text="Quit", width=14, takefocus=0,
+               command=exit).grid(row=8, column=0, columnspan=1, sticky='w')
     # Get Scholar tab
     # ------------------------------------
     # User entry
-    tk.Label(f0, text="Google Author Name:",
-             padx=5, pady=1).grid(row=0, column=1, sticky='s')
-    tk.Entry(f0, textvariable=scholar_name, width=18).grid(
+    ttk.Label(f0, text="Author Name:",).grid(row=0, column=1, sticky='s')
+    ttk.Entry(f0, textvariable=scholar_name, width=16).grid(
      row=1, column=1)
     # Find author button and download buttons
     # row 1
-    bs = tk.Button(f0, text="Find Author", width=12, command=find_scholar)
-    bs.grid(row=1, column=0, columnspan=1, padx=1, sticky='w')
+    bs = ttk.Button(f0, text="Find Author", width=12, command=find_scholar)
+    bs.grid(row=1, column=0, columnspan=1, sticky='w')
 
     # row 2
-    b2 = tk.Button(f0, text="Download", width=12, command=get_scholar)
-    b2.grid(row=2, column=0, columnspan=1, padx=1, sticky='w')
+    b2 = ttk.Button(f0, text="Download", width=12, command=get_scholar)
+    b2.grid(row=2, column=0, columnspan=1, sticky='w')
     # Info text
-    b3 = tk.Label(
-     f0, textvariable=selected_scholar, padx=5, pady=1, justify=tk.LEFT)
+    b3 = ttk.Label(
+     f0, textvariable=selected_scholar, padding=(5, 1), justify=tk.LEFT)
     b3.grid(row=2, column=1, sticky='w')
 
     # row 3
-    tk.Label(f0, text='Queue Size:', padx=5, pady=1).grid(
+    ttk.Label(f0, text='Queue Size:', padding=(5, 1)).grid(
      row=3, column=0, sticky='s')
     th = ttk.Combobox(f0, width=10, textvariable=nthreads)
     th['values'] = (1, 2, 3, 4, 6, 8)
@@ -686,24 +677,25 @@ if __name__ == "__main__":
     th.grid(row=4, column=0, columnspan=1, pady=1, sticky='n')
 
     # row 4
-    b4 = tk.Label(f0, textvariable=downloading_publication, padx=5, pady=1)
+    b4 = ttk.Label(f0, textvariable=downloading_publication, padding=(5, 1))
     b4.grid(row=4, column=1, sticky='nw')
-    tk.Label(f0, text='\n', padx=5, pady=1).grid(row=5, column=0, sticky='w')
-    b6 = tk.Label(f0, textvariable=messageInfo2, padx=6, pady=1)
+    ttk.Label(f0, text='\n', padding=(5, 1)).grid(row=5, column=0, sticky='w')
+    b6 = ttk.Label(f0, textvariable=messageInfo2, padding=(6, 1))
     b6.grid(row=6, column=0, columnspan=2)
-    tk.Label(f0, text='\n', padx=5, pady=1).grid(row=7, column=0, sticky='w')
+    ttk.Label(f0, text='\n', padding=(5, 1)).grid(row=7, column=0, sticky='w')
 
     # vertical
     pb4 = ttk.Progressbar(f0, orient='vertical',
                           mode='determinate', length=280)
     pb4.grid(row=0, rowspan=9,
-             column=3, columnspan=1, padx=(25, 1), pady=5, sticky='se')
+             column=3, columnspan=1, padx=(10, 1), pady=5)
 
     # row 8
     # Quit Button
-    tk.Button(f0, text="Quit", width=14, takefocus=0, command=exit).grid(
-     row=8, column=1, columnspan=1, pady=1, sticky='se')
-    b5 = tk.Button(f0, text="Stop Download", width=12, command=cancel_Download)
+    ttk.Button(f0, text="Quit", width=14, takefocus=0, command=exit).grid(
+     row=8, column=1, columnspan=1, pady=1, sticky='s')
+    b5 = ttk.Button(
+     f0, text="Stop Download", width=14, command=cancel_Download)
     b5.grid(row=8, column=0, columnspan=1, padx=1, sticky='sw')
 
     root.mainloop()
