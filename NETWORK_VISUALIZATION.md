@@ -38,7 +38,7 @@ Google Scholar accounts are arguably the best way to obtain a list of publicatio
 It is possible to get citations from Google Scholar using  [Publish or Perish](https://harzing.com/resources/publish-or-perish). PoP is a windows based application, but it can be used on Mac and Linux with the help of Wine. In theory PoP allows literature searches in several databases, however, I was not able to connect to WOS using campus VPN. PoP could be useful to scrape citation results from Google Scholar. Unfortunately, Google truncates author lists unpredictably. In some cases, it retains 5 authors, in other only 3,  and adds '...' at the end of authors. This "..." record appears as a node in the network. Another issue with a shortened list of authors is that the head of a group may very often be the last one, and then the citation will be not connected to the main node. These issues make networks extracted from PoP imported lists not particularly trustworthy. If you decide to go this way, save query results in BibTex format for subsequent network extraction.
 
 #### bibnet-google-scholar-scraper
-[Bibnet-google-scholar-scraper](https://github.com/jimmytidey/bibnet-google-scholar-scraper)  allows to search Google Scholar and then collect citations for each item in the search result.  This tool can extract co-author or citation networks and export them in graphviz .dot format. Search results are limited to 10 items per search though. Bibnet-google-scholar-scraper requires javascript developers framework to run it. I have not used this tool myself yet.
+[Bibnet-google-scholar-scraper](https://github.com/jimmytidey/bibnet-google-scholar-scraper)  allows to search Google Scholar and then collect citations for each item in the search result.  This tool can extract co-author or citation networks and export them in graphviz .dot format. Search results are limited to 10 items per search though. Bibnet-google-scholar-scraper requires javascript developers framework Meteor to run it. I have not used this tool myself yet.
 
 #### get_scholar
  [Get_scholar](https://github.com/ssvassiliev/PublicationNetworks)  searches Google Scholar authors by name and then retrieves full records of all publications. This protocol allows circumventing author truncation issue mentioned above. Get_scholar produces a usable list of publications at the expense of query time. Publication records are retrieved one by one, and each query takes a couple of seconds to process, so be patient. The result of a query is saved in BibTex format.<br>
@@ -94,6 +94,8 @@ Troubleshooting problems loading BibTeX files. Sci2 BibTeX parser is picky. You 
 ### Graphviz
 
 ### Cytoscape
+
+### NodeXL
 
 
 ## Complete packages for bibliographic data collection, network extraction and visualization
