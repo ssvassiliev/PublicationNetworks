@@ -83,7 +83,8 @@ def get_scholar():
     if len(authors) == 0:
         return()
     pool = Pool(int(nthreads.get()))
-    messageInfo2.set("*** Querying Google Scholar ***\n    Please wait")
+    messageInfo2.set("*** Querying Google Scholar ***\
+    \n               Please wait")
     b6.update()
     pb4['value'] = 0
     pb4.update()
@@ -120,9 +121,12 @@ def get_scholar():
         estimate = current*npub/(id+1)
         remaining = str(datetime.timedelta(
          seconds=estimate-current)).split('.')[0]
+        elapsed = str(datetime.timedelta(
+         seconds=current)).split('.')[0]
         downloading_publication.set(
-         ''.join(('Downloading: ', str(id+1), '/', str(npub),
-                  "\nTime Left: ", remaining)))
+         ''.join(('Done: ', str(id+1), '/', str(npub),
+                  "\nTime Left: ", remaining,
+                  "\nElapsed: ", elapsed)))
         pb4['value'] = (id+1)*100.0/npub
         root.update()
         id += 1
@@ -537,8 +541,8 @@ if __name__ == "__main__":
         ybar.grid(row=1, column=3, sticky="ns")
 
     root.title('Network Extractor')
-    root["padx"] = 20
-    root["pady"] = 20
+    root["padx"] = 1
+    root["pady"] = 1
 
     # Make Network Window
     # -----------------------------------------
@@ -625,7 +629,7 @@ if __name__ == "__main__":
         column=0, row=4, columnspan=3, pady=10, sticky='nwe')
     # Auto cleanup
     ttk.Button(
-     f1, text="Auto cleanup", width=14, command=lambda: edit_authors(1),
+     f1, text="Auto Cleanup", width=14, command=lambda: edit_authors(1),
      takefocus=0,).grid(row=5, column=0, columnspan=1, sticky='w')
     # Progress bar 2
     pb3 = ttk.Progressbar(f1, orient='vertical',
@@ -636,7 +640,7 @@ if __name__ == "__main__":
     l1.grid(row=5, rowspan=4, column=1,  padx=10, sticky='nw')
     # Select duplicates
     ttk.Button(
-     f1, text="Edit duplicates", width=14, takefocus=0,
+     f1, text="Edit Duplicates", width=14, takefocus=0,
      command=pair_editor).grid(row=6, column=0, columnspan=1, sticky='sw')
     # Save BibTex
     ttk.Button(
@@ -682,7 +686,6 @@ if __name__ == "__main__":
     ttk.Label(f0, text='\n', padding=(5, 1)).grid(row=5, column=0, sticky='w')
     b6 = ttk.Label(f0, textvariable=messageInfo2, padding=(6, 1))
     b6.grid(row=6, column=0, columnspan=2)
-    ttk.Label(f0, text='\n', padding=(5, 1)).grid(row=7, column=0, sticky='w')
 
     # vertical
     pb4 = ttk.Progressbar(f0, orient='vertical',
