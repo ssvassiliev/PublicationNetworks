@@ -4,6 +4,14 @@ import networkx as nx
 import numpy
 import matplotlib.pyplot as plt
 from progress.bar import Bar
+from writeNodesEdges import writeObjects
+from forceatlas import forceatlas2_layout
+#from networkx.algorithms.community import greedy_modularity_communities
+#from networkx.algorithms.community import asyn_fluidc
+#from networkx.algorithms.community import asyn_lpa_communities
+#from networkx.algorithms.community import label_propagation_communities
+import community
+import igraph as ig
 
 
 def make_uniq_authors_list(bib_db):
@@ -17,7 +25,7 @@ def make_uniq_authors_list(bib_db):
             if author not in allAuthors:
                 allAuthors.append(author)
             else:
-                continue            
+                continue
     return allAuthors
 
 
@@ -41,9 +49,32 @@ def extract_ref_authors_scopus(db_entry):
     return(authors)
 
 
+def abbrev_auth(auth, db_type):
+    # Normalize name records:
+    # - strip all names except first, middle and last
+    # - abbreviate first and middle names
+    # - if initials are joined: 'AA' --> A A
+    # - convert to lower case
+    t1 = auth.split()
+    if db_type == 'scholar':
+        if len(t1) > 2:
+            ta1 = ' '.join((t1[0][0], t1[1][0], t1[-1]))
+        elif len(t1[0]) == 2 and t1[0].isupper():
+            ta1 = ' '.join((t1[0][0], t1[0][1], t1[1]))
+        else:
+            ta1 = ' '.join((t1[0][0], t1[-1]))
+    if db_type == 'scopus':
+        le = t1[0]
+        t1[0] = t1[-1]
+        t1[-1] = le
+        ta1 = ' '.join(t1).replace(',', '').replace('.', '')
+    return(ta1)
+
+
 if __name__ == "__main__":
     infile = raw_input('Enter name of BibTex file:')
     out_graphml = infile.replace(".bib", ".graphml")
+    out_vtk  = infile.replace(".bib", "")
     out_bib = infile.replace(".bib", "-edited.bib")
     # Graph parameters
     maxNodeSize = 200
@@ -54,8 +85,6 @@ if __name__ == "__main__":
     print('Constructing network from file: ' + infile)
     # Make the list of unique authors
     allAuthors = make_uniq_authors_list(bib_db)
-    # Create network
-    G = nx.Graph()
     msize = len(allAuthors)
     edges = numpy.zeros((msize, msize))
     weights = numpy.zeros(msize)
@@ -75,21 +104,84 @@ if __name__ == "__main__":
                 e1 = allAuthors.index(author)
                 if e1 != e2:
                     edges[e1][e2] = edges[e1][e2] + 1
-    bar.finish()
     # Add normalized nodes and edges
     wm = weights.max()
     for i, each_weight in enumerate(weights):
         weights[i] = each_weight*maxNodeSize/wm
-    bar = Bar('Building network ', max=msize)
+    bar.finish()
+
+    # Create networkX graph
+    G = nx.Graph()
+    bar = Bar('Building networkX graph ', max=msize)
     for i in range(0, msize):
         bar.next()
-        G.add_node(i, weight=weights[i], label=allAuthors[i])
+        G.add_node(i, weight=weights[i],
+                   label=abbrev_auth(allAuthors[i], 'scholar'))
         for j in range(i+1, msize):
             if edges[i][j] != 0:
                 G.add_edge(i, j, weight=edges[i][j]*maxEdgeWidth/edges.max())
     bar.finish()
-    # Save graph
-    nx.write_graphml(G, out_graphml)
+    # Save GRAPHML
+#    nx.write_graphml(G, out_graphml)
+
+    # Create igraph graph
+    IG = ig.Graph()
+    IG.add_vertices(msize)
+    IG.vs['weight'] = weights
+    bar = Bar('Building igraph graph ', max=msize)
+    auth = []
+    eweight = []
+    for i in range(0, msize):
+        bar.next()
+        auth.append(allAuthors[i].encode('utf-8'))
+        for j in range(i+1, msize):
+            if edges[i][j] != 0:
+                IG.add_edge(i, j)
+                eweight.append(edges[i][j]*maxEdgeWidth/edges.max())
+    IG.es['weight'] = eweight
+    bar.finish()
+    x = []
+    y = []
+    layout = IG.layout("fr")
+    for xy in layout.coords:
+        x.append(xy[0])
+        y.append(xy[1])
+    IG.vs['x'] = x
+    IG.vs['y'] = y
+    IG.vs['label'] = auth
+    # Save DOT
+    IG.write_graphml(out_graphml)
+
+
+
+    # Communities
+    partitions = [None]*msize
+    #communities = list(asyn_fluidc(G, 15, max_iter=200, seed=None))
+    #communities = list(asyn_lpa_communities(G, weight=None, seed=None))
+    #communities = list(greedy_modularity_communities(G))
+    #communities.sort(key=len, reverse=True)
+    #for i, comm in enumerate(communities):
+    #    for c in comm:
+    #        partitions[c] = i
+    par = community.best_partition(G)
+    partitions = par.values()
+
+    # 3D network layout
+    #p = nx.spring_layout(G, iterations=500, dim=3, k=1)
+    p = forceatlas2_layout(G, iterations=50, linlog=True, pos=None,
+                           nohubs=True, k=None, dim=3)
+
+
+    # Save VTK
+    pos = [list(p[i]) for i in p]
+    degree = [d for n, d in G.degree]
+    labels = [d['label'] for n, d in G.nodes(data=True)]
+    writeObjects(
+     pos, edges=G.edges(), nodeLabel=labels,
+     scalar=degree, name='degree', power=0.333,
+     scalar2=partitions, name2='partition', power2=1.0,
+     method='vtkPolyData', fileout=out_vtk)
+
 
     # Draw graph
     if raw_input('Draw network (y/n)?') == 'y':
