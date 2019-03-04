@@ -63,15 +63,19 @@ def save_pairs(pairs, filename):
 
 def rename_authors(bib_db, pairs):
     c = 0
-    for entry in bib_db.entries:
+    for i, entry in enumerate(bib_db.entries):
         if 'author' not in entry:
             continue
         old = entry['author']
         for p in pairs:
-            if len(p[0]) < len(p[1]):
-                entry['author'] = entry['author'].replace(p[1], p[0])
+            p1 = p[1].strip()
+            p0 = p[0].strip()
+            if p1 not in old and p0 not in old:
+                continue
+            if len(p0) < len(p1):
+                entry['author'] = entry['author'].replace(p1, p0)
             else:
-                entry['author'] = entry['author'].replace(p[0], p[1])
+                entry['author'] = entry['author'].replace(p0, p1)
             if old != entry['author']:
                 c += 1
     return(c, bib_db)

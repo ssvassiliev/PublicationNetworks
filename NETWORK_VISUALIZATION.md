@@ -129,7 +129,7 @@ Cons
 - [BioGrid](https://thebiogrid.org/) database of biological interactions
 
 KEGG pathway .kgml files can be loaded into Cytoscape using the KEGGscape plugin. If it fails, try [KEGGtranslator](http://www.ra.cs.uni-tuebingen.de/software/KEGGtranslator/index.html)
--[network repository](http://networkrepository.com/index.php) A scientific network data repository with interactive visual analytic tools.
+- [network repository](http://networkrepository.com/index.php) A scientific network data repository with interactive visual analytic tools.
 
 
 

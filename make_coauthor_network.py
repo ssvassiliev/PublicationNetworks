@@ -3,6 +3,7 @@ import bibtexparser
 import networkx as nx
 import numpy
 import matplotlib.pyplot as plt
+from math import sqrt
 from progress.bar import Bar
 from writeNodesEdges import writeObjects
 from forceatlas import forceatlas2_layout
@@ -74,11 +75,11 @@ def abbrev_auth(auth, db_type):
 if __name__ == "__main__":
     infile = raw_input('Enter name of BibTex file:')
     out_graphml = infile.replace(".bib", ".graphml")
-    out_vtk  = infile.replace(".bib", "")
+    out_vtk = infile.replace(".bib", "")
     out_bib = infile.replace(".bib", "-edited.bib")
     # Graph parameters
-    maxNodeSize = 200
-    maxEdgeWidth = 3
+    maxNodeSize = 10
+    maxEdgeWidth = 10
     bibtex_file = open(infile)
     bib_str = bibtex_file.read()
     bib_db = bibtexparser.loads(bib_str)
@@ -110,91 +111,104 @@ if __name__ == "__main__":
         weights[i] = each_weight*maxNodeSize/wm
     bar.finish()
 
-    # Create networkX graph
-    G = nx.Graph()
-    bar = Bar('Building networkX graph ', max=msize)
-    for i in range(0, msize):
-        bar.next()
-        G.add_node(i, weight=weights[i],
-                   label=abbrev_auth(allAuthors[i], 'scholar'))
-        for j in range(i+1, msize):
-            if edges[i][j] != 0:
-                G.add_edge(i, j, weight=edges[i][j]*maxEdgeWidth/edges.max())
-    bar.finish()
-    # Save GRAPHML
-#    nx.write_graphml(G, out_graphml)
+    # NetworkX graph
+    do_netX = False
+    do_igraph = True
+    db_type = 'scholar'
+    if do_netX:
+        G = nx.Graph()
+        bar = Bar('Building networkX graph ', max=msize)
+        for i in range(0, msize):
+            bar.next()
+            G.add_node(i, weight=weights[i],
+                       label=abbrev_auth(allAuthors[i], db_type))
+            for j in range(i+1, msize):
+                if edges[i][j] != 0:
+                    G.add_edge(i, j, weight=edges[i][j]*maxEdgeWidth/edges.max())
+        bar.finish()
+        # Save GRAPHML
+        nx.write_graphml(G, out_graphml)
+        # Communities
+        partitions = [None]*msize
+        # communities = list(asyn_fluidc(G, 15, max_iter=200, seed=None))
+        # communities = list(asyn_lpa_communities(G, weight=None, seed=None))
+        # communities = list(greedy_modularity_communities(G))
+        # communities.sort(key=len, reverse=True)
+        # for i, comm in enumerate(communities):
+        #    for c in comm:
+        #        partitions[c] = i
+        par = community.best_partition(G)
+        partitions = par.values()
+        # 3D network layout
+        # p = nx.spring_layout(G, iterations=500, dim=3, k=1)
+        p = forceatlas2_layout(G, iterations=50, linlog=True, pos=None,
+                               nohubs=True, k=None, dim=3)
+        # Save VTK
+        pos = [list(p[i]) for i in p]
+        degree = [d for n, d in G.degree]
+        labels = [d['label'] for n, d in G.nodes(data=True)]
+        writeObjects(
+         pos, edges=G.edges(), nodeLabel=labels,
+         scalar=degree, name='degree', power=0.333,
+         scalar2=partitions, name2='partition', power2=1.0,
+         method='vtkPolyData', fileout=out_vtk)
 
-    # Create igraph graph
-    IG = ig.Graph()
-    IG.add_vertices(msize)
-    IG.vs['weight'] = weights
-    bar = Bar('Building igraph graph ', max=msize)
-    auth = []
-    eweight = []
-    for i in range(0, msize):
-        bar.next()
-        auth.append(allAuthors[i].encode('utf-8'))
-        for j in range(i+1, msize):
-            if edges[i][j] != 0:
-                IG.add_edge(i, j)
-                eweight.append(edges[i][j]*maxEdgeWidth/edges.max())
-    IG.es['weight'] = eweight
-    bar.finish()
-    x = []
-    y = []
-    layout = IG.layout("fr")
-    for xy in layout.coords:
-        x.append(xy[0])
-        y.append(xy[1])
-    IG.vs['x'] = x
-    IG.vs['y'] = y
-    IG.vs['label'] = auth
-    # Save DOT
-    IG.write_graphml(out_graphml)
+    # igraph graph
+    if do_igraph:
+        IG = ig.Graph()
+        IG.add_vertices(msize)
+        IG.vs['weight'] = weights
+        bar = Bar('Building igraph graph ', max=msize)
+        auth = []
+        eweight = []
+        for i in range(0, msize):
+            bar.next()
+            auth.append(unicode(abbrev_auth(allAuthors[i], db_type)))
+            for j in range(i+1, msize):
+                if edges[i][j] != 0:
+                    IG.add_edge(i, j)
+                    eweight.append(edges[i][j]*maxEdgeWidth/edges.max())
+        IG.es['weight'] = eweight
+        bar.finish()
+        # layout = IG.layout("kk3d")
+        # 2D layout
+        layout2D = IG.layout("fr3d", weights=eweight, area=sqrt(msize))
+        layout2D.center()
+        IG.vs['x'] = [xy[0] for xy in layout2D.coords]
+        IG.vs['y'] = [xy[1] for xy in layout2D.coords]
+        IG.vs['label'] = [a.encode('utf-8') for a in auth]
+        part = IG.community_multilevel(weights=eweight)
+        # Sort partitions by number of sublists
+        sorted_part = sorted(part, key=len, reverse=True)
+        memb = [0] * msize
+        for n, comm in enumerate(sorted_part):
+            for i in comm:
+                memb[i] = n
+        # ig.plot(IG, layout=layout2D)
+        # Save
+        IG.write_graphml(out_graphml)
 
+        layout3D = IG.layout("fr3d", weights=eweight, area=sqrt(msize))
+        layout3D.center()
 
-
-    # Communities
-    partitions = [None]*msize
-    #communities = list(asyn_fluidc(G, 15, max_iter=200, seed=None))
-    #communities = list(asyn_lpa_communities(G, weight=None, seed=None))
-    #communities = list(greedy_modularity_communities(G))
-    #communities.sort(key=len, reverse=True)
-    #for i, comm in enumerate(communities):
-    #    for c in comm:
-    #        partitions[c] = i
-    par = community.best_partition(G)
-    partitions = par.values()
-
-    # 3D network layout
-    #p = nx.spring_layout(G, iterations=500, dim=3, k=1)
-    p = forceatlas2_layout(G, iterations=50, linlog=True, pos=None,
-                           nohubs=True, k=None, dim=3)
-
-
-    # Save VTK
-    pos = [list(p[i]) for i in p]
-    degree = [d for n, d in G.degree]
-    labels = [d['label'] for n, d in G.nodes(data=True)]
-    writeObjects(
-     pos, edges=G.edges(), nodeLabel=labels,
-     scalar=degree, name='degree', power=0.333,
-     scalar2=partitions, name2='partition', power2=1.0,
-     method='vtkPolyData', fileout=out_vtk)
-
+        # Save VTK
+        writeObjects(
+         layout3D.coords, edges=IG.get_edgelist(), nodeLabel=auth,
+         scalar=list(weights), name='weight', power=0.333,
+         scalar2=memb, name2='partition', power2=1.0,
+         method='vtkPolyData', fileout=out_vtk)
 
     # Draw graph
-    if raw_input('Draw network (y/n)?') == 'y':
-        labels = dict((n, d['label']) for (n, d) in G.nodes(data=True))
-        edgewidth = [d['weight'] for (u, v, d) in G.edges(data=True)]
-        nodesize = [d['weight'] for (u, d) in G.nodes(data=True)]
-        pos = nx.spring_layout(G, iterations=100)
-        nx.draw_networkx_nodes(G, pos, node_size=nodesize)
-        nx.draw_networkx_edges(G, pos, width=0.5, edge_color='b')
-        nx.draw_networkx_labels(
-            G, pos, labels, alpha=1.0, font_size=3, font_color='black')
-        plt.axis('off')
-        plt.show()
+#    if raw_input('Draw network (y/n)?') == 'y':
+#        labels = dict((n, d['label']) for (n, d) in G.nodes(data=True))
+#        edgewidth = [d['weight'] for (u, v, d) in G.edges(data=True)]
+#        nodesize = [d['weight'] for (u, d) in G.nodes(data=True)]
+#        pos = nx.spring_layout(G, iterations=100)
+#        nx.draw_networkx_nodes(G, pos, node_size=nodesize)
+#        nx.draw_networkx_edges(G, pos, width=0.5, edge_color='b')
+#        nx.draw_networkx_labels(
+#        plt.axis('off')
+#        plt.show()
 
     # Draw Hub Ego graph
     # from operator import itemgetter
