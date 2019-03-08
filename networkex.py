@@ -132,16 +132,15 @@ def get_scholar():
         id += 1
     pool.close()
     pool.join()
-
-    for id, p in enumerate(pub):
-        if 'year' in p.bib:
-            p.bib['year'] = str(p.bib['year'])
-        p.bib['ENTRYTYPE'] = unicode('article')
-        if 'abstract' in p.bib:
-            del p.bib['abstract']
+    for id, publ in enumerate(author.publications):
+        if 'year' in publ.bib:
+            publ.bib['year'] = str(publ.bib['year'])
+        publ.bib['ENTRYTYPE'] = unicode('article')
+        if 'abstract' in publ.bib:
+            del publ.bib['abstract']
         sid = "%04d" % id
-        p.bib['ID'] = str(sid)
-        db.entries.append(p.bib)
+        publ.bib['ID'] = str(sid)
+        db.entries.append(publ.bib)
     bibtex_str = bibtexparser.dumps(db)
     with open(outfile, 'w') as bibfile:
         bibfile.write(bibtex_str.encode('utf8'))
