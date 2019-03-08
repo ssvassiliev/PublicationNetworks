@@ -8,6 +8,7 @@ from multiprocessing.dummy import Pool
 import time
 import pause
 import random
+import sys
 
 number_publications = 0
 
@@ -16,7 +17,6 @@ def download_publications(p):
     pause.seconds(random.random())
     publ = p.fill()
     return(publ)
-
 
 # make the Pool of workers
 pool = Pool(4)
@@ -27,16 +27,23 @@ db = BibDatabase()
 authors = []
 count = 0
 search_query = scholarly.search_author(scholar)
-for au in search_query:
-    count = count + 1
-    print "\nProfile #" + str(count) + ': ' + au.name
-    print 'Affiliation: ' + au.affiliation
-    print 'Email: ' + au.email
-    line = ''
-    for i in au.interests:
-        line = line + unicode(i) + ', '
-    print 'Interests: ' + line.rstrip(',')
-    authors.append(au)
+try:
+    for au in search_query:
+        count = count + 1
+        print "\nProfile #" + str(count) + ': ' + au.name
+        print 'Affiliation: ' + au.affiliation
+        print 'Email: ' + au.email
+        line = ''
+        for i in au.interests:
+            line = line + unicode(i) + ', '
+        print 'Interests: ' + line.rstrip(',')
+        authors.append(au)
+except AttributeError:
+    print "Search failed - empty search results?"
+    sys.exit()
+if count == 0:
+    print "Search failed - empty search results?"
+    sys.exit()
 if count > 1:
     s = 'Select profile (1-' + str(count) + "): "
     ind = input(s)
@@ -57,11 +64,9 @@ for i in pb:
 bar.finish()
 pool.close()
 pool.join()
-pub = list(pb)
 end = time.time()
 print "Download time: " + str(end - start)
-
-for id, publ in enumerate(pub):
+for id, publ in enumerate(author.publications):
     if 'year' in publ.bib:
         publ.bib['year'] = str(publ.bib['year'])
     publ.bib['ENTRYTYPE'] = unicode('article')
