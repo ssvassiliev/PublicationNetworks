@@ -2,7 +2,7 @@
 import bibtexparser
 import networkx as nx
 import numpy
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from math import sqrt
 from progress.bar import Bar
 from writeNodesEdges import writeObjects
@@ -13,7 +13,7 @@ from forceatlas import forceatlas2_layout
 #from networkx.algorithms.community import label_propagation_communities
 import community
 import igraph as ig
-
+import time
 
 def make_uniq_authors_list(bib_db):
     allAuthors = []
@@ -155,6 +155,7 @@ if __name__ == "__main__":
 
     # igraph graph
     if do_igraph:
+        start=time.time()
         IG = ig.Graph()
         IG.add_vertices(msize)
         IG.vs['weight'] = weights
@@ -170,9 +171,11 @@ if __name__ == "__main__":
                     eweight.append(edges[i][j]*maxEdgeWidth/edges.max())
         IG.es['weight'] = eweight
         bar.finish()
+        print "Time to build graph:" + str(time.time()-start)
         # layout = IG.layout("kk3d")
         # 2D layout
-        layout2D = IG.layout("fr3d", weights=eweight, area=sqrt(msize))
+        start = time.time()
+        layout2D = IG.layout("fr", weights=eweight, area=sqrt(msize))
         layout2D.center()
         IG.vs['x'] = [xy[0] for xy in layout2D.coords]
         IG.vs['y'] = [xy[1] for xy in layout2D.coords]
@@ -187,9 +190,12 @@ if __name__ == "__main__":
         # ig.plot(IG, layout=layout2D)
         # Save
         IG.write_graphml(out_graphml)
-
+        print "Time to compute 2D layout:" + str(time.time()-start)
+        start = time.time()
         layout3D = IG.layout("fr3d", weights=eweight, area=sqrt(msize))
         layout3D.center()
+        print "Time to compute 3D layout:" + str(time.time()-start)
+
 
         # Save VTK
         writeObjects(
