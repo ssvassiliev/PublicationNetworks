@@ -83,7 +83,6 @@ def rename_authors(bib_db, pairs):
 
 def rename_authors_auto(bib_db, threshold, db_type):
     allAuthors = make_uniq_authors_list(bib_db)
-    print allAuthors
     pairs = []
     np = 0
     for i, auth_1 in enumerate(allAuthors):
