@@ -7,6 +7,7 @@ import sys
 from make_coauthor_network import make_uniq_authors_list
 
 
+# Find duplicate authors
 def make_pairs(allAuthors, threshold, db_type):
     pairs = []
     np = 0
