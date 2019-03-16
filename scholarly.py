@@ -1,5 +1,10 @@
 """scholarly.py"""
 
+# Google Scholar changed formatting in March 2019
+# Modifications to scholarly:
+# 1: replace gsc_oai_ with gs_ai_
+# 2: co-authors extraction code commented out as it stopped working
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from bs4 import BeautifulSoup
